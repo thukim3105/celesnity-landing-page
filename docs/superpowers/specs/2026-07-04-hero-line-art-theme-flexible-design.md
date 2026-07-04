@@ -41,16 +41,18 @@ Applies to **both** hero layers so light mode is coherent:
 - `in-factory.png` (project root) — already copied to `public/hero/factory-in.png`.
 
 ### Asset prep — baked masks
-Bake two high-contrast **white-line-on-black** PNGs to serve as clean luminance masks
-(the source blue/gradient strokes have modest luminance and would mask softly):
+Bake two **white-line-on-transparent** PNGs (alpha masks) so ordinary CSS alpha masking
+can be used — universally supported (incl. Safari via `-webkit-mask`), avoiding the
+narrower browser support of `mask-mode: luminance`:
 - `public/hero/mask-worm.png` from `bg (2).png`
-- `public/hero/mask-interior.png` from `factory-in.png`
+- `public/hero/mask-interior.png` from `in-factory.png`
 
 Method: a small Node script (Node v22 available; no ImageMagick). Per pixel, compute
-Rec.709 luminance, apply a threshold/gain curve, and write it to all of R/G/B (white lines
-on black). No alpha needed — `mask-mode: luminance` reads brightness. Dependency: use a
-zero-config PNG codec already resolvable in the project (`pngjs`); if absent, add it as a
-dev dependency. Keep the script under `scripts/bake-hero-masks.mjs` for repeatability.
+Rec.709 luminance and a gain/offset curve → that becomes the **alpha** channel; RGB is set
+to white. The source's near-black background → alpha 0 (transparent); bright strokes →
+high alpha (opaque). Dependency: **`sharp` 0.34.5 is already installed** — no new
+dependency. Keep the script at `scripts/bake-hero-masks.mjs` (pure luma function unit-
+tested with built-in `node:test`).
 
 The masks are the **sole hero art** — there is no raster fallback layer. The source
 `bg (2).png` is only read once by the bake script to produce `mask-worm.png`; it does not
