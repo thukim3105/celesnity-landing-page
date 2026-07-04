@@ -60,7 +60,6 @@ export function HowItWorks() {
       return;
     }
 
-    const heading = el.querySelector<HTMLElement>("[data-heading]");
     const frame = el.querySelector<HTMLElement>("[data-frame]");
     const slides = Array.from(el.querySelectorAll<HTMLElement>("[data-slide]"));
     const stepLines = Array.from(
@@ -74,18 +73,10 @@ export function HowItWorks() {
       const travel = el.offsetHeight - window.innerHeight;
       const p = clamp01(-rect.top / Math.max(1, travel));
 
-      // Left: over the lead-in the heading travels straight up toward the navbar,
-      // fading out only as it arrives; the frame + steps appear afterwards.
-      const travelProg = clamp01(p / LEAD);
-      if (heading) {
-        // Climbs up to just below the navbar and stays there (no fade).
-        heading.style.transform = `translateY(${-travelProg * 34}vh)`;
-      }
-      // Frame fades in just as the heading finishes its climb.
+      // Left: the frame fades in as you scroll into the section (the heading is a
+      // fixed title, handled in CSS).
       if (frame) {
-        frame.style.opacity = String(
-          easeOut(clamp01((p - (LEAD - 0.03)) / 0.04)),
-        );
+        frame.style.opacity = String(easeOut(clamp01((p - 0.04) / (LEAD - 0.04))));
       }
 
       // Left: cross-fade the image to the active step. Each image is centred on
@@ -142,6 +133,13 @@ export function HowItWorks() {
   return (
     <section ref={rootRef} className={styles.section}>
       <div className={styles.sticky}>
+        {/* Fixed section title, pinned at the top-left for the whole section. */}
+        <h2 className={styles.heading}>
+          Easy to set up,
+          <br />
+          simple to use
+        </h2>
+
         <div className={styles.grid}>
           <div className={styles.mediaCol}>
             {/* Image frame stays fixed; the picture inside cross-fades per step. */}
@@ -153,12 +151,6 @@ export function HowItWorks() {
                 </div>
               ))}
             </div>
-            {/* Heading overlays the frame, then slides away on scroll. */}
-            <h2 className={styles.heading} data-heading>
-              Easy to set up,
-              <br />
-              simple to use
-            </h2>
           </div>
 
           <div className={styles.stage}>
