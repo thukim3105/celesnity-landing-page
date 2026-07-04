@@ -21,7 +21,7 @@
   margin-inline: auto;
   width: 100%;
   max-width: 1360px;
-  min-height: var(--header-h);
+  min-height: var(--header-h, clamp(60px, 8vh, 76px));
   display: flex;
   align-items: center;
   justify-content: space-between;
