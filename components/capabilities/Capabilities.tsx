@@ -79,12 +79,17 @@ export function Capabilities() {
   return (
     <section ref={rootRef} className={styles.section}>
       <div className={styles.sticky}>
-        <div className={styles.titles}>
-          {ITEMS.map((it) => (
-            <h2 key={it.n} className={styles.title} data-title>
-              {it.title}
-            </h2>
-          ))}
+        <div className={styles.head}>
+          <h2 className={styles.sectionTitle}>
+            One Platform for the Entire Operation
+          </h2>
+          <div className={styles.titles}>
+            {ITEMS.map((it) => (
+              <p key={it.n} className={styles.title} data-title>
+                {it.title}
+              </p>
+            ))}
+          </div>
         </div>
 
         <div className={styles.track} data-track>
