@@ -19,14 +19,14 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  /* Line the brand wordmark up with the column titles (same text baseline). */
-  align-items: baseline;
+  align-items: flex-start;
   gap: clamp(32px, 6vw, 72px);
 }
 
 .brand {
   display: flex;
   align-items: center;
+  min-height: 40px;
 }
 
 .col {
@@ -35,7 +35,12 @@
   gap: var(--space-3);
 }
 
+/* Match the brand-logo height and centre the title, so titles line up with the
+   wordmark (the logo is ~1.4x its size = 40px at the default size 28). */
 .colHead {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
   font-size: 15px;
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
