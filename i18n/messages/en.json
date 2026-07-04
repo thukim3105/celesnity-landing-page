@@ -1,0 +1,101 @@
+{
+  "Meta": {
+    "homeTitle": "Celesnity — Minder AI",
+    "homeDescription": "Celesnity — an AI company. Reach the stars with Minder AI and more.",
+    "aboutTitle": "About Us — Celesnity",
+    "aboutDescription": "Celesnity — an AI company building Minder AI."
+  },
+  "Nav": {
+    "minderAI": "Minder AI",
+    "solution": "Solution",
+    "resources": "Resources",
+    "about": "About Us",
+    "comingSoon": "Coming soon"
+  },
+  "Header": {
+    "brandHome": "Celesnity home",
+    "primaryNav": "Primary",
+    "openMenu": "Open menu",
+    "menu": "Menu",
+    "closeMenu": "Close menu"
+  },
+  "LanguageSwitcher": {
+    "label": "Select language"
+  },
+  "ThemeToggle": {
+    "label": "Switch between dark and light theme"
+  },
+  "Hero": {
+    "heading": "Minder AI",
+    "leadLine1": "Increase workforce productivity, capture every action as data,",
+    "leadLine2": "and make operations instantly searchable.",
+    "cta": "Request a demo"
+  },
+  "HowItWorks": {
+    "headingLine1": "Easy to set up,",
+    "headingLine2": "simple to use",
+    "steps": [
+      {
+        "title": "Install the Hardware",
+        "points": [
+          "Set up Minder AI in the work area",
+          "Celesnity engineers deploy and configure the system on-site",
+          "Gather factory-specific operational information"
+        ]
+      },
+      {
+        "title": "Configure the Software",
+        "points": [
+          "Connect Minder AI to existing processes",
+          "Define user roles and permissions",
+          "Customize terminology, workflows, and operational stages"
+        ]
+      },
+      {
+        "title": "Start Using Minder AI",
+        "points": [
+          "Workers log in and interact using voice commands",
+          "AI supports daily operations immediately",
+          "Continuous learning and optimization from usage"
+        ]
+      }
+    ]
+  },
+  "Capabilities": {
+    "sectionTitle": "One Platform for the Entire Operation",
+    "items": [
+      "Onboard new hires fast",
+      "Catch errors in the workflow",
+      "Capture production data automatically",
+      "Reporting on demand",
+      "Scheduling",
+      "Ask the operation anything, in plain language"
+    ]
+  },
+  "CTA": {
+    "lead": "If your workers are juggling between machines and shifts and you're curious how to save cost and increase productivity.",
+    "thanks": "Thanks — we'll be in touch shortly.",
+    "emailLabel": "Work email",
+    "emailPlaceholder": "your@email.com",
+    "button": "Request a demo",
+    "emailUsPrefix": "Or email us directly at "
+  },
+  "Footer": {
+    "minderAI": "Minder AI",
+    "solution": "Solution",
+    "manufacturing": "Manufacturing",
+    "logistics": "Logistics",
+    "resources": "Resources",
+    "blogs": "Blogs",
+    "caseStudy": "Case Study",
+    "guides": "Guides",
+    "glossary": "Glossary",
+    "about": "About Us",
+    "copyright": "© 2026 Celesnity Ltd · Minder AI · All rights reserved."
+  },
+  "About": {
+    "eyebrow": "About Us",
+    "heading": "Reach the stars.",
+    "lead": "Celesnity is an AI company building Minder AI — turning the factory floor into searchable, actionable data so teams work smarter, catch errors sooner, and scale without the chaos."
+  }
+}

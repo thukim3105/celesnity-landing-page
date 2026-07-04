@@ -1,0 +1,101 @@
+{
+  "Meta": {
+    "homeTitle": "Celesnity — Minder AI",
+    "homeDescription": "Celesnity — công ty AI. Vươn tới những vì sao cùng Minder AI và hơn thế nữa.",
+    "aboutTitle": "Về chúng tôi — Celesnity",
+    "aboutDescription": "Celesnity — công ty AI xây dựng Minder AI."
+  },
+  "Nav": {
+    "minderAI": "Minder AI",
+    "solution": "Giải pháp",
+    "resources": "Tài nguyên",
+    "about": "Về chúng tôi",
+    "comingSoon": "Sắp ra mắt"
+  },
+  "Header": {
+    "brandHome": "Celesnity trang chủ",
+    "primaryNav": "Điều hướng chính",
+    "openMenu": "Mở menu",
+    "menu": "Menu",
+    "closeMenu": "Đóng menu"
+  },
+  "LanguageSwitcher": {
+    "label": "Chọn ngôn ngữ"
+  },
+  "ThemeToggle": {
+    "label": "Chuyển giữa giao diện tối và sáng"
+  },
+  "Hero": {
+    "heading": "Minder AI",
+    "leadLine1": "Tăng năng suất lao động, ghi lại mọi thao tác thành dữ liệu,",
+    "leadLine2": "và giúp toàn bộ vận hành có thể tìm kiếm tức thì.",
+    "cta": "Yêu cầu demo"
+  },
+  "HowItWorks": {
+    "headingLine1": "Dễ cài đặt,",
+    "headingLine2": "đơn giản để dùng",
+    "steps": [
+      {
+        "title": "Lắp đặt phần cứng",
+        "points": [
+          "Lắp đặt Minder AI tại khu vực làm việc",
+          "Kỹ sư Celesnity triển khai và cấu hình hệ thống tại chỗ",
+          "Thu thập thông tin vận hành riêng của nhà máy"
+        ]
+      },
+      {
+        "title": "Cấu hình phần mềm",
+        "points": [
+          "Kết nối Minder AI với các quy trình hiện có",
+          "Thiết lập vai trò và quyền của người dùng",
+          "Tùy chỉnh thuật ngữ, quy trình và các giai đoạn vận hành"
+        ]
+      },
+      {
+        "title": "Bắt đầu dùng Minder AI",
+        "points": [
+          "Công nhân đăng nhập và tương tác bằng lệnh giọng nói",
+          "AI hỗ trợ vận hành hằng ngày ngay lập tức",
+          "Liên tục học hỏi và tối ưu từ quá trình sử dụng"
+        ]
+      }
+    ]
+  },
+  "Capabilities": {
+    "sectionTitle": "Một nền tảng cho toàn bộ vận hành",
+    "items": [
+      "Đào tạo nhân viên mới nhanh chóng",
+      "Phát hiện lỗi trong quy trình",
+      "Tự động ghi lại dữ liệu sản xuất",
+      "Báo cáo theo yêu cầu",
+      "Lập lịch",
+      "Hỏi bất cứ điều gì về vận hành, bằng ngôn ngữ tự nhiên"
+    ]
+  },
+  "CTA": {
+    "lead": "Nếu công nhân của bạn phải xoay xở giữa nhiều máy móc và ca kíp, và bạn muốn biết cách tiết kiệm chi phí và tăng năng suất.",
+    "thanks": "Cảm ơn bạn, chúng tôi sẽ liên hệ trong thời gian ngắn.",
+    "emailLabel": "Email công việc",
+    "emailPlaceholder": "your@email.com",
+    "button": "Yêu cầu demo",
+    "emailUsPrefix": "Hoặc gửi email trực tiếp cho chúng tôi tại "
+  },
+  "Footer": {
+    "minderAI": "Minder AI",
+    "solution": "Giải pháp",
+    "manufacturing": "Sản xuất",
+    "logistics": "Hậu cần",
+    "resources": "Tài nguyên",
+    "blogs": "Bài viết",
+    "caseStudy": "Nghiên cứu điển hình",
+    "guides": "Hướng dẫn",
+    "glossary": "Thuật ngữ",
+    "about": "Về chúng tôi",
+    "copyright": "© 2026 Celesnity Ltd · Minder AI · Bảo lưu mọi quyền."
+  },
+  "About": {
+    "eyebrow": "Về chúng tôi",
+    "heading": "Vươn tới những vì sao.",
+    "lead": "Celesnity là công ty AI xây dựng Minder AI, biến sàn nhà máy thành dữ liệu có thể tìm kiếm và hành động, để các đội ngũ làm việc thông minh hơn, phát hiện lỗi sớm hơn và mở rộng quy mô mà không hỗn loạn."
+  }
+}
