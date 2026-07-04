@@ -9,12 +9,12 @@ const easeOut = (x: number) => 1 - (1 - x) * (1 - x);
 type Item = { n: string; title: string; img?: string };
 
 const ITEMS: Item[] = [
-  { n: "01", title: "Onboard new hires fast" },
-  { n: "02", title: "Catch errors in the workflow" },
-  { n: "03", title: "Capture production data automatically" },
-  { n: "04", title: "Reporting on demand" },
-  { n: "05", title: "Scheduling" },
-  { n: "06", title: "Ask the operation anything, in plain language" },
+  { n: "01", title: "Onboard new hires fast", img: "/capabilities/onboard-new-hires.png" },
+  { n: "02", title: "Catch errors in the workflow", img: "/capabilities/catch-errors.png" },
+  { n: "03", title: "Capture production data automatically", img: "/capabilities/capture-data.png" },
+  { n: "04", title: "Reporting on demand", img: "/capabilities/reporting.png" },
+  { n: "05", title: "Scheduling", img: "/capabilities/scheduling.png" },
+  { n: "06", title: "Ask the operation anything, in plain language", img: "/capabilities/ask-anything.png" },
 ];
 
 /**
