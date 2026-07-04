@@ -74,9 +74,9 @@
 
 .panel {
   position: relative;
-  flex: 0 0 clamp(280px, 52vw, 760px);
+  flex: 0 0 clamp(280px, 62vw, 900px);
   aspect-ratio: 16 / 9;
-  max-height: 58vh;
+  max-height: 66vh;
   border-radius: var(--radius-xl, 28px);
   overflow: hidden;
   border: 1px solid var(--border);
@@ -160,6 +160,15 @@
 .section[data-reduced="true"] .panelLabel {
   opacity: 1;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* 16:9 (and wider/shorter) desktops only — smaller panels so they fit the
+   shorter height. 16:10 and taller keep the larger size. */
+@media (min-width: 861px) and (min-aspect-ratio: 17 / 10) {
+  .panel {
+    flex-basis: clamp(280px, 52vw, 760px);
+    max-height: 58vh;
+  }
 }
 
 /* Safety net: force the stacked layout on small screens even if the pinned JS
