@@ -8,20 +8,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-base);
+  /* Deep indigo wash (dark top-left), matching the brand cover. */
+  background: var(--hero-bg);
   padding-block: clamp(80px, 14vh, 180px);
   padding-inline: clamp(20px, 5vw, 48px);
   overflow: hidden;
 }
 
-/* Signature-gradient wash over the dark base, held at 30%. */
+/* Signature gradient blended in diagonally — transparent at the top-left, rising
+   to purple/magenta toward the bottom-right (like the brand cover). */
 .section::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: var(--gradient-brand);
-  opacity: 0.3;
+  opacity: 0.85;
+  -webkit-mask: linear-gradient(135deg, transparent 12%, #000 88%);
+          mask: linear-gradient(135deg, transparent 12%, #000 88%);
 }
 
 .inner {
