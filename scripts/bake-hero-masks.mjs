@@ -1,7 +1,7 @@
 // Bakes the hero line-art alpha masks. Run from the repo root:
 //   node scripts/bake-hero-masks.mjs
-// Inputs (repo root): "bg(4).png" (intro scene), "in-factory.png" (interior).
-// Outputs: public/hero/mask-intro.png, public/hero/mask-interior.png.
+// Input (repo root): "in-factory.png" (the static inside-factory hero scene).
+// Output: public/hero/mask-interior.png.
 // The output PNGs are committed; only re-run when a source image changes.
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -35,7 +35,6 @@ async function bake(src, dst, gain, offset) {
 }
 
 async function main() {
-  await bake("bg(4).png", "public/hero/mask-intro.png", 3.6, 40);
   await bake("in-factory.png", "public/hero/mask-interior.png", 3.6, 40);
 }
 
