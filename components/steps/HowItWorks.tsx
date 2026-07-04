@@ -60,6 +60,7 @@ export function HowItWorks() {
       return;
     }
 
+    const heading = el.querySelector<HTMLElement>("[data-heading]");
     const frame = el.querySelector<HTMLElement>("[data-frame]");
     const slides = Array.from(el.querySelectorAll<HTMLElement>("[data-slide]"));
     const stepLines = Array.from(
@@ -73,8 +74,16 @@ export function HowItWorks() {
       const travel = el.offsetHeight - window.innerHeight;
       const p = clamp01(-rect.top / Math.max(1, travel));
 
-      // Left: the frame fades in as you scroll into the section (the heading is a
-      // fixed title, handled in CSS).
+      // Left: the heading appears from the middle (fade + blur), climbs up to its
+      // pinned top-left spot over the lead-in, then STAYS there (no fade-out).
+      const travelProg = clamp01(p / LEAD);
+      if (heading) {
+        const appear = easeOut(clamp01(travelProg / 0.3));
+        heading.style.opacity = String(appear);
+        heading.style.transform = `translateY(${(1 - travelProg) * 34}vh)`;
+        heading.style.filter = `blur(${(1 - appear) * 8}px)`;
+      }
+      // Frame fades in as the heading settles.
       if (frame) {
         frame.style.opacity = String(easeOut(clamp01((p - 0.04) / (LEAD - 0.04))));
       }
@@ -133,8 +142,8 @@ export function HowItWorks() {
   return (
     <section ref={rootRef} className={styles.section}>
       <div className={styles.sticky}>
-        {/* Fixed section title, pinned at the top-left for the whole section. */}
-        <h2 className={styles.heading}>
+        {/* Title appears from the middle, climbs to the top-left, then stays. */}
+        <h2 className={styles.heading} data-heading>
           Easy to set up,
           <br />
           simple to use

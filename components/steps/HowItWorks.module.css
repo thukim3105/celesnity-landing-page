@@ -106,6 +106,8 @@
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-display);
   color: var(--text-primary);
+  opacity: 0; /* revealed + climbed into place from scroll (see .tsx) */
+  will-change: opacity, transform, filter;
 }
 
 /* Stage: the steps share one frame and swap in place. min-height holds the
@@ -228,6 +230,9 @@
 .section[data-reduced="true"] .heading {
   position: static;
   margin: 0 auto var(--space-8);
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 .section[data-reduced="true"] .frame {
