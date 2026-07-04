@@ -33,15 +33,6 @@
   align-items: center;
 }
 
-.eyebrow {
-  margin: 0 0 var(--space-3);
-  font-size: 14px;
-  font-weight: var(--fw-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
 .heading {
   margin: 0;
   font-family: var(--font-display);

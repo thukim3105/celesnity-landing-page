@@ -116,9 +116,6 @@ export function HowItWorks() {
         <div className={styles.grid}>
           <div className={styles.headingCol}>
             <Reveal>
-              <p className={styles.eyebrow}>How it works</p>
-            </Reveal>
-            <Reveal delay={120}>
               <h2 className={styles.heading}>
                 Easy to set up,
                 <br />
