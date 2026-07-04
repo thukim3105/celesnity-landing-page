@@ -17,8 +17,11 @@ export function Hero() {
         </Reveal>
         <Reveal delay={120}>
           <p className={styles.lead}>
-            Increase workforce productivity, capture every action as data, and make
-            operations instantly searchable.
+            Increase workforce productivity,
+            <br />
+            capture every action as data,
+            <br />
+            and make operations instantly searchable.
           </p>
         </Reveal>
         <Reveal delay={240}>
