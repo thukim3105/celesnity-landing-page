@@ -28,16 +28,29 @@
   inset: 0;
   background: var(--gradient-brand);
   opacity: 0.4;
-  -webkit-mask: var(--mask) center / cover no-repeat;
-          mask: var(--mask) center / cover no-repeat;
+  /* Two intersected mask layers: (1) the wireframe alpha, (2) a feather on the
+     seam-facing edge (--feather) so the line-art dissolves where the two layers
+     meet during the scroll pull, hiding the join. Default feather is a no-op. */
+  -webkit-mask:
+    var(--mask) center / cover no-repeat,
+    var(--feather, linear-gradient(#000, #000)) center / cover no-repeat;
+          mask:
+    var(--mask) center / cover no-repeat,
+    var(--feather, linear-gradient(#000, #000)) center / cover no-repeat;
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
 }
 
+/* Worm's-eye slides up and out the top, so its BOTTOM edge is the seam → feather it. */
 .lineWorm {
   --mask: url("/hero/mask-worm.png");
+  --feather: linear-gradient(to bottom, #000 78%, transparent 100%);
 }
 
+/* Interior slides up from below, so its TOP edge is the seam → feather it. */
 .lineInterior {
   --mask: url("/hero/mask-interior.png");
+  --feather: linear-gradient(to top, #000 78%, transparent 100%);
 }
 
 /* Worm's-eye starts filling the viewport and slides up out of the top. */
