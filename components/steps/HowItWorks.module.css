@@ -9,12 +9,15 @@
 .section {
   position: relative;
   height: 340vh; /* scroll room for the pinned line-by-line reveal */
-  /* Colour handoff from the hero: the top carries the hero's cobalt/indigo wash
-     mood, then settles into the base over the first ~70vh. Flips with the theme. */
+  /* Colour handoff from the hero. The very top matches the hero's dark base (so
+     the boundary is seamless — no hard line), then a soft cobalt bloom swells in
+     and fades back to base, both edges gradual so it reads as a glow, not a band.
+     Flips with the theme. */
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--cobalt-blue) 16%, var(--bg-base)) 0,
-    var(--bg-base) 70vh
+    var(--bg-base) 0,
+    color-mix(in srgb, var(--cobalt-blue) 12%, var(--bg-base)) 42vh,
+    var(--bg-base) 104vh
   );
   background-repeat: no-repeat;
 }
