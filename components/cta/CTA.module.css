@@ -8,23 +8,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--hero-bg);
+  /* Experiment: full signature-gradient background on this one section. */
+  background: var(--gradient-brand);
   padding-block: clamp(80px, 14vh, 180px);
   padding-inline: clamp(20px, 5vw, 48px);
   overflow: hidden;
 }
 
-/* Soft glow behind the headline — the DS signature gradient, radially masked
-   and held low so it reads as a glow, not a full background. */
+/* Dark vignette so the centred content stays legible over the gradient. */
 .section::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: var(--gradient-brand);
-  opacity: 0.18;
-  -webkit-mask: radial-gradient(58% 52% at 50% 44%, #000 0%, transparent 70%);
-          mask: radial-gradient(58% 52% at 50% 44%, #000 0%, transparent 70%);
+  background: radial-gradient(
+    82% 82% at 50% 46%,
+    transparent 34%,
+    color-mix(in srgb, var(--cosmic-black) 46%, transparent) 100%
+  );
 }
 
 .inner {
