@@ -39,7 +39,8 @@ const STEPS: Step[] = [
   },
 ];
 
-const LEAD = 0.16; // scroll fraction the heading occupies before the steps begin
+const LEAD = 0.16; // scroll fraction over which the heading climbs into place
+const CONTENT = 0.24; // frame + steps begin here — after the heading has settled and the user scrolls a bit more
 
 /**
  * "How it works" — a pinned section. Left column: the heading shows first, then
@@ -83,16 +84,16 @@ export function HowItWorks() {
         heading.style.transform = `translateY(${(1 - travelProg) * 34}vh)`;
         heading.style.filter = `blur(${(1 - appear) * 8}px)`;
       }
-      // Frame fades in as the heading settles.
+      // Frame fades in once the content phase begins (after the heading settles).
       if (frame) {
-        frame.style.opacity = String(easeOut(clamp01((p - 0.04) / (LEAD - 0.04))));
+        frame.style.opacity = String(easeOut(clamp01((p - CONTENT) / 0.05)));
       }
 
       // Left: cross-fade the image to the active step. Each image is centred on
       // its step's segment (so it holds while that step's text is fully shown),
       // and the first/last images hold at the ends so the frame is never blank.
-      const seg = (1 - LEAD) / STEPS.length;
-      const activeF = (p - LEAD) / seg; // fractional step index
+      const seg = (1 - CONTENT) / STEPS.length;
+      const activeF = (p - CONTENT) / seg; // fractional step index
       slides.forEach((slide, i) => {
         const center = i + 0.5;
         let dist = Math.abs(activeF - center);
@@ -107,7 +108,7 @@ export function HowItWorks() {
       const width = 0.2;
       stepLines.forEach((lines, i) => {
         const isLast = i === stepLines.length - 1;
-        const local = (p - LEAD - i * seg) / seg;
+        const local = (p - CONTENT - i * seg) / seg;
         lines.forEach((line, j) => {
           let op = 0;
           let ty = 24;
