@@ -1,0 +1,161 @@
+/* ============================================================
+   "How it works" — pinned section. The heading is sticky on the
+   left for the whole section; the three steps reveal on the right
+   one at a time, driven by scroll progress (see HowItWorks.tsx).
+   Opaque background so the fixed hero backdrop does not bleed through.
+   ============================================================ */
+
+.section {
+  position: relative;
+  height: 340vh; /* scroll room for the pinned 3-step reveal */
+  background: var(--bg-base);
+}
+
+/* Pinned viewport — holds the heading fixed while the section scrolls past. */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.grid {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-3);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+}
+
+/* Stage: the three steps stack in the same box and crossfade. min-height holds
+   the column so the sticky frame does not jump as steps swap. */
+.stage {
+  position: relative;
+  min-height: 360px;
+}
+
+.step {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  will-change: opacity, transform;
+}
+
+/* Number badge — the one spot of signature gradient per step (used sparingly). */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  color: var(--text-on-accent, var(--cloud-white));
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+
+.stepTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+}
+
+.points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.points li {
+  position: relative;
+  padding-left: 22px;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: var(--lh-body);
+  color: var(--text-secondary);
+}
+
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent, var(--cobalt-blue));
+}
+
+/* Single column below the desktop breakpoint: heading on top, steps below. */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* Reduced motion / no-JS fallback: unpin and show all three steps stacked. */
+.section[data-reduced="true"] {
+  height: auto;
+}
+
+.section[data-reduced="true"] .sticky {
+  position: static;
+  height: auto;
+  padding-block: clamp(64px, 12vh, 140px);
+  overflow: visible;
+}
+
+.section[data-reduced="true"] .grid {
+  align-items: start;
+}
+
+.section[data-reduced="true"] .stage {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.section[data-reduced="true"] .step {
+  position: relative;
+  inset: auto;
+  opacity: 1 !important;
+  transform: none !important;
+}

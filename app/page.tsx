@@ -1,5 +1,6 @@
 import { HeroExperience } from "@/components/hero/HeroExperience";
 import { Hero } from "@/components/hero/Hero";
+import { HowItWorks } from "@/components/steps/HowItWorks";
 
 export default function Home() {
   return (
@@ -14,6 +15,8 @@ export default function Home() {
             user scrolls from the intro scene into the factory interior,
             then holds on the interior image at the bottom. */}
         <section style={{ minHeight: "150vh" }} aria-hidden="true" />
+
+        <HowItWorks />
       </main>
     </>
   );
