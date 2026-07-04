@@ -1,24 +1,13 @@
 /* ============================================================
-   "How it works" — pinned section. The heading is sticky on the
-   left for the whole section; the three steps reveal on the right
-   one at a time, driven by scroll progress (see HowItWorks.tsx).
-   Opaque background so the fixed hero backdrop does not bleed through.
+   "How it works" — the heading stays sticky on the left while the
+   three steps stack down the right, each revealing (line by line)
+   as it scrolls into view and STAYING (1 -> 2 -> 3 accumulate).
+   Opaque background so the hero backdrop does not bleed through.
    ============================================================ */
 
 .section {
   position: relative;
-  height: 340vh; /* scroll room for the pinned 3-step reveal */
   background: var(--bg-base);
-}
-
-/* Pinned viewport — holds the heading fixed while the section scrolls past. */
-.sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
 }
 
 .grid {
@@ -29,7 +18,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(24px, 5vw, 72px);
-  align-items: center;
+  align-items: start;
+}
+
+/* Heading column — sticks in view (below the header) for the whole section. */
+.headingCol {
+  position: sticky;
+  top: calc(var(--header-h, 68px) + 8vh);
+  align-self: start;
 }
 
 .eyebrow {
@@ -51,32 +47,42 @@
   color: var(--text-primary);
 }
 
-/* Stage: the three steps stack in the same box and crossfade. min-height holds
-   the column so the sticky frame does not jump as steps swap. */
+/* Steps stack down the right, spaced so each scrolls into view on its own. The
+   top padding lets the heading read alone before step 1 arrives. */
 .stage {
-  position: relative;
-  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 6vh, 72px);
+  padding-block: 18vh 12vh;
 }
 
 .step {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
+  min-height: 42vh;
+  justify-content: center;
 }
 
-/* Each line inside a step reveals on its own (staggered), the same fade + slide +
-   blur as the heading. Values are driven per-line from scroll (see the .tsx); the
-   short transition gives a smooth trailing glide instead of rigid scroll tracking. */
+/* Each line reveals with a fade + slide + blur, staggered by its index (--li),
+   and STAYS once its step scrolls in. */
 .line {
   opacity: 0;
-  will-change: opacity, transform, filter;
+  transform: translateY(24px);
+  filter: blur(10px);
   transition:
-    opacity 220ms var(--ease, ease-out),
-    transform 220ms var(--ease, ease-out),
-    filter 220ms var(--ease, ease-out);
+    opacity 640ms var(--ease, ease-out),
+    transform 640ms var(--ease, ease-out),
+    filter 640ms var(--ease, ease-out);
+  transition-delay: calc(var(--li, 0) * 90ms);
+  will-change: opacity, transform, filter;
+}
+
+.step[data-shown="true"] .line {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 /* Number badge — the one spot of signature gradient per step (used sparingly). */
@@ -133,45 +139,32 @@
   background: var(--accent, var(--cobalt-blue));
 }
 
-/* Single column below the desktop breakpoint: heading on top, steps below. */
+/* Single column below desktop: heading on top (not sticky), steps below. */
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }
+  .headingCol {
+    position: static;
+  }
+  .stage {
+    padding-block: var(--space-8);
+    gap: var(--space-10, 40px);
+  }
+  .step {
+    min-height: 0;
+  }
 }
 
-/* Reduced motion / no-JS fallback: unpin and show all three steps stacked. */
-.section[data-reduced="true"] {
-  height: auto;
-}
-
-.section[data-reduced="true"] .sticky {
-  position: static;
-  height: auto;
-  padding-block: clamp(64px, 12vh, 140px);
-  overflow: visible;
-}
-
-.section[data-reduced="true"] .grid {
-  align-items: start;
-}
-
-.section[data-reduced="true"] .stage {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
+/* Reduced motion / no-JS fallback: show every line immediately. */
 .section[data-reduced="true"] .step {
-  position: relative;
-  inset: auto;
+  min-height: 0;
 }
 
 .section[data-reduced="true"] .line {
-  opacity: 1 !important;
-  transform: none !important;
-  filter: none !important;
+  opacity: 1;
+  transform: none;
+  filter: none;
   transition: none;
 }
