@@ -1,0 +1,472 @@
+/* ============================================================
+   Celesnity header — navbar stylesheet.
+   Layout only from here; every brand value references a LOCKED
+   design-system token (color, type, radius, motion). No raw hex.
+   Mobile-first: hamburger < 768px, full row >= 768px.
+   ============================================================ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: var(--bg-base);
+  border-bottom: 1px solid var(--border);
+  transition:
+    background-color var(--dur-slow) var(--ease),
+    border-color var(--dur-slow) var(--ease);
+}
+
+.inner {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1360px;
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(12px, 2vw, 32px);
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+
+/* ---------- Brand / logo ---------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  border-radius: var(--radius-sm);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logoMarks {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  margin-left: -4px;
+}
+
+.markDark,
+.markLight {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.markLight {
+  display: none;
+}
+
+:global([data-theme="light"]) .markLight {
+  display: block;
+}
+
+:global([data-theme="light"]) .markDark {
+  display: none;
+}
+
+.logoWord {
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color var(--dur-slow) var(--ease);
+}
+
+/* ---------- Center nav cluster ---------- */
+.navCluster {
+  display: none;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1.4vw, 28px);
+}
+
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navLink,
+.navTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.navLink:hover,
+.navTrigger:hover {
+  color: var(--text-primary);
+}
+
+/* ---------- Right controls ---------- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: none;
+}
+
+.iconButton,
+.menuButton {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.iconButton:hover,
+.menuButton:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+  border-color: transparent;
+}
+
+.iconButton:active,
+.menuButton:active {
+  transform: scale(var(--press-scale));
+}
+
+/* Theme toggle: both icons render, CSS shows one per theme. */
+.iconSun,
+.iconMoon {
+  display: inline-flex;
+}
+
+.iconMoon {
+  display: none;
+}
+
+:global([data-theme="light"]) .iconMoon {
+  display: inline-flex;
+}
+
+:global([data-theme="light"]) .iconSun {
+  display: none;
+}
+
+/* ---------- Language switcher ---------- */
+.langSwitcher {
+  position: relative;
+  display: none;
+}
+
+.langSwitcherDrawer {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.langButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 0 var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.langButton:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+  border-color: transparent;
+}
+
+.langButton:active {
+  transform: scale(var(--press-scale));
+}
+
+.chevron,
+.chevronOpen {
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ---------- Dropdown menus (nav + language) ---------- */
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: var(--space-2);
+  min-width: 220px;
+  list-style: none;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation);
+  z-index: 50;
+}
+
+/* Language menu aligns to the right edge of its trigger. */
+.langSwitcher .menu {
+  left: auto;
+  right: 0;
+}
+
+.menuItem,
+.menuItemActive {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.menuItem:hover,
+.menuItemActive:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
+.menuItemActive {
+  color: var(--text-primary);
+  font-weight: var(--fw-semibold);
+  background-color: var(--surface-hover);
+}
+
+.menuEmpty {
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.localeCode {
+  width: 26px;
+  font-weight: var(--fw-semibold);
+}
+
+.localeLabel {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- Mobile drawer ---------- */
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.drawerBackdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--cosmic-black) 62%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.drawerPanel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: clamp(16px, 4vw, 28px);
+  padding-top: max(16px, env(safe-area-inset-top));
+  background-color: var(--bg-base);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--elevation);
+  animation: drawerIn var(--dur-base) var(--ease);
+}
+
+@keyframes drawerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawerNavList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.drawerNavItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerNavLink {
+  display: block;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-medium);
+  border-radius: var(--radius-md);
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.drawerNavLink:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
+.drawerGroupLabel {
+  padding: var(--space-3) var(--space-2) var(--space-1);
+  color: var(--text-primary);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-semibold);
+}
+
+.drawerEmpty {
+  padding: 0 var(--space-2) var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.drawerSubList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--space-3);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerSubLink {
+  display: block;
+  padding: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.drawerSubLink:hover {
+  color: var(--text-primary);
+}
+
+.drawerFooter {
+  margin-top: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Focus visibility (DS cobalt ring) ---------- */
+.brand:focus-visible,
+.navLink:focus-visible,
+.navTrigger:focus-visible,
+.langButton:focus-visible,
+.iconButton:focus-visible,
+.menuButton:focus-visible,
+.menuItem:focus-visible,
+.menuItemActive:focus-visible,
+.drawerNavLink:focus-visible,
+.drawerSubLink:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------- Breakpoint: full row at >= 768px ---------- */
+@media (min-width: 768px) {
+  .navCluster {
+    display: flex;
+  }
+  .langSwitcher {
+    display: block;
+  }
+  .menuButton {
+    display: none;
+  }
+  .drawer {
+    display: none;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .header *,
+  .drawer *,
+  .drawerPanel {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

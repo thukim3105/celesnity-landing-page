@@ -18,6 +18,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Sticky header height — single source of truth, shared by the header and by
+   the hero so the hero can subtract it and center its content in the viewport. */
+:root {
+  --header-h: clamp(60px, 8vh, 76px);
+}
+
 /* Hero scrim token — flips with the DS theme so edge shading follows the wash
    (dark toward cosmic-black, light toward cloud-white). The wireframe line color
    itself uses --gradient-brand, which already flips per theme. Compose DS tokens
