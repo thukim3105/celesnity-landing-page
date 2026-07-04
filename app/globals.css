@@ -42,10 +42,21 @@ html.lenis body {
   overflow: clip;
 }
 
+/* Anurati — futuristic all-caps display face. DS-approved exception (Inter only,
+   otherwise) used solely for the CTA headline. Uppercase + digits only. */
+@font-face {
+  font-family: "Anurati";
+  src: url("/fonts/Anurati-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Sticky header height — single source of truth, shared by the header and by
    the hero so the hero can subtract it and center its content in the viewport. */
 :root {
   --header-h: clamp(60px, 8vh, 76px);
+  --font-anurati: "Anurati", var(--font-display);
 }
 
 /* Hero scrim token — flips with the DS theme so edge shading follows the wash
