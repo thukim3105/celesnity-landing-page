@@ -70,11 +70,19 @@
     filter 200ms var(--ease, ease-out);
 }
 
+/* Number + label on one row. */
+.stepHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
 /* Number badge — the one spot of signature gradient per step (used sparingly). */
 .badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 56px;
   height: 56px;
   border-radius: var(--radius-pill);

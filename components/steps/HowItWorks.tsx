@@ -127,12 +127,14 @@ export function HowItWorks() {
           <div className={styles.stage}>
             {STEPS.map((s) => (
               <article key={s.n} className={styles.step} data-step>
-                <span className={`${styles.badge} ${styles.line}`} data-line>
-                  {s.n}
-                </span>
-                <h3 className={`${styles.stepTitle} ${styles.line}`} data-line>
-                  {s.title}
-                </h3>
+                <div className={styles.stepHead}>
+                  <span className={`${styles.badge} ${styles.line}`} data-line>
+                    {s.n}
+                  </span>
+                  <h3 className={`${styles.stepTitle} ${styles.line}`} data-line>
+                    {s.title}
+                  </h3>
+                </div>
                 <ul className={styles.points}>
                   {s.points.map((pt) => (
                     <li key={pt} className={styles.line} data-line>
