@@ -65,9 +65,14 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
+}
+
+/* Each line inside a step reveals on its own (staggered), the same fade + slide +
+   blur as the heading. Values are driven per-line from scroll (see the .tsx); the
+   short transition gives a smooth trailing glide instead of rigid scroll tracking. */
+.line {
+  opacity: 0;
   will-change: opacity, transform, filter;
-  /* Short trailing ease so the scroll-scrubbed reveal glides smoothly into place
-     (heading-like) instead of tracking the scroll position rigidly. */
   transition:
     opacity 220ms var(--ease, ease-out),
     transform 220ms var(--ease, ease-out),
@@ -162,6 +167,9 @@
 .section[data-reduced="true"] .step {
   position: relative;
   inset: auto;
+}
+
+.section[data-reduced="true"] .line {
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;

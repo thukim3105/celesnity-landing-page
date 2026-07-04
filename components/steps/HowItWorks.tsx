@@ -61,6 +61,11 @@ export function HowItWorks() {
       return;
     }
 
+    // Each step's revealable lines (badge, title, bullets), grouped by step.
+    const stepLines = Array.from(
+      el.querySelectorAll<HTMLElement>("[data-step]"),
+    ).map((step) => Array.from(step.querySelectorAll<HTMLElement>("[data-line]")));
+
     let raf = 0;
     const apply = () => {
       raf = 0;
@@ -70,34 +75,27 @@ export function HowItWorks() {
       // Lead-in: the first slice of scroll shows the heading alone; the steps
       // only begin after the user keeps scrolling past it.
       const lead = 0.18;
-      const seg = (1 - lead) / STEPS.length;
-      for (let i = 0; i < STEPS.length; i++) {
-        // Local progress inside this step's scroll segment (0..1), or out of range.
+      const seg = (1 - lead) / stepLines.length;
+      const stagger = 0.08; // per-line offset, in local-segment units
+      const width = 0.26; // each line's fade duration, in local-segment units
+      stepLines.forEach((lines, i) => {
+        // Progress inside this step's scroll segment (0..1), or out of range.
         const local = (p - lead - i * seg) / seg;
-        let op = 0;
-        let ty = 28; // px: starts below, waiting to slide up (matches the heading)
-        if (local >= 0 && local <= 1) {
-          if (local < 0.3) {
-            // Fade in, eased like the heading reveal (decelerating arrival).
-            op = easeOut(local / 0.3);
-            ty = (1 - op) * 28; // slide up from below into place
-          } else if (local > 0.7) {
-            // Fade out, eased the same way.
-            op = easeOut((1 - local) / 0.3);
-            ty = -(1 - op) * 28; // continue drifting up and out
-          } else {
-            op = 1;
-            ty = 0;
+        lines.forEach((line, j) => {
+          let op = 0;
+          if (local >= 0 && local <= 1) {
+            // Line j fades in later, and out later — a cascade both ways, each
+            // line easing like the heading reveal.
+            const fadeIn = clamp01((local - j * stagger) / width);
+            const fadeOut = clamp01((1 - local - j * stagger) / width);
+            op = easeOut(Math.min(fadeIn, fadeOut));
           }
-        }
-        op = clamp01(op);
-        // Blur clears and the card settles from a hair small as it arrives, so the
-        // step reveals with the same fade + slide + blur feel as the heading.
-        el.style.setProperty(`--s${i}-op`, String(op));
-        el.style.setProperty(`--s${i}-ty`, `${ty}px`);
-        el.style.setProperty(`--s${i}-bl`, `${(1 - op) * 10}px`);
-        el.style.setProperty(`--s${i}-sc`, String(0.98 + op * 0.02));
-      }
+          const ty = (1 - op) * 24;
+          line.style.opacity = String(op);
+          line.style.transform = `translateY(${ty}px)`;
+          line.style.filter = `blur(${(1 - op) * 10}px)`;
+        });
+      });
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(apply);
@@ -130,21 +128,19 @@ export function HowItWorks() {
           </div>
 
           <div className={styles.stage}>
-            {STEPS.map((s, i) => (
-              <article
-                key={s.n}
-                className={styles.step}
-                style={{
-                  opacity: `var(--s${i}-op, 0)`,
-                  transform: `translateY(var(--s${i}-ty, 24px)) scale(var(--s${i}-sc, 0.985))`,
-                  filter: `blur(var(--s${i}-bl, 8px))`,
-                }}
-              >
-                <span className={styles.badge}>{s.n}</span>
-                <h3 className={styles.stepTitle}>{s.title}</h3>
+            {STEPS.map((s) => (
+              <article key={s.n} className={styles.step} data-step>
+                <span className={`${styles.badge} ${styles.line}`} data-line>
+                  {s.n}
+                </span>
+                <h3 className={`${styles.stepTitle} ${styles.line}`} data-line>
+                  {s.title}
+                </h3>
                 <ul className={styles.points}>
                   {s.points.map((pt) => (
-                    <li key={pt}>{pt}</li>
+                    <li key={pt} className={styles.line} data-line>
+                      {pt}
+                    </li>
                   ))}
                 </ul>
               </article>
