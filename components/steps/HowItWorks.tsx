@@ -74,14 +74,21 @@ export function HowItWorks() {
       const travel = el.offsetHeight - window.innerHeight;
       const p = clamp01(-rect.top / Math.max(1, travel));
 
-      // Left: heading fades out with a gentle lift over the lead-in; the frame
-      // fades in to take its place, then holds.
-      const out = easeOut(clamp01((p - 0.04) / (LEAD - 0.04)));
+      // Left: over the lead-in the heading travels straight up toward the navbar,
+      // fading out only as it arrives; the frame + steps appear afterwards.
+      const travelProg = clamp01(p / LEAD);
       if (heading) {
-        heading.style.opacity = String(1 - out);
-        heading.style.transform = `translateY(${-out * 16}px)`;
+        heading.style.opacity = String(
+          1 - easeOut(clamp01((travelProg - 0.7) / 0.3)),
+        );
+        heading.style.transform = `translateY(${-travelProg * 42}vh)`;
       }
-      if (frame) frame.style.opacity = String(out);
+      // Frame fades in just as the heading finishes its climb.
+      if (frame) {
+        frame.style.opacity = String(
+          easeOut(clamp01((p - (LEAD - 0.03)) / 0.04)),
+        );
+      }
 
       // Left: cross-fade the image to the active step. Each image is centred on
       // its step's segment (so it holds while that step's text is fully shown),
