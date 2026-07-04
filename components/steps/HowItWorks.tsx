@@ -23,6 +23,7 @@ const STEPS: Step[] = [
   {
     n: "02",
     title: "Configure the Software",
+    img: "/steps/config.png",
     points: [
       "Connect Minder AI to existing processes",
       "Define user roles and permissions",
