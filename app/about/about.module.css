@@ -14,7 +14,7 @@
   max-width: 780px;
   margin: 0 auto;
   padding: clamp(64px, 12vh, 160px) clamp(20px, 5vw, 48px);
-  background: var(--hero-bg);
+  background: var(--bg-base);
 }
 
 .eyebrow {

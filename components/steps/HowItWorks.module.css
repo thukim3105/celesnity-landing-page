@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--hero-bg);
+  background: var(--bg-base);
 }
 
 .grid {

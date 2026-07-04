@@ -8,24 +8,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Deep indigo wash (dark top-left), matching the brand cover. */
-  background: var(--hero-bg);
   padding-block: clamp(80px, 14vh, 180px);
   padding-inline: clamp(20px, 5vw, 48px);
   overflow: hidden;
-}
 
-/* Signature gradient blended in diagonally — transparent at the top-left, rising
-   to purple/magenta toward the bottom-right (like the brand cover). */
-.section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--gradient-brand);
-  opacity: 0.85;
-  -webkit-mask: linear-gradient(135deg, transparent 12%, #000 88%);
-          mask: linear-gradient(135deg, transparent 12%, #000 88%);
+  /* Locked dark section: a single solid cosmic-black in BOTH themes, so pin the
+     on-dark foreground + gradient values regardless of the page theme. */
+  --text-primary: var(--cloud-white);
+  --text-secondary: var(--starlight);
+  --text-muted: rgba(201, 206, 232, 0.62);
+  --surface: rgba(255, 255, 255, 0.06);
+  --border: rgba(201, 206, 232, 0.18);
+  --gradient-brand: var(--nebula-gradient);
+
+  background: var(--cosmic-black);
 }
 
 .inner {
