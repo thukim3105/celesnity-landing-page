@@ -1,0 +1,21 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Spacing scale" subtitle="4px base rhythm — roomy, unhurried" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:var(--cosmic-black);font-family:var(--font-sans);color:#F8F9FE;padding:26px 30px}
+  .row{display:flex;align-items:flex-end;gap:14px}
+  .u{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .bar{width:100%;background:var(--nebula-gradient);border-radius:4px}
+  .t{font-size:10.5px;color:var(--starlight-dim);font-variant-numeric:tabular-nums}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:8px}
+</style></head>
+<body>
+  <div class="row" id="r"></div>
+  <script>
+    const scale=[['1',4],['2',8],['3',12],['4',16],['5',20],['6',24],['8',32],['10',40],['12',48],['16',64]];
+    document.getElementById('r').innerHTML=scale.map(([n,px])=>
+      `<div class="cell"><div class="bar" style="height:${px}px"></div><div class="t">${n}</div><div class="t">${px}</div></div>`
+    ).join('');
+  </script>
+</body></html>

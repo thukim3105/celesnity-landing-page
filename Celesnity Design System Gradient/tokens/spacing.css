@@ -1,0 +1,36 @@
+/* ============================================================
+   CELESNITY · SPACING & LAYOUT TOKENS
+   A calm 4px-based rhythm with roomy breathing space that lets
+   the celestial surfaces feel open and unhurried.
+   ============================================================ */
+
+:root {
+  /* ---------- Spacing scale (4px base) ---------- */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ---------- Corner radii ---------- */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   16px;   /* inputs, small cards                 */
+  --radius-lg:   20px;   /* cards                               */
+  --radius-xl:   28px;   /* hero cards, panels                  */
+  --radius-2xl:  36px;
+  --radius-pill: 999px;  /* buttons, chips, toggles             */
+
+  /* ---------- Layout ---------- */
+  --container-max: 1200px;
+  --gutter: var(--space-6);
+}

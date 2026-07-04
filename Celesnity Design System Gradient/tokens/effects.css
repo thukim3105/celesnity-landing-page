@@ -1,0 +1,30 @@
+/* ============================================================
+   CELESNITY · EFFECTS — elevation, glow, motion
+   Matches the brand-kit demo. Cards stay flat: hierarchy comes
+   from 1px borders and a hover colour-shift, not drop shadows.
+   Elevation is reserved for genuinely floating surfaces (the
+   theme toggle, the 3D stage); the accent glow lifts the toast.
+   ============================================================ */
+
+:root {
+  /* ---------- Accent glow (toast / primary emphasis) ---------- */
+  --glow-accent: 0 10px 40px rgba(45, 68, 224, 0.35); /* @kind shadow */
+
+  /* ---------- Motion ---------- */
+  --ease:        cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */  /* calm settle          */
+  --dur-fast:    140ms; /* @kind other */  /* hover / press feedback           */
+  --dur-base:    220ms; /* @kind other */  /* default transitions              */
+  --dur-slow:    350ms; /* @kind other */  /* theme & colour fades             */
+  --press-scale: 0.97;  /* @kind other */  /* scale on :active                 */
+}
+
+/* ---------- Elevation · theme-scoped soft, cool-tinted shadow ----------
+   Dark surfaces sink into depth; light surfaces get a low, soft lift. */
+:root,
+[data-theme="dark"] {
+  --elevation: 0 24px 60px rgba(0, 0, 0, 0.55); /* @kind shadow */
+}
+[data-theme="light"] {
+  --elevation: 0 8px 24px rgba(28, 34, 64, 0.10),
+               0 28px 64px rgba(28, 34, 64, 0.12); /* @kind shadow */
+}

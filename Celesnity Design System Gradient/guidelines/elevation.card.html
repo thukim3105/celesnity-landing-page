@@ -1,0 +1,22 @@
+<!-- @dsCard group="Brand" viewport="700x220" name="Elevation & borders" subtitle="Gradient fills are borderless; quiet surfaces use a hairline; depth via soft shadow" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:var(--cosmic-black);font-family:var(--font-sans);color:#F8F9FE;padding:30px;display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end}
+  .cell{display:flex;flex-direction:column;gap:12px;align-items:center}
+  .box{width:132px;height:82px;border-radius:18px}
+  .fill{background:var(--nebula-gradient)}
+  .hero{background:var(--cosmos-wash)}
+  .hairline{background:#120A38;border:1px solid var(--hairline-dark)}
+  .depth{background:#120A38;box-shadow:var(--shadow-cosmos)}
+  .day{background:#fff;box-shadow:var(--shadow-lg)}
+  .t{font-size:11px;color:var(--starlight-dim)}
+</style></head>
+<body>
+  <div class="cell"><div class="box fill"></div><div class="t">gradient fill · borderless</div></div>
+  <div class="cell"><div class="box hero"></div><div class="t">hero wash · borderless</div></div>
+  <div class="cell"><div class="box hairline"></div><div class="t">surface · hairline</div></div>
+  <div class="cell"><div class="box depth"></div><div class="t">cosmos depth</div></div>
+  <div class="cell"><div class="box day"></div><div class="t">daybreak · lg</div></div>
+</body></html>

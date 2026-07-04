@@ -1,0 +1,48 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Cards & StatBlocks" subtitle="Hero cosmos wash, gradient, glass surface · big-number readouts" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:var(--cosmic-black);font-family:var(--font-sans);padding:28px 32px;}
+  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+</style>
+</head>
+<body class="cosmos">
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Card, StatBlock, Badge } = window.CelesnityDesignSystem_29274a;
+function Demo(){
+  return (
+    <div className="grid">
+      <Card variant="hero" padding="lg">
+        <Badge tone="cobalt">Tonight</Badge>
+        <div style={{marginTop:14}}>
+          <StatBlock value="98% clear" label="Tonight's sky" size="lg" bare onDark/>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:18}}>
+          <StatBlock value="12" label="visible planets"/>
+          <StatBlock value="4.2°" label="moon altitude"/>
+        </div>
+      </Card>
+      <div style={{display:'grid',gap:16}}>
+        <Card variant="gradient" padding="md">
+          <StatBlock value="02:14" label="Sunrise in" size="md" bare onDark/>
+        </Card>
+        <Card variant="surface" padding="md">
+          <StatBlock value="17°" label="horizon temp" accent/>
+        </Card>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

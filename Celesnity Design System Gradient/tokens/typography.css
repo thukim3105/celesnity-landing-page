@@ -1,0 +1,74 @@
+/* ============================================================
+   CELESNITY · TYPOGRAPHY TOKENS
+   One family: Inter. Geometric confidence in the display cuts,
+   calm humanist readability in body copy.
+   ============================================================ */
+
+:root {
+  /* ---------- Families ---------- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: var(--font-sans); /* display uses the same family, tighter tracking */
+
+  /* ---------- Weights ---------- */
+  --fw-light:    300; /* @kind font */
+  --fw-regular:  400; /* @kind font */
+  --fw-medium:   500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+
+  /* ---------- Type scale (px) ---------- */
+  --fs-display: 72px;  /* Display · 72/700 · hero wordmarks       */
+  --fs-h1:      48px;  /* H1 · 48/600                             */
+  --fs-h2:      32px;  /* H2 · 32/500                             */
+  --fs-h3:      24px;  /* H3 · 24/600                             */
+  --fs-lead:    20px;  /* lead paragraph                          */
+  --fs-body:    18px;  /* Body · 18/400 · 1.7 line-height         */
+  --fs-sm:      15px;  /* secondary / captions                    */
+  --fs-xs:      13px;  /* labels, meta                            */
+  --fs-eyebrow: 13px;  /* section eyebrows (tracked, uppercase)   */
+
+  /* ---------- Line heights ---------- */
+  --lh-tight:   1.02; /* @kind font */  /* display                                 */
+  --lh-heading: 1.12; /* @kind font */  /* h1–h3                                   */
+  --lh-snug:    1.35; /* @kind font */
+  --lh-body:    1.7;  /* @kind font */  /* body copy — generous, inviting          */
+
+  /* ---------- Letter spacing ---------- */
+  --ls-display: -0.03em; /* @kind font */  /* big display cuts tuck in tightly     */
+  --ls-heading: -0.015em; /* @kind font */
+  --ls-body:    0em; /* @kind font */
+  --ls-eyebrow: 0.24em; /* @kind font */   /* wide-tracked uppercase eyebrows      */
+}
+
+/* ---------- Optional convenience classes ---------- */
+.cel-display {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+}
+.cel-h1 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+}
+.cel-h2 {
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+}
+.cel-body {
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.cel-eyebrow {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-eyebrow);
+  line-height: 1;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+}

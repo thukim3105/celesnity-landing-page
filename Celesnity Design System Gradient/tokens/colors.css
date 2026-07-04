@@ -1,0 +1,78 @@
+/* ============================================================
+   CELESNITY · COLOR TOKENS
+   Two skies, one identity. A cosmic dark mode (Cosmos) and a
+   warm daybreak light mode (Daybreak) sharing one accent spine.
+
+   Theme is driven by [data-theme] to match the brand-kit demo.
+   Default (:root) = Cosmos / dark; [data-theme="light"] flips it.
+   ============================================================ */
+
+:root {
+  /* ---------- Cosmos · dark palette ---------- */
+  --cosmic-black:   #05060F; /* primary surface — the night sky   */
+  --deep-indigo:    #1A0E4D; /* raised surface                    */
+  --cobalt-blue:    #2D44E0; /* primary accent                    */
+  --violet:         #6E1FC6; /* secondary accent                  */
+  --nebula-magenta:   ; /* highlight                         */
+  --starlight:      #C9CEE8; /* text on dark                      */
+
+  /* ---------- Daybreak · light palette ---------- */
+  --cloud-white:    #F8F9FE; /* primary background                */
+  --lavender-mist:  #EEECF8; /* surface / cards                   */
+  --ink:            #1C2240; /* text on light                     */
+  --violet-day:     #8739E0; /* light secondary accent            */
+  --magenta-day:    #BC67D5; /* light highlight                   */
+
+  /* ---------- Signature gradients & washes ---------- */
+  --nebula-gradient:   linear-gradient(120deg, #2D44E0 0%, #6E1FC6 52%, #B14FD0 100%); /* @kind color */
+  --daybreak-gradient: linear-gradient(120deg, #2D44E0 0%, #8739E0 52%, #BC67D5 100%); /* @kind color */
+  --cosmos-wash:   radial-gradient(120% 140% at 18% 12%, #241660 0%, #12093B 45%, #05060F 100%); /* @kind color */
+  --daybreak-wash: radial-gradient(120% 140% at 18% 12%, #E7E1Fb 0%, #F1EDFA 45%, #F8F9FE 100%); /* @kind color */
+}
+
+/* ============================================================
+   SEMANTIC ALIASES — theme-scoped
+   Reference these in components, never the raw palette.
+   Default = Cosmos (dark); [data-theme="light"] flips to Daybreak.
+   ============================================================ */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-base:        var(--cosmic-black);
+  --surface:        rgba(255, 255, 255, 0.04);
+  --surface-hover:  rgba(255, 255, 255, 0.07);
+  --border:         rgba(201, 206, 232, 0.12);
+
+  --text-primary:   #F8F9FE;
+  --text-secondary: var(--starlight);
+  --text-muted:     rgba(201, 206, 232, 0.62);
+
+  --gradient-brand: var(--nebula-gradient);
+  --hero-bg:        var(--cosmos-wash);
+  --hero-text:      #F8F9FE;
+  --hero-lead:      var(--starlight);
+
+  --star-opacity:   1;
+  --focus-ring:     rgba(45, 68, 224, 0.65);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-base:        var(--cloud-white);
+  --surface:        #FFFFFF;
+  --surface-hover:  var(--lavender-mist);
+  --border:         rgba(28, 34, 64, 0.12);
+
+  --text-primary:   var(--ink);
+  --text-secondary: rgba(28, 34, 64, 0.80);
+  --text-muted:     rgba(28, 34, 64, 0.60);
+
+  --gradient-brand: var(--daybreak-gradient);
+  --hero-bg:        var(--daybreak-wash);
+  --hero-text:      var(--ink);
+  --hero-lead:      rgba(28, 34, 64, 0.78);
+
+  --star-opacity:   0;
+  --focus-ring:     rgba(45, 68, 224, 0.45);
+}

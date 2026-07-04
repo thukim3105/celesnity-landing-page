@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Tonight — App Screen" description="Celesnity stargazing home screen: cosmos hero card, big-number readouts, and a nebula CTA, built from the design system's own components." -->
+<helmet>
+  <script src="./ds-base.js"></script>
+</helmet>
+<div style="min-height:100vh;background:radial-gradient(120% 120% at 20% 0%, #150b3e 0%, #0a0722 46%, #05060F 100%);display:flex;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;font-family:var(--font-sans);">
+  <div style="width:390px;max-width:100%;display:flex;flex-direction:column;gap:20px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <x-import component-from-global-scope="CelesnityDesignSystem_29274a.Logo" tone="dark" size="26" asset-base="../../" hint-size="150px,30px"></x-import>
+      <span style="font-size:12.5px;color:var(--text-muted);">Ojai, CA · 9:42 PM</span>
+    </div>
+
+    <x-import component-from-global-scope="CelesnityDesignSystem_29274a.Card" variant="hero" padding="lg" hint-size="100%,300px">
+      <x-import component-from-global-scope="CelesnityDesignSystem_29274a.Badge" tone="cobalt" hint-size="120px,26px">Tonight's sky</x-import>
+      <div style="margin-top:16px;">
+        <x-import component-from-global-scope="CelesnityDesignSystem_29274a.StatBlock" value="98% clear" label="Excellent seeing conditions" size="lg" bare="true" on-dark="true" hint-size="100%,70px"></x-import>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
+        <x-import component-from-global-scope="CelesnityDesignSystem_29274a.StatBlock" value="12" label="visible planets" hint-size="100%,72px"></x-import>
+        <x-import component-from-global-scope="CelesnityDesignSystem_29274a.StatBlock" value="4.2°" label="moon altitude" hint-size="100%,72px"></x-import>
+      </div>
+      <div style="margin-top:18px;">
+        <x-import component-from-global-scope="CelesnityDesignSystem_29274a.Button" variant="primary" full-width="true" hint-size="100%,48px">Start stargazing</x-import>
+      </div>
+    </x-import>
+
+    <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 2px;">
+      <span style="font-size:17px;font-weight:600;color:var(--text-primary);">Visible now</span>
+      <span style="font-size:13px;font-weight:600;color:var(--accent);">See all</span>
+    </div>
+
+    <x-import component-from-global-scope="CelesnityDesignSystem_29274a.Card" variant="surface" padding="md" hint-size="100%,120px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
+        <div>
+          <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Jupiter</div>
+          <div style="font-size:12.5px;color:var(--text-muted);">Rising · SE horizon</div>
+        </div>
+        <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">21:40</span>
+      </div>
+      <div style="height:1px;background:var(--border-subtle);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
+        <div>
+          <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Orion Nebula</div>
+          <div style="font-size:12.5px;color:var(--text-muted);">Constellation · Orion</div>
+        </div>
+        <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">M42</span>
+      </div>
+    </x-import>
+
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>
