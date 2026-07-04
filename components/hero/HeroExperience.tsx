@@ -8,9 +8,10 @@ const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 /**
  * Pinned line-art backdrop for the hero scroll journey. Two theme-flexible
  * layers: `worm's-eye` crossfades/zooms into `interior` as the page scrolls.
- * Each layer is a solid --hero-line fill clipped by an alpha mask baked from
- * the source wireframe art; the backdrop behind is --hero-bg. Scroll drives CSS
- * custom properties via rAF; only opacity + transform animate.
+ * Each layer is a --gradient-brand fill (held at 50% opacity) clipped by an
+ * alpha mask baked from the source wireframe art; the backdrop behind is
+ * --hero-bg. Scroll drives CSS custom properties via rAF; only opacity +
+ * transform animate.
  */
 export function HeroExperience() {
   const rootRef = useRef<HTMLDivElement>(null);

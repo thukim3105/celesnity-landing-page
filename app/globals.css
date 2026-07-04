@@ -18,15 +18,15 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hero line-art tokens — flip with the DS theme. Cosmos: bright lines on the
-   dark wash; Daybreak: ink lines on the light wash. Compose DS tokens only. */
+/* Hero scrim token — flips with the DS theme so edge shading follows the wash
+   (dark toward cosmic-black, light toward cloud-white). The wireframe line color
+   itself uses --gradient-brand, which already flips per theme. Compose DS tokens
+   only. */
 :root,
 [data-theme="dark"] {
-  --hero-line: var(--starlight);
   --hero-scrim: var(--cosmic-black);
 }
 [data-theme="light"] {
-  --hero-line: var(--ink);
   --hero-scrim: var(--cloud-white);
 }
 

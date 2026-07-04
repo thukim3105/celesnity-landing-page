@@ -19,12 +19,15 @@
   will-change: opacity, transform;
 }
 
-/* Solid line-color fill clipped by the baked alpha mask; the backdrop --hero-bg
-   shows through the transparent (masked-out) areas. Both flip with the theme. */
+/* Brand-gradient wireframe clipped by the baked alpha mask; the backdrop
+   --hero-bg shows through the transparent (masked-out) areas. --gradient-brand
+   flips per theme. Held at 50% so the line-art reads as a soft backdrop behind
+   the centered hero text rather than competing with it. */
 .lineFill {
   position: absolute;
   inset: 0;
-  background: var(--hero-line);
+  background: var(--gradient-brand);
+  opacity: 0.5;
   -webkit-mask: var(--mask) center / cover no-repeat;
           mask: var(--mask) center / cover no-repeat;
 }
