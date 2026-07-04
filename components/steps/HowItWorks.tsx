@@ -65,10 +65,13 @@ export function HowItWorks() {
       const rect = el.getBoundingClientRect();
       const travel = el.offsetHeight - window.innerHeight;
       const p = clamp01(-rect.top / Math.max(1, travel));
-      const seg = 1 / STEPS.length;
+      // Lead-in: the first slice of scroll shows the heading alone; the steps
+      // only begin after the user keeps scrolling past it.
+      const lead = 0.18;
+      const seg = (1 - lead) / STEPS.length;
       for (let i = 0; i < STEPS.length; i++) {
         // Local progress inside this step's scroll segment (0..1), or out of range.
-        const local = (p - i * seg) / seg;
+        const local = (p - lead - i * seg) / seg;
         let op = 0;
         let ty = 24; // px: starts below, waiting to slide up
         if (local >= 0 && local <= 1) {
