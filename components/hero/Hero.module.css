@@ -16,7 +16,7 @@
 .layer {
   position: absolute;
   inset: 0;
-  will-change: opacity, transform;
+  will-change: transform;
 }
 
 /* Brand-gradient wireframe clipped by the baked alpha mask; the backdrop
@@ -40,14 +40,14 @@
   --mask: url("/hero/mask-interior.png");
 }
 
+/* Worm's-eye starts filling the viewport and slides up out of the top. */
 .layer1 {
-  opacity: var(--l1-op, 1);
-  transform: translateY(var(--l1-ty, 0)) scale(var(--l1-sc, 1));
+  transform: translateY(var(--l1-ty, 0));
 }
 
+/* Interior starts fully below the viewport and slides up into view. */
 .layer2 {
-  opacity: var(--l2-op, 0);
-  transform: translateY(var(--l2-ty, 10%)) scale(var(--l2-sc, 1.22));
+  transform: translateY(var(--l2-ty, 100%));
 }
 
 /* Soft edge darkening for text contrast; center stays clear. */
