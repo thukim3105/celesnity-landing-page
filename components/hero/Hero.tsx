@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import styles from "./Hero.module.css";
 
 /**
@@ -9,16 +10,22 @@ export function Hero() {
   return (
     <section className={styles.hero}>
       <div className={styles.overlay}>
-        <h1 className={styles.heading}>Minder AI</h1>
-        <p className={styles.lead}>
-          Increase workforce productivity, capture every action as data, and make
-          operations instantly searchable.
-        </p>
-        <div className={styles.actions}>
-          <a className={styles.cta} href="#">
-            Get started
-          </a>
-        </div>
+        <Reveal>
+          <h1 className={styles.heading}>Minder AI</h1>
+        </Reveal>
+        <Reveal delay={120}>
+          <p className={styles.lead}>
+            Increase workforce productivity, capture every action as data, and make
+            operations instantly searchable.
+          </p>
+        </Reveal>
+        <Reveal delay={240}>
+          <div className={styles.actions}>
+            <a className={styles.cta} href="#">
+              Get started
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

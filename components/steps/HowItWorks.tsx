@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Reveal } from "@/components/motion/Reveal";
 import styles from "./HowItWorks.module.css";
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
@@ -105,12 +106,16 @@ export function HowItWorks() {
       <div className={styles.sticky}>
         <div className={styles.grid}>
           <div className={styles.headingCol}>
-            <p className={styles.eyebrow}>How it works</p>
-            <h2 className={styles.heading}>
-              Easy to set up,
-              <br />
-              simple to use
-            </h2>
+            <Reveal>
+              <p className={styles.eyebrow}>How it works</p>
+            </Reveal>
+            <Reveal delay={120}>
+              <h2 className={styles.heading}>
+                Easy to set up,
+                <br />
+                simple to use
+              </h2>
+            </Reveal>
           </div>
 
           <div className={styles.stage}>
