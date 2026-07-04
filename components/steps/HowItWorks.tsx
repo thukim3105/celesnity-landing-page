@@ -5,6 +5,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import styles from "./HowItWorks.module.css";
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+// easeOutQuad — decelerating arrival, matching the heading reveal's feel.
+const easeOut = (x: number) => 1 - (1 - x) * (1 - x);
 
 type Step = { n: string; title: string; points: string[] };
 
@@ -73,26 +75,28 @@ export function HowItWorks() {
         // Local progress inside this step's scroll segment (0..1), or out of range.
         const local = (p - lead - i * seg) / seg;
         let op = 0;
-        let ty = 24; // px: starts below, waiting to slide up
+        let ty = 28; // px: starts below, waiting to slide up (matches the heading)
         if (local >= 0 && local <= 1) {
-          if (local < 0.25) {
-            op = local / 0.25; // fade in
-            ty = (1 - op) * 24; // slide up from below into place
-          } else if (local > 0.75) {
-            op = (1 - local) / 0.25; // fade out
-            ty = -(1 - op) * 24; // continue drifting up and out
+          if (local < 0.3) {
+            // Fade in, eased like the heading reveal (decelerating arrival).
+            op = easeOut(local / 0.3);
+            ty = (1 - op) * 28; // slide up from below into place
+          } else if (local > 0.7) {
+            // Fade out, eased the same way.
+            op = easeOut((1 - local) / 0.3);
+            ty = -(1 - op) * 28; // continue drifting up and out
           } else {
             op = 1;
             ty = 0;
           }
         }
         op = clamp01(op);
-        // Blur clears and the card settles from a hair small as it arrives, so
-        // steps swap like scenes rather than hard cuts.
+        // Blur clears and the card settles from a hair small as it arrives, so the
+        // step reveals with the same fade + slide + blur feel as the heading.
         el.style.setProperty(`--s${i}-op`, String(op));
         el.style.setProperty(`--s${i}-ty`, `${ty}px`);
-        el.style.setProperty(`--s${i}-bl`, `${(1 - op) * 8}px`);
-        el.style.setProperty(`--s${i}-sc`, String(0.985 + op * 0.015));
+        el.style.setProperty(`--s${i}-bl`, `${(1 - op) * 10}px`);
+        el.style.setProperty(`--s${i}-sc`, String(0.98 + op * 0.02));
       }
     };
     const onScroll = () => {

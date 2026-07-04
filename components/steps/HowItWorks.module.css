@@ -66,6 +66,12 @@
   align-items: flex-start;
   gap: var(--space-4);
   will-change: opacity, transform, filter;
+  /* Short trailing ease so the scroll-scrubbed reveal glides smoothly into place
+     (heading-like) instead of tracking the scroll position rigidly. */
+  transition:
+    opacity 220ms var(--ease, ease-out),
+    transform 220ms var(--ease, ease-out),
+    filter 220ms var(--ease, ease-out);
 }
 
 /* Number badge — the one spot of signature gradient per step (used sparingly). */
@@ -159,4 +165,5 @@
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;
+  transition: none;
 }
