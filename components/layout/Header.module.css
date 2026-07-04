@@ -20,13 +20,14 @@
 .inner {
   margin-inline: auto;
   width: 100%;
-  max-width: 1360px;
+  /* Full-width so the logo and controls sit close to the viewport edges. */
+  max-width: none;
   min-height: var(--header-h, clamp(60px, 8vh, 76px));
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: clamp(12px, 2vw, 32px);
-  padding-inline: clamp(16px, 4vw, 40px);
+  padding-inline: clamp(14px, 2.2vw, 28px);
 }
 
 /* ---------- Brand / logo ---------- */
