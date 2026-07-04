@@ -22,10 +22,8 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
-      return;
-    }
+    // Reduced motion: skip observing; the CSS @media rule reveals it statically.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
