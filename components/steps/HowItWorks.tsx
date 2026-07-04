@@ -16,7 +16,7 @@ const STEPS: Step[] = [
     img: "/steps/install-hardware.png",
     points: [
       "Set up Minder AI in the work area",
-      "Two Celesnity engineers deploy and configure the system on-site",
+      "Celesnity engineers deploy and configure the system on-site",
       "Gather factory-specific operational information",
     ],
   },
@@ -59,7 +59,11 @@ export function HowItWorks() {
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Small screens and reduced motion use the static stacked layout (no pin).
+    if (
+      window.matchMedia("(max-width: 860px)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       el.dataset.reduced = "true";
       return;
     }
@@ -186,6 +190,13 @@ export function HowItWorks() {
           <div className={styles.stage}>
             {STEPS.map((s) => (
               <article key={s.n} className={styles.step} data-step>
+                {s.img && (
+                  <div
+                    className={styles.stepMedia}
+                    style={{ backgroundImage: `url("${s.img}")` }}
+                    aria-hidden="true"
+                  />
+                )}
                 <div className={styles.stepHead}>
                   <span className={`${styles.badge} ${styles.line}`} data-line>
                     {s.n}

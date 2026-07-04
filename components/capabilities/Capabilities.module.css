@@ -161,3 +161,41 @@
   opacity: 1;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
+/* Safety net: force the stacked layout on small screens even if the pinned JS
+   already ran (e.g. a desktop window shrunk past the breakpoint). */
+@media (max-width: 860px) {
+  .section {
+    height: auto;
+  }
+  .sticky {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: block;
+    padding: clamp(48px, 10vh, 120px) 0;
+  }
+  .titles {
+    display: none;
+  }
+  .track {
+    flex-direction: column;
+    gap: var(--space-8);
+    transform: none !important;
+    padding-inline: clamp(20px, 6vw, 48px);
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .panel {
+    flex: none;
+    width: 100%;
+    max-height: none;
+  }
+  .panel .panelLabel {
+    opacity: 1;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+  .sectionTitle {
+    font-size: clamp(26px, 6.5vw, 40px);
+  }
+}

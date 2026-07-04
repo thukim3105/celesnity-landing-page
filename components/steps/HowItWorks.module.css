@@ -207,62 +207,127 @@
   background: var(--accent, var(--cobalt-blue));
 }
 
-/* Single column below the desktop breakpoint: heading on top, steps below. */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
+/* Per-step image — hidden in the pinned desktop layout; shown when stacked
+   (small screens / reduced motion) so every step keeps its illustration. */
+.stepMedia {
+  display: none;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg, 20px);
+  border: 1px solid var(--border);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: var(--space-2);
 }
 
-/* Reduced motion / no-JS fallback: unpin and show all three steps stacked. */
+/* ---- Static stacked layout — shared by reduced motion and small screens.
+   Unpins the section; the heading sits on top and each step stacks below with
+   its own image, number, title, and bullets. ---- */
 .section[data-reduced="true"] {
   height: auto;
 }
-
 .section[data-reduced="true"] .sticky {
   position: static;
+  display: block;
   height: auto;
-  padding-block: clamp(64px, 12vh, 140px);
   overflow: visible;
+  padding: clamp(56px, 10vh, 120px) clamp(20px, 6vw, 48px);
 }
-
-.section[data-reduced="true"] .grid {
-  align-items: start;
-}
-
-/* Fallback: title flows above the frame, first image shown. */
 .section[data-reduced="true"] .heading {
   position: static;
+  max-width: 1120px;
   margin: 0 auto var(--space-8);
+  padding-inline: 0;
   opacity: 1;
   transform: none;
   filter: none;
 }
-
-.section[data-reduced="true"] .frame {
-  opacity: 1;
+.section[data-reduced="true"] .grid {
+  display: block;
+  padding-inline: 0;
 }
-
-.section[data-reduced="true"] .slide:first-child {
-  opacity: 1;
+.section[data-reduced="true"] .mediaCol {
+  display: none;
 }
-
+.section[data-reduced="true"] .stepMedia {
+  display: block;
+}
 .section[data-reduced="true"] .stage {
   min-height: 0;
+  max-width: 1120px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: clamp(48px, 8vh, 96px);
 }
-
 .section[data-reduced="true"] .step {
-  position: relative;
+  position: static;
   inset: auto;
+  justify-content: flex-start;
 }
-
 .section[data-reduced="true"] .line {
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;
   transition: none;
+}
+
+/* Safety net: force the static layout on small screens even if the pinned JS
+   already ran (e.g. a desktop window shrunk past the breakpoint). */
+@media (max-width: 860px) {
+  .section {
+    height: auto;
+  }
+  .sticky {
+    position: static;
+    display: block;
+    height: auto;
+    overflow: visible;
+    padding: clamp(56px, 10vh, 120px) clamp(20px, 6vw, 48px);
+  }
+  .heading {
+    position: static;
+    max-width: 1120px;
+    margin: 0 auto var(--space-8);
+    padding-inline: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .grid {
+    display: block;
+    padding-inline: 0;
+  }
+  .mediaCol {
+    display: none;
+  }
+  .stepMedia {
+    display: block;
+  }
+  .stage {
+    min-height: 0;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 7vh, 80px);
+  }
+  .step {
+    position: static;
+    inset: auto;
+    justify-content: flex-start;
+  }
+  .line {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none;
+  }
+  /* Slightly smaller badge/title on phones. */
+  .badge {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
 }

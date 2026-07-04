@@ -29,7 +29,11 @@ export function Capabilities() {
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Small screens and reduced motion use the stacked layout (no horizontal scrub).
+    if (
+      window.matchMedia("(max-width: 860px)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       el.dataset.reduced = "true";
       return;
     }
