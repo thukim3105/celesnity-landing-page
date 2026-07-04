@@ -13,6 +13,7 @@ const STEPS: Step[] = [
   {
     n: "01",
     title: "Install the Hardware",
+    img: "/steps/install-hardware.png",
     points: [
       "Set up Minder AI in the work area",
       "Two Celesnity engineers deploy and configure the system on-site",
