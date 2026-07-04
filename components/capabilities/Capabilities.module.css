@@ -74,9 +74,9 @@
 
 .panel {
   position: relative;
-  flex: 0 0 clamp(280px, 62vw, 900px);
+  flex: 0 0 clamp(280px, 52vw, 760px);
   aspect-ratio: 16 / 9;
-  max-height: 66vh;
+  max-height: 58vh;
   border-radius: var(--radius-xl, 28px);
   overflow: hidden;
   border: 1px solid var(--border);
