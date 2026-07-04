@@ -171,16 +171,6 @@
   outline-offset: 3px;
 }
 
-.scrollCue {
-  position: absolute;
-  bottom: clamp(16px, 4vh, 32px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  color: var(--hero-lead); /* was: var(--starlight) */
-  opacity: 0.6;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cta {
     transition: none;

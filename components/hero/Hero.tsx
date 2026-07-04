@@ -1,4 +1,3 @@
-import { Icon } from "@/components/layout/icons";
 import styles from "./Hero.module.css";
 
 /**
@@ -21,10 +20,6 @@ export function Hero() {
             Get started
           </a>
         </div>
-      </div>
-
-      <div className={styles.scrollCue} aria-hidden="true">
-        <Icon name="chevronDown" size={22} />
       </div>
     </section>
   );
