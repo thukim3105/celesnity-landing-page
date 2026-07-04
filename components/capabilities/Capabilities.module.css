@@ -21,6 +21,7 @@
   justify-content: space-between;
   padding-top: calc(var(--header-h, 68px) + 4vh);
   padding-bottom: clamp(24px, 5vh, 56px);
+  background: var(--hero-bg);
 }
 
 /* Top: the fixed section title. */
