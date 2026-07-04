@@ -78,6 +78,17 @@
   );
 }
 
+/* Bottom fade: the wash + wireframe dissolve to exactly --bg-base at the hero's
+   lower edge, so it hands off seamlessly into the next section (same base colour,
+   no visible seam). Flips with the theme. */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 62%, var(--bg-base) 100%);
+}
+
 .hero {
   position: relative;
   /* Subtract the sticky header (its --header-h inner box plus its 1px bottom
