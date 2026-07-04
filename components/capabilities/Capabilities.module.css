@@ -1,0 +1,140 @@
+/* ============================================================
+   Capabilities — pinned horizontal-scroll gallery. Vertical scroll slides the
+   panel row sideways (continuous scrub); the centred panel's heading cross-fades
+   in at the top. Motion driven in Capabilities.tsx.
+   ============================================================ */
+
+.section {
+  position: relative;
+  height: 560vh; /* scroll room for the 6-panel horizontal scrub */
+  background: var(--bg-base);
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Heading area — the 6 headings stack here and cross-fade to the active panel. */
+.titles {
+  position: relative;
+  margin-top: calc(var(--header-h, 68px) + 4vh);
+  height: clamp(72px, 15vh, 150px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: clamp(20px, 5vw, 48px);
+}
+
+.title {
+  position: absolute;
+  margin: 0;
+  max-width: min(900px, 90vw);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(26px, 4.4vw, 52px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  opacity: 0;
+  will-change: opacity, transform, filter;
+}
+
+/* The sliding row of panels. */
+.track {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 40px);
+  will-change: transform;
+}
+
+.panel {
+  position: relative;
+  flex: 0 0 clamp(280px, 62vw, 900px);
+  aspect-ratio: 16 / 9;
+  max-height: 66vh;
+  border-radius: var(--radius-xl, 28px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: clamp(20px, 3vw, 40px);
+  background:
+    radial-gradient(
+      120% 120% at 85% 12%,
+      color-mix(in srgb, var(--cobalt-blue) 30%, transparent) 0%,
+      transparent 55%
+    ),
+    var(--surface-hover, var(--surface));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.panelNum {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(40px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  opacity: 0.16;
+}
+
+.panelLabel {
+  font-size: clamp(15px, 1.8vw, 18px);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.01em;
+  color: var(--text-secondary);
+}
+
+/* On real-image panels the picture carries the message; hide the caption
+   (a screen-reader still reads it — it's only visually muted). */
+.hasImg .panelLabel {
+  opacity: 0;
+}
+
+/* ---- Reduced motion / no-JS fallback: unpin, stack panels with headings ---- */
+.section[data-reduced="true"] {
+  height: auto;
+}
+
+.section[data-reduced="true"] .sticky {
+  position: static;
+  height: auto;
+  overflow: visible;
+  padding-block: clamp(48px, 10vh, 120px);
+}
+
+.section[data-reduced="true"] .titles {
+  display: none;
+}
+
+.section[data-reduced="true"] .track {
+  flex-direction: column;
+  gap: var(--space-8);
+  transform: none !important;
+  padding-inline: clamp(20px, 5vw, 48px);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section[data-reduced="true"] .panel {
+  flex: none;
+  width: 100%;
+  max-height: none;
+}
+
+.section[data-reduced="true"] .panelLabel {
+  opacity: 1;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
