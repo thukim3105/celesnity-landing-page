@@ -4,8 +4,12 @@
 
 .section {
   position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--bg-base);
-  padding-block: clamp(96px, 18vh, 220px);
+  padding-block: clamp(80px, 14vh, 180px);
   padding-inline: clamp(20px, 5vw, 48px);
   overflow: hidden;
 }
