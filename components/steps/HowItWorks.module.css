@@ -8,7 +8,7 @@
 
 .section {
   position: relative;
-  height: 340vh; /* scroll room for the pinned line-by-line reveal */
+  height: 520vh; /* scroll room for the pinned line-by-line reveal — more per step so fast scrolls don't skip */
   background: var(--bg-base);
 }
 
