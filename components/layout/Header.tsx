@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Logo } from "./Logo";
 import { NavLinks } from "./NavLinks";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -11,6 +12,7 @@ import styles from "./Header.module.css";
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+  const t = useTranslations("Header");
 
   // Lock body scroll while the mobile drawer is open.
   useEffect(() => {
@@ -34,11 +36,11 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <a className={styles.brand} href="#" aria-label="Celesnity home">
+        <a className={styles.brand} href="#" aria-label={t("brandHome")}>
           <Logo />
         </a>
 
-        <nav className={styles.navCluster} aria-label="Primary">
+        <nav className={styles.navCluster} aria-label={t("primaryNav")}>
           <NavLinks variant="bar" />
         </nav>
 
@@ -48,7 +50,7 @@ export function Header() {
           <button
             type="button"
             className={styles.menuButton}
-            aria-label="Open menu"
+            aria-label={t("openMenu")}
             aria-expanded={drawerOpen}
             onClick={() => setDrawerOpen(true)}
           >
@@ -58,7 +60,7 @@ export function Header() {
       </div>
 
       {drawerOpen && (
-        <div className={styles.drawer} role="dialog" aria-modal="true" aria-label="Menu">
+        <div className={styles.drawer} role="dialog" aria-modal="true" aria-label={t("menu")}>
           <div className={styles.drawerBackdrop} onClick={closeDrawer} />
           <div className={styles.drawerPanel}>
             <div className={styles.drawerHeader}>
@@ -66,7 +68,7 @@ export function Header() {
               <button
                 type="button"
                 className={styles.iconButton}
-                aria-label="Close menu"
+                aria-label={t("closeMenu")}
                 onClick={closeDrawer}
               >
                 <Icon name="close" size={22} />

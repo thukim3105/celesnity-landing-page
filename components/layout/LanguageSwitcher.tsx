@@ -1,22 +1,29 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { Icon } from "./icons";
-import { LOCALES, type LocaleCode } from "./nav.config";
+import { LOCALES } from "./nav.config";
 import { useDismiss } from "./useDismiss";
 import styles from "./Header.module.css";
 
 /**
- * Language switcher (globe + current locale + chevron).
- * NOTE: stub — it only changes the displayed locale and opens/closes. Real i18n
- * routing is deferred to a later section.
+ * Language switcher (globe + current locale + chevron). Replaces the active
+ * locale on the current path via next-intl navigation, so /about <-> /vi/about.
  */
 export function LanguageSwitcher({ variant = "bar" }: { variant?: "bar" | "drawer" }) {
+  const t = useTranslations("LanguageSwitcher");
+  const activeRoute = useLocale(); // "en" | "vi"
+  const pathname = usePathname(); // path without the locale prefix
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
-  const [locale, setLocale] = useState<LocaleCode>("EN");
   const ref = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(false), []);
   useDismiss(ref, open, close);
+
+  const current = LOCALES.find((l) => l.route === activeRoute) ?? LOCALES[0];
 
   return (
     <div
@@ -28,10 +35,11 @@ export function LanguageSwitcher({ variant = "bar" }: { variant?: "bar" | "drawe
         className={styles.langButton}
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-label={t("label")}
         onClick={() => setOpen((v) => !v)}
       >
         <Icon name="globe" size={18} />
-        <span className={styles.langCode}>{locale}</span>
+        <span className={styles.langCode}>{current.code}</span>
         <span className={open ? styles.chevronOpen : styles.chevron}>
           <Icon name="chevronDown" size={16} />
         </span>
@@ -44,11 +52,11 @@ export function LanguageSwitcher({ variant = "bar" }: { variant?: "bar" | "drawe
               <button
                 type="button"
                 role="menuitemradio"
-                aria-checked={l.code === locale}
-                className={l.code === locale ? styles.menuItemActive : styles.menuItem}
+                aria-checked={l.route === activeRoute}
+                className={l.route === activeRoute ? styles.menuItemActive : styles.menuItem}
                 onClick={() => {
-                  setLocale(l.code);
                   setOpen(false);
+                  router.replace(pathname, { locale: l.route });
                 }}
               >
                 <span className={styles.localeCode}>{l.code}</span>

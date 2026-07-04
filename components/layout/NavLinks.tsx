@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { usePathname, Link } from "@/i18n/navigation";
 import { Icon } from "./icons";
 import { NAV_ITEMS, type NavItem } from "./nav.config";
 import { useDismiss } from "./useDismiss";
@@ -14,19 +14,20 @@ function useIsActive() {
   return (href?: string) => !!href && href !== "#" && href === pathname;
 }
 
-function DropdownPanel({ item }: { item: NavItem }) {
+function DropdownPanel({ item, label }: { item: NavItem; label: string }) {
+  const t = useTranslations("Nav");
   const children = item.children ?? [];
   return (
-    <ul className={styles.menu} role="menu" aria-label={item.label}>
+    <ul className={styles.menu} role="menu" aria-label={label}>
       {children.length === 0 ? (
         <li role="none" className={styles.menuEmpty}>
-          Coming soon
+          {t("comingSoon")}
         </li>
       ) : (
         children.map((child) => (
-          <li key={child.label} role="none">
+          <li key={child.labelKey} role="none">
             <a role="menuitem" className={styles.menuItem} href={child.href}>
-              {child.label}
+              {t(child.labelKey)}
             </a>
           </li>
         ))
@@ -37,6 +38,7 @@ function DropdownPanel({ item }: { item: NavItem }) {
 
 /** Horizontal nav links for the bar (>=768px). */
 function BarNav() {
+  const t = useTranslations("Nav");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const ref = useRef<HTMLUListElement>(null);
   const close = useCallback(() => setOpenIndex(null), []);
@@ -47,7 +49,7 @@ function BarNav() {
     <ul ref={ref} className={styles.navList}>
       {NAV_ITEMS.map((item, index) =>
         item.children ? (
-          <li key={item.label} className={styles.navItem}>
+          <li key={item.labelKey} className={styles.navItem}>
             <button
               type="button"
               className={styles.navTrigger}
@@ -55,15 +57,15 @@ function BarNav() {
               aria-expanded={openIndex === index}
               onClick={() => setOpenIndex((v) => (v === index ? null : index))}
             >
-              {item.label}
+              {t(item.labelKey)}
               <span className={openIndex === index ? styles.chevronOpen : styles.chevron}>
                 <Icon name="chevronDown" size={16} />
               </span>
             </button>
-            {openIndex === index && <DropdownPanel item={item} />}
+            {openIndex === index && <DropdownPanel item={item} label={t(item.labelKey)} />}
           </li>
         ) : (
-          <li key={item.label} className={styles.navItem}>
+          <li key={item.labelKey} className={styles.navItem}>
             <Link
               className={
                 isActive(item.href)
@@ -73,7 +75,7 @@ function BarNav() {
               href={item.href ?? "#"}
               aria-current={isActive(item.href) ? "page" : undefined}
             >
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           </li>
         ),
@@ -84,22 +86,23 @@ function BarNav() {
 
 /** Vertical nav for the mobile drawer (<768px). */
 function DrawerNav({ onNavigate }: { onNavigate: () => void }) {
+  const t = useTranslations("Nav");
   const isActive = useIsActive();
   return (
     <ul className={styles.drawerNavList}>
       {NAV_ITEMS.map((item) => (
-        <li key={item.label} className={styles.drawerNavItem}>
+        <li key={item.labelKey} className={styles.drawerNavItem}>
           {item.children ? (
             <>
-              <span className={styles.drawerGroupLabel}>{item.label}</span>
+              <span className={styles.drawerGroupLabel}>{t(item.labelKey)}</span>
               {item.children.length === 0 ? (
-                <span className={styles.drawerEmpty}>Coming soon</span>
+                <span className={styles.drawerEmpty}>{t("comingSoon")}</span>
               ) : (
                 <ul className={styles.drawerSubList}>
                   {item.children.map((child) => (
-                    <li key={child.label}>
+                    <li key={child.labelKey}>
                       <a className={styles.drawerSubLink} href={child.href} onClick={onNavigate}>
-                        {child.label}
+                        {t(child.labelKey)}
                       </a>
                     </li>
                   ))}
@@ -117,7 +120,7 @@ function DrawerNav({ onNavigate }: { onNavigate: () => void }) {
               aria-current={isActive(item.href) ? "page" : undefined}
               onClick={onNavigate}
             >
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           )}
         </li>
