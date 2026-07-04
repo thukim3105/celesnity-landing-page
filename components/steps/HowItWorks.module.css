@@ -56,6 +56,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center; /* center the step content so it lines up with the heading */
   gap: var(--space-4);
 }
 
