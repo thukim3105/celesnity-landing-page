@@ -48,7 +48,8 @@
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--surface);
-  opacity: 0; /* faded in as the heading leaves */
+  opacity: 0; /* revealed (fade + slide + blur) from scroll — see .tsx */
+  will-change: opacity, transform, filter;
 }
 
 /* One placeholder image per step, stacked; swap the inner markup for a real

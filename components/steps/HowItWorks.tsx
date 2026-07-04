@@ -84,9 +84,13 @@ export function HowItWorks() {
         heading.style.transform = `translateY(${(1 - travelProg) * 34}vh)`;
         heading.style.filter = `blur(${(1 - appear) * 8}px)`;
       }
-      // Frame fades in once the content phase begins (after the heading settles).
+      // Frame reveals with the same feel as the heading (fade + slide-up + blur)
+      // once the content phase begins, then holds.
       if (frame) {
-        frame.style.opacity = String(easeOut(clamp01((p - CONTENT) / 0.05)));
+        const fEnter = easeOut(clamp01((p - CONTENT) / 0.06));
+        frame.style.opacity = String(fEnter);
+        frame.style.transform = `translateY(${(1 - fEnter) * 28}px)`;
+        frame.style.filter = `blur(${(1 - fEnter) * 10}px)`;
       }
 
       // Left: cross-fade the image to the active step. Each image is centred on
