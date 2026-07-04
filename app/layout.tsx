@@ -11,6 +11,7 @@ import "../Celesnity Design System Gradient/tokens/effects.css";
 import "./globals.css";
 
 import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 
 export const metadata: Metadata = {
@@ -53,6 +54,7 @@ export default function RootLayout({
         <SmoothScroll />
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

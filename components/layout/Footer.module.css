@@ -1,0 +1,85 @@
+/* ============================================================
+   Site footer — brand + nav groups + copyright. DS tokens only.
+   ============================================================ */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-base);
+  border-top: 1px solid var(--border);
+}
+
+.inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vh, 88px) clamp(20px, 4vw, 40px) clamp(24px, 4vh, 40px);
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: clamp(32px, 6vw, 72px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.colHead {
+  font-size: 15px;
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+a.colHead {
+  transition: color var(--dur-base) var(--ease);
+}
+
+a.colHead:hover {
+  color: var(--accent, var(--cobalt-blue));
+}
+
+.colLinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.colLinks a {
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: color var(--dur-base) var(--ease);
+}
+
+.colLinks a:hover {
+  color: var(--text-primary);
+}
+
+.bottom {
+  margin: clamp(40px, 7vh, 72px) 0 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Single column: stack the groups on small screens. */
+@media (max-width: 640px) {
+  .top {
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+}
