@@ -42,12 +42,12 @@
 
 .layer1 {
   opacity: var(--l1-op, 1);
-  transform: scale(var(--l1-sc, 1));
+  transform: translateY(var(--l1-ty, 0)) scale(var(--l1-sc, 1));
 }
 
 .layer2 {
   opacity: var(--l2-op, 0);
-  transform: scale(var(--l2-sc, 1.14));
+  transform: translateY(var(--l2-ty, 10%)) scale(var(--l2-sc, 1.22));
 }
 
 /* Soft edge darkening for text contrast; center stays clear. */
