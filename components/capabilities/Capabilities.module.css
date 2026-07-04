@@ -19,11 +19,22 @@
   flex-direction: column;
 }
 
-/* Top area: fixed section title + the small per-panel heading that cross-fades. */
+/* Top: the fixed section title. */
 .head {
   margin-top: calc(var(--header-h, 68px) + 4vh);
   padding-inline: clamp(20px, 5vw, 48px);
   text-align: center;
+}
+
+/* Lower group: the small per-panel title sits just above the panels (between the
+   section heading and the images), the pair centred in the remaining space. */
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2.5vh, 28px);
 }
 
 .sectionTitle {
@@ -39,11 +50,11 @@
 /* The 6 per-panel headings stack here and cross-fade to the active panel. */
 .titles {
   position: relative;
-  margin-top: var(--space-4);
   height: clamp(36px, 7vh, 64px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-inline: clamp(20px, 5vw, 48px);
 }
 
 .title {
@@ -63,8 +74,6 @@
 
 /* The sliding row of panels. */
 .track {
-  flex: 1;
-  min-height: 0;
   display: flex;
   align-items: center;
   gap: clamp(16px, 3vw, 40px);
@@ -135,6 +144,10 @@
   height: auto;
   overflow: visible;
   padding-block: clamp(48px, 10vh, 120px);
+}
+
+.section[data-reduced="true"] .body {
+  display: block;
 }
 
 .section[data-reduced="true"] .titles {

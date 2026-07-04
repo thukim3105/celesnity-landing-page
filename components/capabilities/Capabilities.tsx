@@ -83,6 +83,9 @@ export function Capabilities() {
           <h2 className={styles.sectionTitle}>
             One Platform for the Entire Operation
           </h2>
+        </div>
+
+        <div className={styles.body}>
           <div className={styles.titles}>
             {ITEMS.map((it) => (
               <p key={it.n} className={styles.title} data-title>
@@ -90,9 +93,8 @@ export function Capabilities() {
               </p>
             ))}
           </div>
-        </div>
 
-        <div className={styles.track} data-track>
+          <div className={styles.track} data-track>
           {ITEMS.map((it) => (
             <article
               key={it.n}
@@ -104,6 +106,7 @@ export function Capabilities() {
               <span className={styles.panelLabel}>{it.title}</span>
             </article>
           ))}
+          </div>
         </div>
       </div>
     </section>
