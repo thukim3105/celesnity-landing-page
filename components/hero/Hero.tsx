@@ -24,7 +24,7 @@ export function Hero() {
         <Reveal delay={240}>
           <div className={styles.actions}>
             <a className={styles.cta} href="#">
-              Get started
+              Request demo
             </a>
           </div>
         </Reveal>
