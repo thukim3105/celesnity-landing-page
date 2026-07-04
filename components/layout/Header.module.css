@@ -262,6 +262,13 @@
   transform: scale(var(--press-scale));
 }
 
+/* Fixed-width, centred locale code so switching EN <-> VI doesn't reflow the bar. */
+.langCode {
+  display: inline-block;
+  min-width: 1.7em;
+  text-align: center;
+}
+
 .chevron,
 .chevronOpen {
   display: inline-flex;
