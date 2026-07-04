@@ -74,20 +74,26 @@ export function HowItWorks() {
       const travel = el.offsetHeight - window.innerHeight;
       const p = clamp01(-rect.top / Math.max(1, travel));
 
-      // Left: heading slides up + fades out over the lead-in; the frame fades in
-      // to take its place, then holds.
-      const out = easeOut(clamp01((p - 0.03) / (LEAD - 0.03)));
+      // Left: heading fades out with a gentle lift over the lead-in; the frame
+      // fades in to take its place, then holds.
+      const out = easeOut(clamp01((p - 0.04) / (LEAD - 0.04)));
       if (heading) {
         heading.style.opacity = String(1 - out);
-        heading.style.transform = `translateY(${-out * 40}px)`;
+        heading.style.transform = `translateY(${-out * 16}px)`;
       }
       if (frame) frame.style.opacity = String(out);
 
-      // Left: cross-fade the image to the active step (frame stays put).
+      // Left: cross-fade the image to the active step. Each image is centred on
+      // its step's segment (so it holds while that step's text is fully shown),
+      // and the first/last images hold at the ends so the frame is never blank.
       const seg = (1 - LEAD) / STEPS.length;
       const activeF = (p - LEAD) / seg; // fractional step index
       slides.forEach((slide, i) => {
-        const op = easeOut(clamp01((1 - Math.abs(activeF - i)) / 0.4));
+        const center = i + 0.5;
+        let dist = Math.abs(activeF - center);
+        if (i === 0 && activeF < center) dist = 0;
+        if (i === slides.length - 1 && activeF > center) dist = 0;
+        const op = easeOut(clamp01((0.65 - dist) / 0.3));
         slide.style.opacity = String(op);
       });
 
