@@ -78,10 +78,11 @@ export function HowItWorks() {
       // fading out only as it arrives; the frame + steps appear afterwards.
       const travelProg = clamp01(p / LEAD);
       if (heading) {
+        // Climbs the full way up to the navbar, then vanishes only at the very top.
         heading.style.opacity = String(
-          1 - easeOut(clamp01((travelProg - 0.7) / 0.3)),
+          1 - easeOut(clamp01((travelProg - 0.82) / 0.18)),
         );
-        heading.style.transform = `translateY(${-travelProg * 42}vh)`;
+        heading.style.transform = `translateY(${-travelProg * 50}vh)`;
       }
       // Frame fades in just as the heading finishes its climb.
       if (frame) {
