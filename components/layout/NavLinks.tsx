@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Icon } from "./icons";
 import { NAV_ITEMS, type NavItem } from "./nav.config";
 import { useDismiss } from "./useDismiss";
@@ -63,17 +64,17 @@ function BarNav() {
           </li>
         ) : (
           <li key={item.label} className={styles.navItem}>
-            <a
+            <Link
               className={
                 isActive(item.href)
                   ? `${styles.navLink} ${styles.navLinkActive}`
                   : styles.navLink
               }
-              href={item.href}
+              href={item.href ?? "#"}
               aria-current={isActive(item.href) ? "page" : undefined}
             >
               {item.label}
-            </a>
+            </Link>
           </li>
         ),
       )}
@@ -106,18 +107,18 @@ function DrawerNav({ onNavigate }: { onNavigate: () => void }) {
               )}
             </>
           ) : (
-            <a
+            <Link
               className={
                 isActive(item.href)
                   ? `${styles.drawerNavLink} ${styles.drawerNavLinkActive}`
                   : styles.drawerNavLink
               }
-              href={item.href}
+              href={item.href ?? "#"}
               aria-current={isActive(item.href) ? "page" : undefined}
               onClick={onNavigate}
             >
               {item.label}
-            </a>
+            </Link>
           )}
         </li>
       ))}
