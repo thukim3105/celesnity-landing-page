@@ -8,24 +8,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Experiment: full signature-gradient background on this one section. */
-  background: var(--gradient-brand);
+  background: var(--bg-base);
   padding-block: clamp(80px, 14vh, 180px);
   padding-inline: clamp(20px, 5vw, 48px);
   overflow: hidden;
 }
 
-/* Dark vignette so the centred content stays legible over the gradient. */
+/* Signature-gradient wash over the dark base, held at 30%. */
 .section::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(
-    82% 82% at 50% 46%,
-    transparent 34%,
-    color-mix(in srgb, var(--cosmic-black) 46%, transparent) 100%
-  );
+  background: var(--gradient-brand);
+  opacity: 0.3;
 }
 
 .inner {
