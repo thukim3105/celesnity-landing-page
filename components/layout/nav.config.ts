@@ -7,19 +7,13 @@
  * empty for now and will be filled once the reference for those menus arrives.
  */
 export type NavChild = { label: string; href: string };
-export type NavItem = {
-  label: string;
-  href?: string;
-  children?: NavChild[];
-  /** Marks the item as the current page (this landing page is Minder AI). */
-  active?: boolean;
-};
+export type NavItem = { label: string; href?: string; children?: NavChild[] };
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Minder AI", href: "#", active: true },
+  { label: "Minder AI", href: "/" },
   { label: "Solution", children: [] },
   { label: "Resources", children: [] },
-  { label: "About Us", href: "#" },
+  { label: "About Us", href: "/about" },
 ];
 
 export type LocaleCode = "EN" | "VI";

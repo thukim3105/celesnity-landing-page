@@ -1,10 +1,17 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Icon } from "./icons";
 import { NAV_ITEMS, type NavItem } from "./nav.config";
 import { useDismiss } from "./useDismiss";
 import styles from "./Header.module.css";
+
+/** Whether a nav href is the current route. */
+function useIsActive() {
+  const pathname = usePathname();
+  return (href?: string) => !!href && href !== "#" && href === pathname;
+}
 
 function DropdownPanel({ item }: { item: NavItem }) {
   const children = item.children ?? [];
@@ -33,6 +40,7 @@ function BarNav() {
   const ref = useRef<HTMLUListElement>(null);
   const close = useCallback(() => setOpenIndex(null), []);
   useDismiss(ref, openIndex !== null, close);
+  const isActive = useIsActive();
 
   return (
     <ul ref={ref} className={styles.navList}>
@@ -57,12 +65,12 @@ function BarNav() {
           <li key={item.label} className={styles.navItem}>
             <a
               className={
-                item.active
+                isActive(item.href)
                   ? `${styles.navLink} ${styles.navLinkActive}`
                   : styles.navLink
               }
               href={item.href}
-              aria-current={item.active ? "page" : undefined}
+              aria-current={isActive(item.href) ? "page" : undefined}
             >
               {item.label}
             </a>
@@ -75,6 +83,7 @@ function BarNav() {
 
 /** Vertical nav for the mobile drawer (<768px). */
 function DrawerNav({ onNavigate }: { onNavigate: () => void }) {
+  const isActive = useIsActive();
   return (
     <ul className={styles.drawerNavList}>
       {NAV_ITEMS.map((item) => (
@@ -99,12 +108,12 @@ function DrawerNav({ onNavigate }: { onNavigate: () => void }) {
           ) : (
             <a
               className={
-                item.active
+                isActive(item.href)
                   ? `${styles.drawerNavLink} ${styles.drawerNavLinkActive}`
                   : styles.drawerNavLink
               }
               href={item.href}
-              aria-current={item.active ? "page" : undefined}
+              aria-current={isActive(item.href) ? "page" : undefined}
               onClick={onNavigate}
             >
               {item.label}
