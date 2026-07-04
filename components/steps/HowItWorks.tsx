@@ -7,7 +7,7 @@ const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 // easeOutQuad — decelerating arrival, matching the reveal feel.
 const easeOut = (x: number) => 1 - (1 - x) * (1 - x);
 
-type Step = { n: string; title: string; points: string[] };
+type Step = { n: string; title: string; points: string[]; img?: string };
 
 const STEPS: Step[] = [
   {
@@ -31,6 +31,7 @@ const STEPS: Step[] = [
   {
     n: "03",
     title: "Start Using Minder AI",
+    img: "/steps/using-minder.jpg",
     points: [
       "Workers log in and interact using voice commands",
       "AI supports daily operations immediately",
@@ -159,9 +160,22 @@ export function HowItWorks() {
             {/* Image frame stays fixed; the picture inside cross-fades per step. */}
             <div className={styles.frame} data-frame aria-hidden="true">
               {STEPS.map((s) => (
-                <div key={s.n} className={styles.slide} data-slide>
-                  <span className={styles.slideNum}>{s.n}</span>
-                  <span className={styles.slideLabel}>{s.title}</span>
+                <div
+                  key={s.n}
+                  className={styles.slide}
+                  data-slide
+                  style={
+                    s.img
+                      ? { backgroundImage: `url("${s.img}")` }
+                      : undefined
+                  }
+                >
+                  {!s.img && (
+                    <>
+                      <span className={styles.slideNum}>{s.n}</span>
+                      <span className={styles.slideLabel}>{s.title}</span>
+                    </>
+                  )}
                 </div>
               ))}
             </div>

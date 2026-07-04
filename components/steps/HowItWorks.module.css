@@ -70,6 +70,10 @@
       transparent 55%
     ),
     var(--surface-hover, var(--surface));
+  /* Real per-step images (set as background-image inline) cover the frame. */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .slideNum {
