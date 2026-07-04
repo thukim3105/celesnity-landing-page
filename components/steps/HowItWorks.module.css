@@ -33,7 +33,67 @@
   align-items: center;
 }
 
+/* Left column: the heading and the image frame share the same box. The frame
+   defines the height; the heading overlays it and slides away on scroll. */
+.mediaCol {
+  position: relative;
+}
+
+/* Fixed image frame; its picture cross-fades per step (opacity driven in .tsx). */
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-xl, 28px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  opacity: 0; /* faded in as the heading leaves */
+}
+
+/* One placeholder image per step, stacked; swap the inner markup for a real
+   <img> later. Each slide's opacity is driven from scroll for the cross-fade. */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: clamp(20px, 3vw, 36px);
+  background:
+    radial-gradient(
+      120% 120% at 85% 12%,
+      color-mix(in srgb, var(--cobalt-blue) 30%, transparent) 0%,
+      transparent 55%
+    ),
+    var(--surface-hover, var(--surface));
+}
+
+.slideNum {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(48px, 9vw, 96px);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  opacity: 0.16;
+}
+
+.slideLabel {
+  font-size: clamp(14px, 1.6vw, 16px);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
 .heading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0;
   font-family: var(--font-display);
   font-weight: var(--fw-semibold);
@@ -157,6 +217,22 @@
 
 .section[data-reduced="true"] .grid {
   align-items: start;
+}
+
+/* Left column in the fallback: heading above the frame, first image shown. */
+.section[data-reduced="true"] .heading {
+  position: static;
+  opacity: 1 !important;
+  transform: none !important;
+  margin-bottom: var(--space-8);
+}
+
+.section[data-reduced="true"] .frame {
+  opacity: 1;
+}
+
+.section[data-reduced="true"] .slide:first-child {
+  opacity: 1;
 }
 
 .section[data-reduced="true"] .stage {

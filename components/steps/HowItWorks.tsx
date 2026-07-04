@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Reveal } from "@/components/motion/Reveal";
 import styles from "./HowItWorks.module.css";
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
-// easeOutQuad — decelerating arrival, matching the heading reveal's feel.
+// easeOutQuad — decelerating arrival, matching the reveal feel.
 const easeOut = (x: number) => 1 - (1 - x) * (1 - x);
 
 type Step = { n: string; title: string; points: string[] };
@@ -40,12 +39,15 @@ const STEPS: Step[] = [
   },
 ];
 
+const LEAD = 0.16; // scroll fraction the heading occupies before the steps begin
+
 /**
- * "How it works" — a pinned section. The heading stays on the left while the
- * steps play in one frame on the right: each step's lines fade + slide + blur in
- * one after another (heading-style), then get pulled UP line by line to hand off
- * to the next step. The last step stays. Scroll drives each line via rAF; only
- * opacity + transform + filter animate. Reduced motion shows everything.
+ * "How it works" — a pinned section. Left column: the heading shows first, then
+ * slides up and fades out as you scroll in, replaced (in place) by a fixed image
+ * frame whose picture cross-fades 01 -> 02 -> 03 to match the step on the right.
+ * Right column: each step's lines cascade in (fade + slide + blur) and are pulled
+ * up line by line to hand off to the next; the last step stays. Scroll drives it
+ * all via rAF. Reduced motion unpins and shows everything.
  */
 export function HowItWorks() {
   const rootRef = useRef<HTMLElement>(null);
@@ -58,7 +60,9 @@ export function HowItWorks() {
       return;
     }
 
-    // Each step's revealable lines (badge, title, bullets), grouped by step.
+    const heading = el.querySelector<HTMLElement>("[data-heading]");
+    const frame = el.querySelector<HTMLElement>("[data-frame]");
+    const slides = Array.from(el.querySelectorAll<HTMLElement>("[data-slide]"));
     const stepLines = Array.from(
       el.querySelectorAll<HTMLElement>("[data-step]"),
     ).map((step) => Array.from(step.querySelectorAll<HTMLElement>("[data-line]")));
@@ -69,26 +73,40 @@ export function HowItWorks() {
       const rect = el.getBoundingClientRect();
       const travel = el.offsetHeight - window.innerHeight;
       const p = clamp01(-rect.top / Math.max(1, travel));
-      // Lead-in: heading alone before step 1; then one segment per step.
-      const lead = 0.16;
-      const seg = (1 - lead) / stepLines.length;
-      const stagger = 0.05; // per-line offset within a segment
-      const width = 0.2; // each line's fade span (keeps all lines fully shown mid-segment)
+
+      // Left: heading slides up + fades out over the lead-in; the frame fades in
+      // to take its place, then holds.
+      const out = easeOut(clamp01((p - 0.03) / (LEAD - 0.03)));
+      if (heading) {
+        heading.style.opacity = String(1 - out);
+        heading.style.transform = `translateY(${-out * 40}px)`;
+      }
+      if (frame) frame.style.opacity = String(out);
+
+      // Left: cross-fade the image to the active step (frame stays put).
+      const seg = (1 - LEAD) / STEPS.length;
+      const activeF = (p - LEAD) / seg; // fractional step index
+      slides.forEach((slide, i) => {
+        const op = easeOut(clamp01((1 - Math.abs(activeF - i)) / 0.4));
+        slide.style.opacity = String(op);
+      });
+
+      // Right: each step's lines cascade in, then get pulled up to hand off.
+      const stagger = 0.05;
+      const width = 0.2;
       stepLines.forEach((lines, i) => {
         const isLast = i === stepLines.length - 1;
-        const local = (p - lead - i * seg) / seg;
+        const local = (p - LEAD - i * seg) / seg;
         lines.forEach((line, j) => {
           let op = 0;
           let ty = 24;
           if (local >= 0 && (isLast || local <= 1)) {
-            // Cascade in (each line a touch later); the last step never leaves.
             const fadeIn = clamp01((local - j * stagger) / width);
             const fadeOut = isLast
               ? 1
               : clamp01((1 - local - j * stagger) / width);
             const entering = fadeIn <= fadeOut;
             op = easeOut(Math.min(fadeIn, fadeOut));
-            // Enter from below (+), leave by being pulled UP (−).
             ty = entering ? (1 - op) * 24 : -(1 - op) * 24;
           }
           line.style.opacity = String(op);
@@ -114,14 +132,22 @@ export function HowItWorks() {
     <section ref={rootRef} className={styles.section}>
       <div className={styles.sticky}>
         <div className={styles.grid}>
-          <div className={styles.headingCol}>
-            <Reveal>
-              <h2 className={styles.heading}>
-                Easy to set up,
-                <br />
-                simple to use
-              </h2>
-            </Reveal>
+          <div className={styles.mediaCol}>
+            {/* Image frame stays fixed; the picture inside cross-fades per step. */}
+            <div className={styles.frame} data-frame aria-hidden="true">
+              {STEPS.map((s) => (
+                <div key={s.n} className={styles.slide} data-slide>
+                  <span className={styles.slideNum}>{s.n}</span>
+                  <span className={styles.slideLabel}>{s.title}</span>
+                </div>
+              ))}
+            </div>
+            {/* Heading overlays the frame, then slides away on scroll. */}
+            <h2 className={styles.heading} data-heading>
+              Easy to set up,
+              <br />
+              simple to use
+            </h2>
           </div>
 
           <div className={styles.stage}>
