@@ -9,14 +9,25 @@
 .section {
   position: relative;
   height: 340vh; /* scroll room for the pinned line-by-line reveal */
-  /* Same background wash as the hero, so the section continues its colour. */
+  background: var(--bg-base);
+}
+
+/* Hero wash as the section background, held at 40% over the base. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: var(--hero-bg);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Pinned viewport — holds the frame while the section scrolls past. */
 .sticky {
   position: sticky;
   top: 0;
+  z-index: 1;
   height: 100vh;
   display: flex;
   align-items: center;
