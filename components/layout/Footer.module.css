@@ -19,7 +19,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-start;
+  /* Line the brand wordmark up with the column titles (same text baseline). */
+  align-items: baseline;
   gap: clamp(32px, 6vw, 72px);
 }
 
