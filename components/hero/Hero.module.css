@@ -49,9 +49,10 @@
 
 .hero {
   position: relative;
-  /* Subtract the sticky header so the content block centers in the visible
-     viewport, not in a 100svh box pushed down by the header. */
-  min-height: calc(100svh - var(--header-h));
+  /* Subtract the sticky header (its --header-h inner box plus its 1px bottom
+     border) so the content block centers in the visible viewport and the first
+     screen is exactly 100svh — no leftover scroll. */
+  min-height: calc(100svh - var(--header-h) - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
