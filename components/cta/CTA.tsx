@@ -48,24 +48,30 @@ export function CTA() {
               Thanks — we&rsquo;ll be in touch shortly.
             </p>
           ) : (
-            <form className={styles.form} onSubmit={onSubmit}>
-              <label className={styles.srOnly} htmlFor="cta-email">
-                Work email
-              </label>
-              <input
-                id="cta-email"
-                className={styles.input}
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button className={styles.button} type="submit">
-                Request a demo
-              </button>
-            </form>
+            <div className={styles.formWrap}>
+              <form className={styles.form} onSubmit={onSubmit}>
+                <label className={styles.srOnly} htmlFor="cta-email">
+                  Work email
+                </label>
+                <input
+                  id="cta-email"
+                  className={styles.input}
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <button className={styles.button} type="submit">
+                  Request a demo
+                </button>
+              </form>
+              <p className={styles.emailUs}>
+                Or email us directly at{" "}
+                <a href="mailto:start@celesnity.com">start@celesnity.com</a>
+              </p>
+            </div>
           )}
         </Reveal>
       </div>

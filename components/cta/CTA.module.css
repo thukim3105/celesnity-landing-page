@@ -53,11 +53,36 @@
   color: var(--text-primary);
 }
 
+.formWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
 .form {
   display: flex;
   gap: var(--space-3);
   width: 100%;
   max-width: 520px;
+}
+
+.emailUs {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.emailUs a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--dur-base) var(--ease);
+}
+
+.emailUs a:hover {
+  color: var(--accent, var(--cobalt-blue));
 }
 
 .input {
