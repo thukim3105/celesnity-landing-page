@@ -76,8 +76,10 @@ export function HowItWorks() {
       // only begin after the user keeps scrolling past it.
       const lead = 0.18;
       const seg = (1 - lead) / stepLines.length;
-      const stagger = 0.08; // per-line offset, in local-segment units
-      const width = 0.26; // each line's fade duration, in local-segment units
+      // Kept small enough that every line (incl. the last, j = lines-1) fully
+      // reveals before it starts leaving: (lines-1)*stagger + width <= 0.5.
+      const stagger = 0.05; // per-line offset, in local-segment units
+      const width = 0.2; // each line's fade duration, in local-segment units
       stepLines.forEach((lines, i) => {
         // Progress inside this step's scroll segment (0..1), or out of range.
         const local = (p - lead - i * seg) / seg;
