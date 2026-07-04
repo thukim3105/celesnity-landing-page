@@ -35,6 +35,36 @@
   --mask: url("/hero/mask-interior.png");
 }
 
+/* Animated light sweep along the wireframe: a soft highlight band, masked to the
+   same line-art, gliding diagonally back and forth. Screen-blended so the lines
+   glow where it passes. Alternate direction → seamless, calm loop (no reset jump). */
+.lineFill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    color-mix(in srgb, var(--cloud-white) 82%, transparent) 50%,
+    transparent 62%
+  );
+  background-size: 250% 250%;
+  -webkit-mask: var(--mask) center / cover no-repeat;
+          mask: var(--mask) center / cover no-repeat;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: heroSheen 7s ease-in-out infinite alternate;
+}
+
+@keyframes heroSheen {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
 /* Soft edge darkening for text contrast; center stays clear. */
 .scrim {
   position: absolute;
@@ -150,5 +180,9 @@
 @media (prefers-reduced-motion: reduce) {
   .cta {
     transition: none;
+  }
+  .lineFill::after {
+    animation: none;
+    opacity: 0;
   }
 }
