@@ -96,6 +96,12 @@
   background-repeat: no-repeat;
 }
 
+.panelNum,
+.panelLabel {
+  position: relative;
+  z-index: 1;
+}
+
 .panelNum {
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
@@ -107,16 +113,28 @@
 }
 
 .panelLabel {
-  font-size: clamp(15px, 1.8vw, 18px);
+  font-size: clamp(16px, 1.9vw, 20px);
   font-weight: var(--fw-semibold);
   letter-spacing: 0.01em;
   color: var(--text-secondary);
 }
 
-/* On real-image panels the picture carries the message; hide the caption
-   (a screen-reader still reads it — it's only visually muted). */
+/* Bottom scrim so the small caption reads over the photo. */
+.hasImg::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 48%;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--cosmic-black) 82%, transparent),
+    transparent
+  );
+}
+
 .hasImg .panelLabel {
-  opacity: 0;
+  color: var(--cloud-white);
 }
 
 /* ---- Reduced motion / no-JS fallback: unpin, stack panels with headings ---- */
