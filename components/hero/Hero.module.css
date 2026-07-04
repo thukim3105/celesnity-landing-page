@@ -4,9 +4,10 @@
    backdrop and text both flip with the DS theme (Cosmos/Daybreak).
    ============================================================ */
 
-/* Pinned backdrop — fixed behind all content. */
+/* Backdrop — absolutely fills the hero section and scrolls away WITH it (rather
+   than staying fixed and being covered by the next section). */
 .backdrop {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
