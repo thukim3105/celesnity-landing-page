@@ -58,11 +58,11 @@ export function Footer() {
             </div>
           ))}
         </div>
-
-        <p className={styles.bottom}>
-          © 2026 Celesnity Ltd · Minder AI · All rights reserved.
-        </p>
       </div>
+
+      <p className={styles.copyright}>
+        © 2026 Celesnity Ltd · Minder AI · All rights reserved.
+      </p>
     </footer>
   );
 }

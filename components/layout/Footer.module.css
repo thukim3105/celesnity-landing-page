@@ -12,7 +12,7 @@
 .inner {
   max-width: 1360px;
   margin: 0 auto;
-  padding: clamp(48px, 8vh, 88px) clamp(20px, 4vw, 40px) clamp(24px, 4vh, 40px);
+  padding: clamp(48px, 8vh, 88px) clamp(20px, 4vw, 40px) clamp(40px, 7vh, 72px);
 }
 
 .top {
@@ -73,9 +73,10 @@ a.colHead:hover {
   color: var(--text-primary);
 }
 
-.bottom {
-  margin: clamp(40px, 7vh, 72px) 0 0;
-  padding-top: var(--space-6);
+/* Full-width copyright bar — its top border matches the footer's top line. */
+.copyright {
+  margin: 0;
+  padding: var(--space-6) clamp(20px, 4vw, 40px);
   border-top: 1px solid var(--border);
   text-align: center;
   font-size: 13px;
