@@ -1,6 +1,6 @@
 /* ============================================================
-   Celesnity hero. Pinned line-art backdrop that crossfades
-   worm's-eye -> interior on scroll, with centered content over it.
+   Celesnity hero. Pinned line-art backdrop that pulls up from the
+   intro scene -> interior on scroll, with centered content over it.
    Hero backdrop and text both flip with the DS theme (Cosmos/Daybreak).
    ============================================================ */
 
@@ -41,9 +41,9 @@
           mask-composite: intersect;
 }
 
-/* Worm's-eye slides up and out the top, so its BOTTOM edge is the seam → feather it. */
-.lineWorm {
-  --mask: url("/hero/mask-worm.png");
+/* Intro scene slides up and out the top, so its BOTTOM edge is the seam → feather it. */
+.lineIntro {
+  --mask: url("/hero/mask-intro.png");
   --feather: linear-gradient(to bottom, #000 78%, transparent 100%);
 }
 
@@ -53,7 +53,7 @@
   --feather: linear-gradient(to top, #000 78%, transparent 100%);
 }
 
-/* Worm's-eye starts filling the viewport and slides up out of the top. */
+/* Intro scene starts filling the viewport and slides up out of the top. */
 .layer1 {
   transform: translateY(var(--l1-ty, 0));
 }

@@ -3,8 +3,8 @@ import styles from "./Hero.module.css";
 /**
  * Minder AI hero content — heading + lede + primary CTA, centered over the
  * pinned line-art factory backdrop (rendered separately by <HeroExperience/>).
- * As the user scrolls, this section scrolls away while the backdrop crossfades
- * from the worm's-eye view into the factory interior.
+ * As the user scrolls, this section scrolls away while the backdrop pulls up
+ * from the intro scene into the factory interior.
  */
 export function Hero() {
   return (
