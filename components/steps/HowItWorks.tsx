@@ -40,7 +40,7 @@ const STEPS: Step[] = [
 ];
 
 const LEAD = 0.16; // scroll fraction over which the heading climbs into place
-const CONTENT = 0.24; // frame + steps begin here — after the heading has settled and the user scrolls a bit more
+const CONTENT = 0.2; // frame + steps begin here — a short beat after the heading settles
 
 /**
  * "How it works" — a pinned section. Left column: the heading shows first, then
