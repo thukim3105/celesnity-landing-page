@@ -1,8 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import localFont from "next/font/local";
 import { Reveal } from "@/components/motion/Reveal";
 import styles from "./CTA.module.css";
+
+/* Anurati — futuristic all-caps display face. DS-approved exception (Inter only,
+   otherwise), used solely for the CTA headline. Loaded via next/font/local. */
+const anurati = localFont({
+  src: "../../public/fonts/Anurati-Regular.otf",
+  display: "swap",
+});
 
 /**
  * Closing CTA — a lead line, a big Anurati headline ("LET'S TALK"), and an email
@@ -22,14 +30,16 @@ export function CTA() {
     <section className={styles.section}>
       <div className={styles.inner}>
         <Reveal>
-          <p className={styles.lead}>
-            If your workers are juggling between machines and shifts and you&rsquo;re
-            curious how to save cost and increase productivity…
-          </p>
+          <h2 className={`${styles.headline} ${anurati.className}`}>
+            LET&rsquo;S TALK
+          </h2>
         </Reveal>
 
         <Reveal delay={120}>
-          <h2 className={styles.headline}>LET&rsquo;S TALK</h2>
+          <p className={styles.lead}>
+            If your workers are juggling between machines and shifts and you&rsquo;re
+            curious how to save cost and increase productivity.
+          </p>
         </Reveal>
 
         <Reveal delay={240}>
@@ -53,7 +63,7 @@ export function CTA() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button className={styles.button} type="submit">
-                Request demo
+                Request a demo
               </button>
             </form>
           )}

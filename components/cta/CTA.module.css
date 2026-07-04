@@ -43,10 +43,9 @@
   color: var(--text-secondary);
 }
 
-/* The one Anurati exception — futuristic all-caps display. */
+/* The one Anurati exception — futuristic all-caps display (font from next/font). */
 .headline {
   margin: 0;
-  font-family: var(--font-anurati, var(--font-display));
   font-weight: 400;
   font-size: clamp(48px, 11vw, 132px);
   line-height: 1;
