@@ -84,8 +84,12 @@ export function HowItWorks() {
           }
         }
         op = clamp01(op);
+        // Blur clears and the card settles from a hair small as it arrives, so
+        // steps swap like scenes rather than hard cuts.
         el.style.setProperty(`--s${i}-op`, String(op));
         el.style.setProperty(`--s${i}-ty`, `${ty}px`);
+        el.style.setProperty(`--s${i}-bl`, `${(1 - op) * 8}px`);
+        el.style.setProperty(`--s${i}-sc`, String(0.985 + op * 0.015));
       }
     };
     const onScroll = () => {
@@ -125,7 +129,8 @@ export function HowItWorks() {
                 className={styles.step}
                 style={{
                   opacity: `var(--s${i}-op, 0)`,
-                  transform: `translateY(var(--s${i}-ty, 24px))`,
+                  transform: `translateY(var(--s${i}-ty, 24px)) scale(var(--s${i}-sc, 0.985))`,
+                  filter: `blur(var(--s${i}-bl, 8px))`,
                 }}
               >
                 <span className={styles.badge}>{s.n}</span>

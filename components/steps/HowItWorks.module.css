@@ -65,7 +65,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 
 /* Number badge — the one spot of signature gradient per step (used sparingly). */
@@ -158,4 +158,5 @@
   inset: auto;
   opacity: 1 !important;
   transform: none !important;
+  filter: none !important;
 }
