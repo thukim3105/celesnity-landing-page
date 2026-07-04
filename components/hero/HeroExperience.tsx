@@ -10,7 +10,7 @@ const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
  * scene up: the intro layer slides up and out the top while the interior
  * layer slides up into view from below, the two meeting at a seam that travels
  * upward (like pulling a filmstrip). The layers tile exactly — no crossfade, no
- * gap. Each layer is a --gradient-brand fill (held at 40% opacity) clipped by an
+ * gap. Each layer is a --gradient-brand fill (held at 70% opacity) clipped by an
  * alpha mask baked from the source wireframe art; the backdrop behind is
  * --hero-bg. Scroll drives CSS custom properties via rAF; only transform animates.
  */

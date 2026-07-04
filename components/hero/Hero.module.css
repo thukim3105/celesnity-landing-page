@@ -21,13 +21,13 @@
 
 /* Brand-gradient wireframe clipped by the baked alpha mask; the backdrop
    --hero-bg shows through the transparent (masked-out) areas. --gradient-brand
-   flips per theme. Held at 40% so the line-art reads as a soft backdrop behind
-   the centered hero text rather than competing with it. */
+   flips per theme. Held at 70% so the line-art reads clearly while still sitting
+   behind the centered hero text. */
 .lineFill {
   position: absolute;
   inset: 0;
   background: var(--gradient-brand);
-  opacity: 0.4;
+  opacity: 0.7;
   /* Two intersected mask layers: (1) the wireframe alpha, (2) a feather on the
      seam-facing edge (--feather) so the line-art dissolves where the two layers
      meet during the scroll pull, hiding the join. Default feather is a no-op. */
