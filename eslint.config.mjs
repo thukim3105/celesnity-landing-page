@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Locked, vendored design system — read-only reference, not our source.
+    "Celesnity Design System Gradient/**",
   ]),
 ]);
 
