@@ -6,21 +6,23 @@
   position: relative;
   z-index: 1;
   background: var(--bg-base);
-  border-top: 1px solid var(--border);
 }
 
 .inner {
   max-width: 1360px;
   margin: 0 auto;
-  padding: clamp(48px, 8vh, 88px) clamp(20px, 4vw, 40px) clamp(40px, 7vh, 72px);
+  padding-inline: clamp(20px, 4vw, 40px);
 }
 
+/* Top line — same width as the copyright line below (both span the content). */
 .top {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
   gap: clamp(32px, 6vw, 72px);
+  padding-top: clamp(48px, 8vh, 88px);
+  border-top: 1px solid var(--border);
 }
 
 .brand {
@@ -73,10 +75,10 @@ a.colHead:hover {
   color: var(--text-primary);
 }
 
-/* Full-width copyright bar — its top border matches the footer's top line. */
+/* Bottom line — same width as the top line above. */
 .copyright {
-  margin: 0;
-  padding: var(--space-6) clamp(20px, 4vw, 40px);
+  margin: clamp(40px, 7vh, 72px) 0 0;
+  padding: var(--space-6) 0 clamp(24px, 4vh, 40px);
   border-top: 1px solid var(--border);
   text-align: center;
   font-size: 13px;
