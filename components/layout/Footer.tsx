@@ -1,34 +1,33 @@
+import { getTranslations } from "next-intl/server";
 import { Logo } from "./Logo";
 import styles from "./Footer.module.css";
 
-type Group = { label: string; href?: string; links?: { label: string; href: string }[] };
+type Group = { labelKey: string; href?: string; links?: { labelKey: string; href: string }[] };
 
 const GROUPS: Group[] = [
-  { label: "Minder AI", href: "#" },
+  { labelKey: "minderAI", href: "#" },
   {
-    label: "Solution",
+    labelKey: "solution",
     links: [
-      { label: "Manufacturing", href: "#" },
-      { label: "Logistics", href: "#" },
+      { labelKey: "manufacturing", href: "#" },
+      { labelKey: "logistics", href: "#" },
     ],
   },
   {
-    label: "Resources",
+    labelKey: "resources",
     links: [
-      { label: "Blogs", href: "#" },
-      { label: "Case Study", href: "#" },
-      { label: "Guides", href: "#" },
-      { label: "Glossary", href: "#" },
+      { labelKey: "blogs", href: "#" },
+      { labelKey: "caseStudy", href: "#" },
+      { labelKey: "guides", href: "#" },
+      { labelKey: "glossary", href: "#" },
     ],
   },
-  { label: "About Us", href: "#" },
+  { labelKey: "about", href: "#" },
 ];
 
-/**
- * Site footer — brand lockup, the nav groups (with their sub-links), and a
- * copyright line. Content mirrors the header; styling is DS tokens only.
- */
-export function Footer() {
+/** Site footer — brand lockup, nav groups, copyright. DS tokens only. */
+export async function Footer() {
+  const t = await getTranslations("Footer");
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
@@ -38,19 +37,19 @@ export function Footer() {
           </div>
 
           {GROUPS.map((g) => (
-            <div key={g.label} className={styles.col}>
+            <div key={g.labelKey} className={styles.col}>
               {g.links ? (
-                <span className={styles.colHead}>{g.label}</span>
+                <span className={styles.colHead}>{t(g.labelKey)}</span>
               ) : (
                 <a className={styles.colHead} href={g.href}>
-                  {g.label}
+                  {t(g.labelKey)}
                 </a>
               )}
               {g.links && (
                 <ul className={styles.colLinks}>
                   {g.links.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href}>{l.label}</a>
+                    <li key={l.labelKey}>
+                      <a href={l.href}>{t(l.labelKey)}</a>
                     </li>
                   ))}
                 </ul>
@@ -59,9 +58,7 @@ export function Footer() {
           ))}
         </div>
 
-        <p className={styles.copyright}>
-          © 2026 Celesnity Ltd · Minder AI · All rights reserved.
-        </p>
+        <p className={styles.copyright}>{t("copyright")}</p>
       </div>
     </footer>
   );
