@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Icon } from "./icons";
 import styles from "./Header.module.css";
 
@@ -10,6 +11,8 @@ import styles from "./Header.module.css";
  * markup stays theme-independent (no hydration mismatch).
  */
 export function ThemeToggle() {
+  const t = useTranslations("ThemeToggle");
+
   function toggle() {
     const current =
       document.documentElement.getAttribute("data-theme") === "light"
@@ -29,7 +32,7 @@ export function ThemeToggle() {
       type="button"
       className={styles.iconButton}
       onClick={toggle}
-      aria-label="Switch between dark and light theme"
+      aria-label={t("label")}
     >
       <span className={styles.iconSun}>
         <Icon name="sun" size={20} />

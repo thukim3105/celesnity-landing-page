@@ -1,45 +1,19 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./HowItWorks.module.css";
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 // easeOutQuad — decelerating arrival, matching the reveal feel.
 const easeOut = (x: number) => 1 - (1 - x) * (1 - x);
 
-type Step = { n: string; title: string; points: string[]; img?: string };
+type StepMeta = { n: string; img?: string };
 
-const STEPS: Step[] = [
-  {
-    n: "01",
-    title: "Install the Hardware",
-    img: "/steps/install-hardware.png",
-    points: [
-      "Set up Minder AI in the work area",
-      "Celesnity engineers deploy and configure the system on-site",
-      "Gather factory-specific operational information",
-    ],
-  },
-  {
-    n: "02",
-    title: "Configure the Software",
-    img: "/steps/config.png",
-    points: [
-      "Connect Minder AI to existing processes",
-      "Define user roles and permissions",
-      "Customize terminology, workflows, and operational stages",
-    ],
-  },
-  {
-    n: "03",
-    title: "Start Using Minder AI",
-    img: "/steps/using-minder.jpg",
-    points: [
-      "Workers log in and interact using voice commands",
-      "AI supports daily operations immediately",
-      "Continuous learning and optimization from usage",
-    ],
-  },
+const STEP_META: StepMeta[] = [
+  { n: "01", img: "/steps/install-hardware.png" },
+  { n: "02", img: "/steps/config.png" },
+  { n: "03", img: "/steps/using-minder.jpg" },
 ];
 
 const LEAD = 0.16; // scroll fraction over which the heading climbs into place
@@ -54,6 +28,11 @@ const CONTENT = 0.2; // frame + steps begin here — a short beat after the head
  * all via rAF. Reduced motion unpins and shows everything.
  */
 export function HowItWorks() {
+  const t = useTranslations("HowItWorks");
+  const steps = (t.raw("steps") as { title: string; points: string[] }[]).map(
+    (s, i) => ({ ...s, n: STEP_META[i].n, img: STEP_META[i].img }),
+  );
+
   const rootRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -103,7 +82,7 @@ export function HowItWorks() {
       // Left: cross-fade the image to the active step. Each image is centred on
       // its step's segment (so it holds while that step's text is fully shown),
       // and the first/last images hold at the ends so the frame is never blank.
-      const seg = (1 - CONTENT) / STEPS.length;
+      const seg = (1 - CONTENT) / STEP_META.length;
       const activeF = (p - CONTENT) / seg; // fractional step index
       slides.forEach((slide, i) => {
         const center = i + 0.5;
@@ -156,16 +135,16 @@ export function HowItWorks() {
       <div className={styles.sticky}>
         {/* Title appears from the middle, climbs to the top-left, then stays. */}
         <h2 className={styles.heading} data-heading>
-          Easy to set up,
+          {t("headingLine1")}
           <br />
-          simple to use
+          {t("headingLine2")}
         </h2>
 
         <div className={styles.grid}>
           <div className={styles.mediaCol}>
             {/* Image frame stays fixed; the picture inside cross-fades per step. */}
             <div className={styles.frame} data-frame aria-hidden="true">
-              {STEPS.map((s) => (
+              {steps.map((s) => (
                 <div
                   key={s.n}
                   className={styles.slide}
@@ -188,7 +167,7 @@ export function HowItWorks() {
           </div>
 
           <div className={styles.stage}>
-            {STEPS.map((s) => (
+            {steps.map((s) => (
               <article key={s.n} className={styles.step} data-step>
                 {s.img && (
                   <div

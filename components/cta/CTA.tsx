@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import localFont from "next/font/local";
+import { useTranslations } from "next-intl";
 import { Reveal } from "@/components/motion/Reveal";
 import styles from "./CTA.module.css";
 
@@ -18,6 +19,7 @@ const anurati = localFont({
  * a confirmation. Anurati (all-caps display) is used only for the headline.
  */
 export function CTA() {
+  const t = useTranslations("CTA");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
@@ -36,22 +38,19 @@ export function CTA() {
         </Reveal>
 
         <Reveal delay={120}>
-          <p className={styles.lead}>
-            If your workers are juggling between machines and shifts and you&rsquo;re
-            curious how to save cost and increase productivity.
-          </p>
+          <p className={styles.lead}>{t("lead")}</p>
         </Reveal>
 
         <Reveal delay={240}>
           {sent ? (
             <p className={styles.thanks}>
-              Thanks — we&rsquo;ll be in touch shortly.
+              {t("thanks")}
             </p>
           ) : (
             <div className={styles.formWrap}>
               <form className={styles.form} onSubmit={onSubmit}>
                 <label className={styles.srOnly} htmlFor="cta-email">
-                  Work email
+                  {t("emailLabel")}
                 </label>
                 <input
                   id="cta-email"
@@ -59,16 +58,16 @@ export function CTA() {
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder="your@email.com"
+                  placeholder={t("emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <button className={styles.button} type="submit">
-                  Request a demo
+                  {t("button")}
                 </button>
               </form>
               <p className={styles.emailUs}>
-                Or email us directly at{" "}
+                {t("emailUsPrefix")}
                 <a href="mailto:start@celesnity.com">start@celesnity.com</a>
               </p>
             </div>

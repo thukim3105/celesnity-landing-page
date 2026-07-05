@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./Capabilities.module.css";
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 const easeOut = (x: number) => 1 - (1 - x) * (1 - x);
 
-type Item = { n: string; title: string; img?: string };
+type ItemMeta = { n: string; img?: string };
 
-const ITEMS: Item[] = [
-  { n: "01", title: "Onboard new hires fast", img: "/capabilities/onboard-new-hires.png" },
-  { n: "02", title: "Catch errors in the workflow", img: "/capabilities/catch-errors.png" },
-  { n: "03", title: "Capture production data automatically", img: "/capabilities/capture-data.png" },
-  { n: "04", title: "Reporting on demand", img: "/capabilities/reporting.png" },
-  { n: "05", title: "Scheduling", img: "/capabilities/scheduling.png" },
-  { n: "06", title: "Ask the operation anything, in plain language", img: "/capabilities/ask-anything.png" },
+const ITEM_META: ItemMeta[] = [
+  { n: "01", img: "/capabilities/onboard-new-hires.png" },
+  { n: "02", img: "/capabilities/catch-errors.png" },
+  { n: "03", img: "/capabilities/capture-data.png" },
+  { n: "04", img: "/capabilities/reporting.png" },
+  { n: "05", img: "/capabilities/scheduling.png" },
+  { n: "06", img: "/capabilities/ask-anything.png" },
 ];
 
 /**
@@ -24,6 +25,13 @@ const ITEMS: Item[] = [
  * swap in real images via each item's `img`. Reduced motion unpins and stacks.
  */
 export function Capabilities() {
+  const t = useTranslations("Capabilities");
+  const items = (t.raw("items") as string[]).map((title, i) => ({
+    title,
+    n: ITEM_META[i].n,
+    img: ITEM_META[i].img,
+  }));
+
   const rootRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -85,12 +93,12 @@ export function Capabilities() {
       <div className={styles.sticky}>
         <div className={styles.head}>
           <h2 className={styles.sectionTitle}>
-            One Platform for the Entire Operation
+            {t("sectionTitle")}
           </h2>
         </div>
 
         <div className={styles.titles}>
-          {ITEMS.map((it) => (
+          {items.map((it) => (
             <p key={it.n} className={styles.title} data-title>
               {it.title}
             </p>
@@ -98,7 +106,7 @@ export function Capabilities() {
         </div>
 
         <div className={styles.track} data-track>
-          {ITEMS.map((it) => (
+          {items.map((it) => (
             <article
               key={it.n}
               className={`${styles.panel} ${it.img ? styles.hasImg : ""}`}
