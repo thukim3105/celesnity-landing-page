@@ -31,57 +31,6 @@
     "leadLine2": "và giúp toàn bộ vận hành có thể tìm kiếm tức thì.",
     "cta": "Yêu cầu demo"
   },
-  "HeroSequence": {
-    "eyebrow": "Ngay trên sàn nhà máy",
-    "heading": "Minder AI",
-    "scrollHint": "Cuộn để xem một ca làm",
-    "cartons": {
-      "packing": "Đóng gói",
-      "inspection": "Kiểm tra",
-      "dataEntry": "Nhập liệu"
-    },
-    "hud": {
-      "label": "Thời gian nhập liệu hôm nay",
-      "unit": "và vẫn đang tăng"
-    },
-    "problem": {
-      "title": "Nhập liệu thủ công ngốn cả ngày",
-      "body": "Mỗi thùng được đóng, kiểm, rồi gõ tay. Giờ công cứ dồn lại đúng nơi không ai để ý.",
-      "cta": "Thử Minder AI"
-    },
-    "setup": {
-      "hardware": "Đã lắp phần cứng",
-      "config": "Đã cấu hình theo quy trình của bạn"
-    },
-    "phone": {
-      "app": "Minder AI",
-      "prompt": "Nhấn giữ để nói",
-      "holdHint": "Giữ 1 giây",
-      "listening": "Đang nghe…"
-    },
-    "transcript": "Thùng A-7734, mười hai kiện, Minh đóng, hai kiện nứt góc trái, chuyển sang khoang 3.",
-    "order": {
-      "title": "Đã ghi nhận",
-      "subtitle": "Một hơi nói, thành dữ liệu có cấu trúc.",
-      "boxNo": "Mã thùng",
-      "boxNoValue": "A-7734",
-      "qty": "Số lượng",
-      "qtyValue": "12 kiện",
-      "handler": "Người đóng",
-      "handlerValue": "Minh",
-      "condition": "Tình trạng",
-      "conditionValue": "2 kiện nứt · góc trái",
-      "location": "Chuyển đến",
-      "locationValue": "Khoang 3",
-      "note": "Ghi chú",
-      "noteValue": "Đánh dấu kiểm lại",
-      "hint": "Không đơn nào giống đơn nào — chính vì thế nó được nói, không phải gõ."
-    },
-    "handoff": {
-      "title": "Đó mới là một khoảnh khắc. Minder AI vận hành cả nhà máy.",
-      "cta": "Khám phá Minder AI"
-    }
-  },
   "HowItWorks": {
     "headingLine1": "Cài đặt dễ dàng,",
     "headingLine2": "sử dụng đơn giản.",
