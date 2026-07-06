@@ -6,15 +6,42 @@
    ============================================================ */
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   width: 100%;
-  background-color: var(--bg-base);
-  border-bottom: 1px solid var(--border);
+  background-color: transparent;
   transition:
     background-color var(--dur-slow) var(--ease),
     border-color var(--dur-slow) var(--ease);
+}
+
+/* Scrolled past the hero: frosted-glass bar so nav stays readable over content. */
+.header.scrolled {
+  background-color: color-mix(in srgb, var(--bg-base) 72%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .header.scrolled {
+    background-color: var(--bg-base);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header.scrolled {
+    background-color: var(--bg-base);
+  }
+}
+
+/* Light (Daybreak): the frosted-on-scroll bar is tinted to the page's lavender
+   base (instead of cloud-white) so the glass matches the bg. Blur is inherited
+   from .header.scrolled above; over the hero it stays transparent, like dark. */
+:global([data-theme="light"]) .header.scrolled {
+  background-color: color-mix(in srgb, var(--lavender-mist) 72%, transparent);
 }
 
 .inner {
@@ -104,6 +131,10 @@
   position: relative;
   display: flex;
   align-items: center;
+  /* Fixed-width slot (fits the widest EN/VI label) with the link centred, so
+     nav items don't shift position when the language switches. */
+  justify-content: center;
+  min-width: 7rem;
 }
 
 .navLink,
@@ -129,8 +160,8 @@
   color: var(--text-primary);
 }
 
-/* Active nav item — the current page (Minder AI): brightened, with a signature
-   gradient underline that draws in on load. */
+/* Active nav item — the current page: brightened, with a signature gradient
+   underline that draws in on load. */
 .navLinkActive {
   position: relative;
   color: var(--text-primary);

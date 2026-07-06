@@ -11,7 +11,7 @@ import styles from "./Hero.module.css";
 export async function Hero() {
   const t = await getTranslations("Hero");
   return (
-    <section className={styles.hero}>
+    <section className={styles.hero} data-hero>
       <HeroExperience />
       <div className={styles.overlay}>
         <Reveal>
@@ -24,13 +24,7 @@ export async function Hero() {
             {t("leadLine2")}
           </p>
         </Reveal>
-        <Reveal delay={240}>
-          <div className={styles.actions}>
-            <a className={styles.cta} href="#">
-              {t("cta")}
-            </a>
-          </div>
-        </Reveal>
+        
       </div>
     </section>
   );

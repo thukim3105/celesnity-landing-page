@@ -27,13 +27,13 @@
   },
   "Hero": {
     "heading": "Minder AI",
-    "leadLine1": "Tăng năng suất lao động, ghi lại mọi thao tác thành dữ liệu,",
+    "leadLine1": "Tăng năng suất lao động, ghi lại mọi thao tác thành dữ liệu",
     "leadLine2": "và giúp toàn bộ vận hành có thể tìm kiếm tức thì.",
     "cta": "Yêu cầu demo"
   },
   "HowItWorks": {
-    "headingLine1": "Dễ cài đặt,",
-    "headingLine2": "đơn giản để dùng",
+    "headingLine1": "Cài đặt dễ dàng,",
+    "headingLine2": "sử dụng đơn giản.",
     "steps": [
       {
         "title": "Lắp đặt phần cứng",
@@ -69,11 +69,11 @@
       "Tự động ghi lại dữ liệu sản xuất",
       "Báo cáo theo yêu cầu",
       "Lập lịch",
-      "Hỏi bất cứ điều gì về vận hành, bằng ngôn ngữ tự nhiên"
+      "Hỏi bất cứ điều gì về vận hành bằng ngôn ngữ tự nhiên"
     ]
   },
   "CTA": {
-    "lead": "Nếu công nhân của bạn phải xoay xở giữa nhiều máy móc và ca kíp, và bạn muốn biết cách tiết kiệm chi phí và tăng năng suất.",
+    "lead": "Khi mỗi phút dừng máy đều ảnh hưởng đến lợi nhuận,<br></br>và bạn cần một cách tốt hơn để tăng năng suất và giảm lãng phí.",
     "thanks": "Cảm ơn bạn, chúng tôi sẽ liên hệ trong thời gian ngắn.",
     "emailLabel": "Email công việc",
     "emailPlaceholder": "your@email.com",

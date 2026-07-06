@@ -11,17 +11,12 @@
   padding-block: clamp(80px, 14vh, 180px);
   padding-inline: clamp(20px, 5vw, 48px);
   overflow: hidden;
+  isolation: isolate;
 
-  /* Locked dark section: a single solid cosmic-black in BOTH themes, so pin the
-     on-dark foreground + gradient values regardless of the page theme. */
-  --text-primary: var(--cloud-white);
-  --text-secondary: var(--starlight);
-  --text-muted: rgba(201, 206, 232, 0.62);
-  --surface: rgba(255, 255, 255, 0.06);
-  --border: rgba(201, 206, 232, 0.18);
-  --gradient-brand: var(--nebula-gradient);
-
-  background: var(--cosmic-black);
+  /* Transparent so the continuous page background flows through the CTA too;
+     the aurora layers below sit on top and fade in from the top edge (see .bg),
+     so there is no hard seam with the section above. */
+  background: transparent;
 }
 
 .inner {
@@ -38,7 +33,7 @@
 
 .lead {
   margin: 0;
-  max-width: 680px;
+  max-width: 820px;
   font-size: clamp(18px, 2.4vw, 24px);
   line-height: var(--lh-body);
   color: var(--text-secondary);

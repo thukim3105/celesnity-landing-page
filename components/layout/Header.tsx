@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { NavLinks } from "./NavLinks";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -13,6 +14,26 @@ export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
   const t = useTranslations("Header");
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  // Frosted-glass navbar: transparent while the hero is in view, blurred once
+  // scrolled past it. IntersectionObserver on the hero — no scroll listener.
+  // Pages without a hero keep the bar readable (scrolled = true).
+  useEffect(() => {
+    const hero = document.querySelector("[data-hero]");
+    if (!hero) {
+      setScrolled(true);
+      return;
+    }
+    setScrolled(false);
+    const obs = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { rootMargin: "-64px 0px 0px 0px", threshold: 0 },
+    );
+    obs.observe(hero);
+    return () => obs.disconnect();
+  }, [pathname]);
 
   // Lock body scroll while the mobile drawer is open.
   useEffect(() => {
@@ -34,7 +55,7 @@ export function Header() {
   }, [drawerOpen]);
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.inner}>
         <a className={styles.brand} href="#" aria-label={t("brandHome")}>
           <Logo />

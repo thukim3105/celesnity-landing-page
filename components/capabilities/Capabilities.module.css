@@ -24,6 +24,12 @@
   background: var(--bg-base);
 }
 
+/* Dark: flat --bg-base (above). Light (Daybreak): lavender. */
+:global([data-theme="light"]) .section,
+:global([data-theme="light"]) .sticky {
+  background: var(--lavender-mist);
+}
+
 /* Top: the fixed section title. */
 .head {
   padding-inline: clamp(20px, 5vw, 48px);
@@ -53,7 +59,7 @@
 .title {
   position: absolute;
   margin: 0;
-  max-width: min(760px, 90vw);
+  white-space: nowrap;
   text-align: center;
   font-family: var(--font-display);
   font-weight: var(--fw-semibold);

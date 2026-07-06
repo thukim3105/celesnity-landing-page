@@ -4,6 +4,7 @@ import { useState } from "react";
 import localFont from "next/font/local";
 import { useTranslations } from "next-intl";
 import { Reveal } from "@/components/motion/Reveal";
+import { AuroraBackground } from "@/components/background/AuroraBackground";
 import styles from "./CTA.module.css";
 
 /* Anurati — futuristic all-caps display face. DS-approved exception (Inter only,
@@ -30,6 +31,7 @@ export function CTA() {
 
   return (
     <section className={styles.section}>
+      <AuroraBackground opacity={1} />
       <div className={styles.inner}>
         <Reveal>
           <h2 className={`${styles.headline} ${anurati.className}`}>
@@ -38,7 +40,7 @@ export function CTA() {
         </Reveal>
 
         <Reveal delay={120}>
-          <p className={styles.lead}>{t("lead")}</p>
+          <p className={styles.lead}>{t.rich("lead", { br: () => <br /> })}</p>
         </Reveal>
 
         <Reveal delay={240}>

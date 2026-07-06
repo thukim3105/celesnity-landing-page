@@ -17,6 +17,11 @@
   background: var(--bg-base);
 }
 
+/* Dark: flat --bg-base (above). Light (Daybreak): lavender. */
+:global([data-theme="light"]) .section {
+  background: var(--lavender-mist);
+}
+
 .eyebrow {
   margin: 0;
   font-size: 14px;

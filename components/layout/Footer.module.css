@@ -8,6 +8,11 @@
   background: var(--bg-base);
 }
 
+/* Light (Daybreak): lavender to match the rest of the page (no seam). */
+:global([data-theme="light"]) .footer {
+  background: var(--lavender-mist);
+}
+
 .inner {
   max-width: 1360px;
   margin: 0 auto;

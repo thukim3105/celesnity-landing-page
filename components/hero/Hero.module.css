@@ -12,6 +12,12 @@
   z-index: 0;
   overflow: hidden;
   background: var(--hero-bg); /* was: background-color: var(--cosmic-black) */
+  /* Fade the whole backdrop (wash + wireframe) to transparent at the bottom so
+     the hero dissolves into whatever page background sits behind the next
+     section — no seam in either theme (flat --bg-base in dark, the tinted body
+     layer in light). Replaces the old ::after fade-to---bg-base. */
+  -webkit-mask: linear-gradient(to bottom, #000 62%, transparent 100%);
+  mask: linear-gradient(to bottom, #000 62%, transparent 100%);
 }
 
 .layer {
@@ -78,23 +84,17 @@
   );
 }
 
-/* Bottom fade: the wash + wireframe dissolve to exactly --bg-base at the hero's
-   lower edge, so it hands off seamlessly into the next section (same base colour,
-   no visible seam). Flips with the theme. */
-.backdrop::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to bottom, transparent 62%, var(--bg-base) 100%);
-}
-
 .hero {
   position: relative;
-  /* Subtract the sticky header (its --header-h inner box plus its 1px bottom
-     border) so the content block centers in the visible viewport and the first
-     screen is exactly 100svh — no leftover scroll. */
-  min-height: calc(100svh - var(--header-h, 68px) - 1px);
+  /* Full viewport so the backdrop bleeds up behind the fixed/transparent navbar.
+     padding-top = header height so the CONTENT still centres in the visible area
+     below the navbar (not the whole viewport) — undoes the upward shift the
+     full-height pull would otherwise cause. Backdrop (inset:0) still fills up. */
+  min-height: 100svh;
+  padding-top: var(--header-h, 68px);
+  /* Extra bottom padding pulls the centred content a bit higher in the viewport
+     while keeping the top clear of the navbar. */
+  padding-bottom: clamp(56px, 12vh, 140px);
   display: flex;
   align-items: center;
   justify-content: center;

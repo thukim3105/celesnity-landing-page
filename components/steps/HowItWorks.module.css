@@ -23,6 +23,12 @@
   background: var(--bg-base);
 }
 
+/* Dark: flat --bg-base (above). Light (Daybreak): lavender. */
+:global([data-theme="light"]) .section,
+:global([data-theme="light"]) .sticky {
+  background: var(--lavender-mist);
+}
+
 .grid {
   width: 100%;
   max-width: 1120px;
