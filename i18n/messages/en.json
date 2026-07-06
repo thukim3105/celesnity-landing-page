@@ -31,6 +31,57 @@
     "leadLine2": "and make operations instantly searchable.",
     "cta": "Request a demo"
   },
+  "HeroSequence": {
+    "eyebrow": "On the floor, right now",
+    "heading": "Minder AI",
+    "scrollHint": "Scroll to watch a shift",
+    "cartons": {
+      "packing": "Packing",
+      "inspection": "Inspection",
+      "dataEntry": "Data entry"
+    },
+    "hud": {
+      "label": "Data entry logged today",
+      "unit": "and still counting"
+    },
+    "problem": {
+      "title": "Manual data entry eats the day",
+      "body": "Every box is packed, checked, then typed by hand. The hours pile up exactly where nobody is looking.",
+      "cta": "Try Minder AI"
+    },
+    "setup": {
+      "hardware": "Hardware installed",
+      "config": "Configured to your workflow"
+    },
+    "phone": {
+      "app": "Minder AI",
+      "prompt": "Press and hold to speak",
+      "holdHint": "Hold 1s",
+      "listening": "Listening…"
+    },
+    "transcript": "Box A-7734, twelve units, packed by Minh, two cracked on the left corner, moved to bay 3.",
+    "order": {
+      "title": "Captured",
+      "subtitle": "One breath of speech, structured.",
+      "boxNo": "Box no.",
+      "boxNoValue": "A-7734",
+      "qty": "Quantity",
+      "qtyValue": "12 units",
+      "handler": "Packed by",
+      "handlerValue": "Minh",
+      "condition": "Condition",
+      "conditionValue": "2 cracked · left corner",
+      "location": "Moved to",
+      "locationValue": "Bay 3",
+      "note": "Note",
+      "noteValue": "Flagged for re-inspection",
+      "hint": "No two entries look the same — which is exactly why it is spoken, not typed."
+    },
+    "handoff": {
+      "title": "That was one moment. Minder AI runs the whole floor.",
+      "cta": "Explore Minder AI"
+    }
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",

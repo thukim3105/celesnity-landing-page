@@ -1,0 +1,215 @@
+/* ============================================================
+   Carton scene — line-art factory backdrop + addressable SVG
+   cartons + corner HUD. Mouse-look parallax reads --px/--py set
+   on the parent stage. All color flips with the DS theme.
+   ============================================================ */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--text-secondary);
+}
+
+/* ---------- Backdrop: reuse the existing hero line-art mask ---------- */
+.backdrop {
+  position: absolute;
+  inset: -4% -4% 0;
+  /* subtle parallax — moves opposite the cursor, small depth */
+  transform: translate3d(
+    calc(var(--px, 0) * -14px),
+    calc(var(--py, 0) * -10px),
+    0
+  );
+}
+
+.backdropFill {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-brand);
+  opacity: 0.14;
+  -webkit-mask: url("/hero/mask-interior.png") center / cover no-repeat;
+          mask: url("/hero/mask-interior.png") center / cover no-repeat;
+}
+
+/* ---------- Cartons ---------- */
+.cartons {
+  position: absolute;
+  inset: 0;
+}
+
+.carton {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+/* parallax layer — each carton shifts by its own --depth */
+.cartonInner {
+  position: relative;
+  transform: translate3d(
+    calc(var(--px, 0) * var(--depth, 20) * 1px),
+    calc(var(--py, 0) * var(--depth, 20) * 0.6px),
+    0
+  );
+  will-change: transform;
+}
+
+.boxWrap {
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.18));
+}
+
+.box {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.faceTop,
+.faceLeft,
+.faceRight,
+.seam {
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+.faceTop {
+  fill: color-mix(in srgb, currentColor 10%, transparent);
+}
+.faceLeft {
+  fill: color-mix(in srgb, currentColor 4%, transparent);
+}
+.faceRight {
+  fill: color-mix(in srgb, currentColor 7%, transparent);
+}
+.seam {
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+/* ---------- Label chip ---------- */
+.label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 14%);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 148px;
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--surface) 82%, var(--bg-base));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* connector dot anchoring the chip to the box */
+.label::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px;
+  height: 12%;
+  min-height: 10px;
+  transform: translateX(-50%);
+  background: linear-gradient(var(--border), transparent);
+}
+
+.labelId {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.labelKey {
+  color: var(--text-muted);
+}
+.labelVal {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+}
+
+/* the data-entry row is the "expensive" one — carry the brand accent */
+.labelRowHot .labelKey {
+  color: var(--text-secondary);
+}
+.labelRowHot .labelVal {
+  font-weight: var(--fw-semibold);
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Corner HUD ---------- */
+.hud {
+  position: absolute;
+  top: clamp(84px, 12vh, 128px);
+  right: clamp(16px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  background: color-mix(in srgb, var(--surface) 80%, var(--bg-base));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: right;
+}
+
+.hudLabel {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+.hudValue {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.05;
+  letter-spacing: var(--ls-heading);
+  font-variant-numeric: tabular-nums;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hudUnit {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+@media (max-width: 720px) {
+  .label {
+    min-width: 120px;
+    padding: var(--space-2) var(--space-3);
+  }
+  .hud {
+    top: auto;
+    bottom: clamp(16px, 6vh, 40px);
+    right: 50%;
+    transform: translateX(50%);
+    align-items: center;
+    text-align: center;
+  }
+}
