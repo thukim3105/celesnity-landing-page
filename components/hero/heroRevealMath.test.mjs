@@ -66,3 +66,11 @@ test("toStagePercent: centre of an anchor rect as a percent of the stage", () =>
   // centre = (600, 450); relative = (500, 250); percent = (50%, 50%)
   assert.deepEqual(toStagePercent(anchorRect, stageRect), { left: 50, top: 50 });
 });
+
+test("toStagePercent: zero-size stage returns { left: 0, top: 0 }", () => {
+  const anchorRect = { left: 10, top: 10, width: 4, height: 4 };
+  assert.deepEqual(
+    toStagePercent(anchorRect, { left: 0, top: 0, width: 0, height: 0 }),
+    { left: 0, top: 0 },
+  );
+});

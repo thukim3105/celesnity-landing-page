@@ -74,6 +74,7 @@ export function revealCount(scrollCount, timerCount, count) {
  * @returns {{ left: number, top: number }}
  */
 export function toStagePercent(anchorRect, stageRect) {
+  if (stageRect.width === 0 || stageRect.height === 0) return { left: 0, top: 0 };
   const cx = anchorRect.left + anchorRect.width / 2 - stageRect.left;
   const cy = anchorRect.top + anchorRect.height / 2 - stageRect.top;
   return {
