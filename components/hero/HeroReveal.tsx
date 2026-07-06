@@ -61,7 +61,9 @@ export function HeroReveal({
     ).matches;
 
     let raf = 0;
+    let cancelled = false;
     const tick = () => {
+      if (cancelled) return;
       const section = sectionRef.current;
       const overlay = overlayRef.current;
       if (section) {
@@ -121,7 +123,10 @@ export function HeroReveal({
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
