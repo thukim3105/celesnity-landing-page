@@ -31,6 +31,16 @@
     "leadLine2": "và giúp toàn bộ vận hành có thể tìm kiếm tức thì.",
     "cta": "Yêu cầu demo"
   },
+  "HeroLabels": {
+    "codeLabel": "Mã hàng",
+    "qtyLabel": "Số lượng",
+    "boxes": [
+      { "name": "Vòng bi gốm 6204", "code": "MHX-204817", "qty": "1.200" },
+      { "name": "Thanh đồng A2", "code": "MHX-330052", "qty": "640" },
+      { "name": "Hạt nhựa PET", "code": "MHX-119043", "qty": "3.000" },
+      { "name": "Găng tay nitrile M", "code": "MHX-778120", "qty": "5.000" }
+    ]
+  },
   "HowItWorks": {
     "headingLine1": "Cài đặt dễ dàng,",
     "headingLine2": "sử dụng đơn giản.",

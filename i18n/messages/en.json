@@ -31,6 +31,16 @@
     "leadLine2": "and make operations instantly searchable.",
     "cta": "Request a demo"
   },
+  "HeroLabels": {
+    "codeLabel": "Code",
+    "qtyLabel": "Qty",
+    "boxes": [
+      { "name": "Ceramic bearing 6204", "code": "MHX-204817", "qty": "1,200" },
+      { "name": "Copper busbar A2", "code": "MHX-330052", "qty": "640" },
+      { "name": "PET resin pellets", "code": "MHX-119043", "qty": "3,000" },
+      { "name": "Nitrile gloves M", "code": "MHX-778120", "qty": "5,000" }
+    ]
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",
