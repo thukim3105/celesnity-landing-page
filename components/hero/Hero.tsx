@@ -1,31 +1,26 @@
 import { getTranslations } from "next-intl/server";
-import { Reveal } from "@/components/motion/Reveal";
-import { HeroExperience } from "./HeroExperience";
-import styles from "./Hero.module.css";
+import { HeroReveal } from "./HeroReveal";
+import type { LabelBox } from "./heroLabels.types";
 
 /**
- * Minder AI hero content — heading + lede + primary CTA, centered over the
- * static inside-factory line-art backdrop (<HeroExperience/>). The backdrop
- * lives inside the section, so it scrolls away together with the content.
+ * Server hero: fetches localized copy + demo carton data and hands them to the
+ * client <HeroReveal/>, which pins the line-art backdrop, scrolls the content
+ * away, and reveals the labels. The backdrop itself (<HeroExperience/>) is
+ * rendered inside HeroReveal and remains visually unchanged.
  */
 export async function Hero() {
   const t = await getTranslations("Hero");
+  const tl = await getTranslations("HeroLabels");
+  const boxes = tl.raw("boxes") as LabelBox[];
+
   return (
-    <section className={styles.hero} data-hero>
-      <HeroExperience />
-      <div className={styles.overlay}>
-        <Reveal>
-          <h1 className={styles.heading}>{t("heading")}</h1>
-        </Reveal>
-        <Reveal delay={120}>
-          <p className={styles.lead}>
-            {t("leadLine1")}
-            <br />
-            {t("leadLine2")}
-          </p>
-        </Reveal>
-        
-      </div>
-    </section>
+    <HeroReveal
+      heading={t("heading")}
+      lead1={t("leadLine1")}
+      lead2={t("leadLine2")}
+      boxes={boxes}
+      codeLabel={tl("codeLabel")}
+      qtyLabel={tl("qtyLabel")}
+    />
   );
 }
