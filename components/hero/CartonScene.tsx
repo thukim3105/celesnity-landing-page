@@ -4,74 +4,85 @@ import { useTranslations } from "next-intl";
 import { motion, useTransform, type MotionValue } from "motion/react";
 import styles from "./CartonScene.module.css";
 
-/** The speech-bubble callouts from the hero art — recreated as addressable
- *  vector/HTML so each can hold a carton's detail and fill in on scroll.
- *  x/y are % of the stage (matched to the hero.png layout); w is bubble width.
- *  "full" bubbles show the packing/inspection/data-entry breakdown; "brief"
- *  bubbles show just the box id + its (expensive) data-entry time. */
-const BUBBLES = [
-  { id: "A-72", x: 21, y: 61, w: 236, depth: 26, variant: "full", pack: "0:38", check: "0:52", entry: "1:24" },
-  { id: "A-73", x: 50, y: 36, w: 168, depth: 40, variant: "brief", entry: "2:11" },
-  { id: "B-15", x: 65, y: 41, w: 150, depth: 52, variant: "brief", entry: "1:39" },
-  { id: "B-19", x: 77, y: 46, w: 138, depth: 64, variant: "brief", entry: "1:52" },
+/** Real cartons on the conveyor in the hero art (public/hero/mask-interior.png).
+ *  bx/by = the box's anchor point; cx/cy = where its info card sits — both as %
+ *  of the fixed-ratio scene canvas, so a leader line links card → box and stays
+ *  aligned under `cover`. "full" shows the packing/inspection/data-entry
+ *  breakdown; "brief" shows the box id + its (expensive) data-entry time. */
+const BOXES = [
+  { id: "A-72", bx: 31, by: 66, cx: 15, cy: 33, variant: "full", pack: "0:38", check: "0:52", entry: "1:24" },
+  { id: "A-73", bx: 50, by: 59, cx: 35, cy: 25, variant: "brief", entry: "2:11" },
+  { id: "B-15", bx: 58, by: 49, cx: 64, cy: 23, variant: "brief", entry: "1:39" },
+  { id: "B-19", bx: 67, by: 45, cx: 83, cy: 30, variant: "brief", entry: "1:52" },
 ] as const;
 
 /** Total data-entry minutes the HUD counts up to across act 2. */
 const TOTAL_MIN = 187;
 
-function Bubble({
-  bubble,
+function Box({
+  box,
   index,
   p2,
 }: {
-  bubble: (typeof BUBBLES)[number];
+  box: (typeof BOXES)[number];
   index: number;
   p2: MotionValue<number>;
 }) {
   const t = useTranslations("HeroSequence");
-  // Stagger each bubble's content fill across act-2 progress.
   const start = 0.05 + index * 0.15;
   const reveal = useTransform(p2, [start, start + 0.4], [0, 1], { clamp: true });
-  const contentY = useTransform(reveal, [0, 1], [8, 0]);
+  const cardY = useTransform(reveal, [0, 1], [10, 0]);
+  const ringScale = useTransform(reveal, [0, 1], [0.4, 1]);
 
   return (
-    <div
-      className={styles.bubble}
-      style={
-        {
-          left: `${bubble.x}%`,
-          top: `${bubble.y}%`,
-          width: `${bubble.w}px`,
-          ["--depth" as string]: bubble.depth,
-        } as React.CSSProperties
-      }
-    >
-      <motion.div className={styles.bubbleContent} style={{ opacity: reveal, y: contentY }}>
-        <span className={styles.bubbleId}>{bubble.id}</span>
+    <>
+      {/* leader line: box → card */}
+      <svg className={styles.leader} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+        <motion.line
+          x1={box.cx}
+          y1={box.cy}
+          x2={box.bx}
+          y2={box.by}
+          className={styles.leaderLine}
+          style={{ opacity: reveal }}
+        />
+      </svg>
 
-        {bubble.variant === "full" ? (
+      {/* hotspot on the box */}
+      <div className={styles.hotspot} style={{ left: `${box.bx}%`, top: `${box.by}%` }}>
+        <motion.span className={styles.ring} style={{ opacity: reveal, scale: ringScale }} />
+        <motion.span className={styles.dot} style={{ opacity: reveal }} />
+      </div>
+
+      {/* info card */}
+      <motion.div
+        className={styles.card}
+        style={{ left: `${box.cx}%`, top: `${box.cy}%`, opacity: reveal, y: cardY }}
+      >
+        <span className={styles.cardId}>{box.id}</span>
+        {box.variant === "full" ? (
           <>
             <span className={styles.row}>
               <span className={styles.rowKey}>{t("cartons.packing")}</span>
-              <span className={styles.rowVal}>{bubble.pack}</span>
+              <span className={styles.rowVal}>{box.pack}</span>
             </span>
             <span className={styles.row}>
               <span className={styles.rowKey}>{t("cartons.inspection")}</span>
-              <span className={styles.rowVal}>{bubble.check}</span>
+              <span className={styles.rowVal}>{box.check}</span>
             </span>
             <span className={`${styles.row} ${styles.rowHot}`}>
               <span className={styles.rowKey}>{t("cartons.dataEntry")}</span>
-              <span className={styles.rowVal}>{bubble.entry}</span>
+              <span className={styles.rowVal}>{box.entry}</span>
             </span>
           </>
         ) : (
           <span className={`${styles.row} ${styles.rowHot} ${styles.rowLead}`}>
             <span className={styles.rowKey}>{t("cartons.dataEntry")}</span>
-            <span className={styles.rowVal}>{bubble.entry}</span>
+            <span className={styles.rowVal}>{box.entry}</span>
           </span>
         )}
       </motion.div>
-    </div>
+    </>
   );
 }
 
@@ -87,19 +98,15 @@ export function CartonScene({ p2 }: { p2: MotionValue<number> }) {
 
   return (
     <div className={styles.scene} aria-hidden>
-      {/* Line-art factory backdrop — reuses the existing hero mask fill. */}
-      <div className={styles.backdrop}>
+      {/* Fixed-ratio canvas: image + anchored annotations scale/crop together. */}
+      <div className={styles.canvas}>
         <div className={styles.backdropFill} />
-      </div>
-
-      {/* Foreground addressable callout bubbles. */}
-      <div className={styles.bubbles}>
-        {BUBBLES.map((bubble, i) => (
-          <Bubble key={bubble.id} bubble={bubble} index={i} p2={p2} />
+        {BOXES.map((box, i) => (
+          <Box key={box.id} box={box} index={i} p2={p2} />
         ))}
       </div>
 
-      {/* Corner HUD — the running cost of manual data entry. */}
+      {/* Corner HUD — the running cost of manual data entry (UI, not parallaxed). */}
       <motion.div className={styles.hud} style={{ opacity: hudOpacity }}>
         <span className={styles.hudLabel}>{t("hud.label")}</span>
         <motion.span className={styles.hudValue}>{hud}</motion.span>

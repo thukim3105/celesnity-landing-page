@@ -1,9 +1,9 @@
 /* ============================================================
-   Carton scene — line-art factory backdrop + the hero's speech
-   bubbles recreated as addressable HTML callouts. Each bubble is
-   an empty gradient outline at rest (matching the hero art) and
-   fills with a carton's detail as act 2 scrolls. Mouse-look
-   parallax reads --px/--py from the parent stage.
+   Carton scene — the hero factory line-art with info cards
+   anchored to the real cartons on the conveyor. Image and
+   annotations live in one fixed-ratio canvas so a card's leader
+   line stays glued to its box under `cover`. Mouse-look parallax
+   moves the whole canvas as one (reads --px/--py from the stage).
    ============================================================ */
 
 .scene {
@@ -13,87 +13,107 @@
   color: var(--text-secondary);
 }
 
-/* ---------- Backdrop: reuse the existing hero line-art mask ---------- */
-.backdrop {
+/* Fixed 3:2 canvas sized to cover the stage, centered, lightly over-scaled so
+   the parallax shift never exposes an edge. */
+.canvas {
   position: absolute;
-  inset: -4% -4% 0;
-  transform: translate3d(
-    calc(var(--px, 0) * -14px),
-    calc(var(--py, 0) * -10px),
-    0
-  );
+  top: 50%;
+  left: 50%;
+  width: max(100vw, calc(100svh * 1536 / 1024));
+  height: max(100svh, calc(100vw * 1024 / 1536));
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--px, 0) * 16px), calc(var(--py, 0) * 10px), 0)
+    scale(1.05);
+  will-change: transform;
 }
 
 .backdropFill {
   position: absolute;
   inset: 0;
   background: var(--gradient-brand);
-  opacity: 0.22;
+  opacity: 0.5;
   -webkit-mask: url("/hero/mask-interior.png") center / cover no-repeat;
           mask: url("/hero/mask-interior.png") center / cover no-repeat;
 }
 
-/* ---------- Callout bubbles ---------- */
-.bubbles {
+/* ---------- Leader line (box → card) ---------- */
+.leader {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.leaderLine {
+  stroke: color-mix(in srgb, var(--focus-ring) 75%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
 }
 
-.bubble {
-  --fill: color-mix(in srgb, var(--bg-base) 72%, transparent);
+/* ---------- Hotspot on the box ---------- */
+.hotspot {
   position: absolute;
-  transform: translate(-50%, -50%)
-    translate3d(
-      calc(var(--px, 0) * var(--depth, 30) * 1px),
-      calc(var(--py, 0) * var(--depth, 30) * 0.6px),
-      0
-    );
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+}
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--focus-ring) 80%, transparent);
+}
+.dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  animation: dotPulse 2.4s var(--ease) infinite;
+}
+@keyframes dotPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--focus-ring) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+/* ---------- Info card ---------- */
+.card {
+  --fill: color-mix(in srgb, var(--bg-base) 74%, transparent);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 138px;
   padding: var(--space-3) var(--space-4);
   border: 1.5px solid transparent;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background:
     linear-gradient(var(--fill), var(--fill)) padding-box,
     var(--gradient-brand) border-box;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  will-change: transform;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
-
-/* speech-bubble tail — a gradient-bordered square, two edges hidden */
-.bubble::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 26px;
-  width: 16px;
-  height: 16px;
-  transform: translateY(-9px) rotate(45deg);
-  border: 1.5px solid transparent;
-  border-top: none;
-  border-left: none;
-  border-bottom-right-radius: 3px;
-  background:
-    linear-gradient(var(--fill), var(--fill)) padding-box,
-    var(--gradient-brand) border-box;
-}
-
-.bubbleContent {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.bubbleId {
+.cardId {
+  display: block;
   font-weight: var(--fw-semibold);
   font-size: var(--fs-xs);
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
-
 .row {
   display: flex;
   align-items: baseline;
@@ -109,8 +129,6 @@
   font-weight: var(--fw-medium);
   color: var(--text-primary);
 }
-
-/* the data-entry figure is the "expensive" one — carry the brand accent */
 .rowHot .rowKey {
   color: var(--text-secondary);
 }
@@ -121,7 +139,6 @@
           background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-/* brief bubbles: make the single data-entry figure larger */
 .rowLead {
   align-items: center;
   font-size: var(--fs-sm);
@@ -172,7 +189,8 @@
 }
 
 @media (max-width: 720px) {
-  .bubble {
+  .card {
+    min-width: 116px;
     padding: var(--space-2) var(--space-3);
   }
   .hud {
