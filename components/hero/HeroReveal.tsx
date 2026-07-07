@@ -71,10 +71,15 @@ export function HeroReveal({
   const outroStartRef = useRef<number | null>(null);
   const lastStepRef = useRef(0);
   const lockedRef = useRef(false);
+  const ctaClickedRef = useRef(false);
   const reducedRef = useRef(false);
 
   const handleCtaClick = () => {
-    document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" });
+    // Real click: release the scroll lock for good and glide to the demo form.
+    ctaClickedRef.current = true;
+    lockedRef.current = false;
+    window.dispatchEvent(new Event("hero:unlock"));
+    window.dispatchEvent(new CustomEvent("hero:scrollto", { detail: "#cta" }));
   };
 
   useEffect(() => {
@@ -112,6 +117,7 @@ export function HeroReveal({
         } else {
           phase2StartRef.current = null;
           maxRevealedRef.current = 0;
+          ctaClickedRef.current = false;
         }
 
         let target: number;
@@ -162,7 +168,10 @@ export function HeroReveal({
 
         // Scroll lock: hold from the first label until Scene 2 arrives, so
         // scrolling can't jump to the next section while the scene auto-plays.
-        const wantLock = phase2StartRef.current !== null && nextStep < 4;
+        const wantLock =
+          phase2StartRef.current !== null &&
+          nextStep < 4 &&
+          !ctaClickedRef.current;
         if (wantLock !== lockedRef.current) {
           lockedRef.current = wantLock;
           window.dispatchEvent(new Event(wantLock ? "hero:lock" : "hero:unlock"));
