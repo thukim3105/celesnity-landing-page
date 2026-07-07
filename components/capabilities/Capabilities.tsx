@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import styles from "./Capabilities.module.css";
 
-const AUTO_MS = 2000; // time on each image before advancing
+const AUTO_MS = 3000; // time on each image before advancing
+const SLIDE_MS = 700; // must match the .track / .panel transition in the CSS
 
 type ItemMeta = { n: string; img?: string };
 
@@ -32,9 +33,12 @@ export function Capabilities() {
   }));
   const n = items.length;
 
+  // active runs 0..n; index n is a clone of the first image, so advancing off
+  // the end slides forward onto it and then snaps back invisibly (seamless loop).
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [noAnim, setNoAnim] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,7 +50,7 @@ export function Capabilities() {
     const track = trackRef.current;
     const viewport = track?.parentElement;
     if (!track || !viewport) return;
-    const center = () => {
+    const place = () => {
       const panels = Array.from(
         track.querySelectorAll<HTMLElement>("[data-panel]"),
       );
@@ -55,19 +59,46 @@ export function Capabilities() {
       const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
       const step = panelW + gap;
       const x = viewport.clientWidth / 2 - (active * step + panelW / 2);
+      track.style.transition = noAnim ? "none" : "";
       track.style.transform = `translate3d(${x}px, 0, 0)`;
     };
-    center();
-    window.addEventListener("resize", center);
-    return () => window.removeEventListener("resize", center);
-  }, [active, n]);
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active, noAnim, n]);
 
   // Auto-advance; any active change (including a click) restarts the timer.
+  // Stops at the clone (n) — the loop effect below takes over there.
   useEffect(() => {
-    if (reduced || paused) return;
-    const id = window.setTimeout(() => setActive((a) => (a + 1) % n), AUTO_MS);
+    if (reduced || paused || active >= n) return;
+    const id = window.setTimeout(() => setActive((a) => a + 1), AUTO_MS);
     return () => clearTimeout(id);
   }, [active, paused, reduced, n]);
+
+  // Seamless loop: once the slide onto the clone finishes, jump back to the
+  // real first image with the transition off (invisible, since they're identical).
+  useEffect(() => {
+    if (active !== n) return;
+    const id = window.setTimeout(() => {
+      setNoAnim(true);
+      setActive(0);
+    }, SLIDE_MS);
+    return () => clearTimeout(id);
+  }, [active, n]);
+
+  // Re-enable the slide a frame after the instant snap.
+  useEffect(() => {
+    if (!noAnim) return;
+    const r = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setNoAnim(false)),
+    );
+    return () => cancelAnimationFrame(r);
+  }, [noAnim]);
+
+  const go = (i: number) => {
+    setNoAnim(false);
+    setActive(i);
+  };
 
   return (
     <section
@@ -91,18 +122,30 @@ export function Capabilities() {
               style={
                 it.img ? { backgroundImage: `url("${it.img}")` } : undefined
               }
-              onClick={() => setActive(i)}
+              onClick={() => go(i)}
               aria-label={it.title}
               aria-current={i === active}
             >
               {!it.img && <span className={styles.panelNum}>{it.n}</span>}
             </button>
           ))}
+          {/* Clone of the first image so the last→first loop slides forward. */}
+          <div
+            className={`${styles.panel} ${items[0].img ? styles.hasImg : ""}`}
+            data-panel
+            data-active={active === n}
+            aria-hidden="true"
+            style={
+              items[0].img
+                ? { backgroundImage: `url("${items[0].img}")` }
+                : undefined
+            }
+          />
         </div>
       </div>
 
       <p key={active} className={styles.activeTitle}>
-        {items[active].title}
+        {items[active % n].title}
       </p>
 
       <div className={styles.dots}>
@@ -111,8 +154,8 @@ export function Capabilities() {
             key={it.n}
             type="button"
             className={styles.dot}
-            data-active={i === active}
-            onClick={() => setActive(i)}
+            data-active={active % n === i}
+            onClick={() => go(i)}
             aria-label={it.title}
           />
         ))}

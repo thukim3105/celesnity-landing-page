@@ -41,9 +41,9 @@
 .track {
   display: flex;
   align-items: center;
-  gap: clamp(16px, 3vw, 40px);
+  gap: clamp(8px, 1.6vw, 24px);
   will-change: transform;
-  transition: transform 620ms var(--ease);
+  transition: transform 700ms var(--ease);
 }
 
 /* Each image panel — a clickable 16:9 tile. Off-centre tiles shrink and dim. */
@@ -62,15 +62,17 @@
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.4;
-  transform: scale(0.9);
+  transform: scale(0.72);
   transition:
-    opacity var(--dur-base) var(--ease),
-    transform var(--dur-base) var(--ease);
+    opacity 700ms var(--ease),
+    transform 700ms var(--ease);
 }
 
+/* Centre image is clearly larger; neighbours shrink and sit behind it. */
 .panel[data-active="true"] {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1.12);
+  z-index: 2;
 }
 
 .panel:focus-visible {
