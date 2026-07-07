@@ -71,15 +71,13 @@ export function HeroReveal({
   const outroStartRef = useRef<number | null>(null);
   const lastStepRef = useRef(0);
   const lockedRef = useRef(false);
-  const ctaClickedRef = useRef(false);
+  const forceScene2Ref = useRef(false);
   const reducedRef = useRef(false);
 
+  // Real click on the CTA doesn't navigate — it just advances to Scene 2,
+  // exactly like the auto-click does at the end of the timeline.
   const handleCtaClick = () => {
-    // Real click: release the scroll lock for good and glide to the demo form.
-    ctaClickedRef.current = true;
-    lockedRef.current = false;
-    window.dispatchEvent(new Event("hero:unlock"));
-    window.dispatchEvent(new CustomEvent("hero:scrollto", { detail: "#cta" }));
+    forceScene2Ref.current = true;
   };
 
   useEffect(() => {
@@ -117,7 +115,7 @@ export function HeroReveal({
         } else {
           phase2StartRef.current = null;
           maxRevealedRef.current = 0;
-          ctaClickedRef.current = false;
+          forceScene2Ref.current = false;
         }
 
         let target: number;
@@ -157,8 +155,9 @@ export function HeroReveal({
         } else {
           outroStartRef.current = null;
         }
-        const nextStep =
-          outroStartRef.current === null
+        const nextStep = forceScene2Ref.current
+          ? 4
+          : outroStartRef.current === null
             ? 0
             : outroStep(performance.now() - outroStartRef.current);
         if (nextStep !== lastStepRef.current) {
@@ -168,10 +167,7 @@ export function HeroReveal({
 
         // Scroll lock: hold from the first label until Scene 2 arrives, so
         // scrolling can't jump to the next section while the scene auto-plays.
-        const wantLock =
-          phase2StartRef.current !== null &&
-          nextStep < 4 &&
-          !ctaClickedRef.current;
+        const wantLock = phase2StartRef.current !== null && nextStep < 4;
         if (wantLock !== lockedRef.current) {
           lockedRef.current = wantLock;
           window.dispatchEvent(new Event(wantLock ? "hero:lock" : "hero:unlock"));

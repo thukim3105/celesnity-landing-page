@@ -30,7 +30,7 @@ export function CTA() {
   };
 
   return (
-    <section id="cta" className={styles.section}>
+    <section className={styles.section}>
       <AuroraBackground opacity={1} />
       <div className={styles.inner}>
         <Reveal>
