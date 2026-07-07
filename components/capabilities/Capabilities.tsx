@@ -40,6 +40,11 @@ export function Capabilities() {
   const [reduced, setReduced] = useState(false);
   const [noAnim, setNoAnim] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(0);
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -96,6 +101,13 @@ export function Capabilities() {
   }, [noAnim]);
 
   const go = (i: number) => {
+    // If we're on the clone (mid-loop) it's visually the first image, so jump
+    // instantly rather than sliding all the way back; otherwise animate.
+    if (activeRef.current === n) {
+      setNoAnim(true);
+      setActive(i);
+      return;
+    }
     setNoAnim(false);
     setActive(i);
   };

@@ -35,6 +35,8 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  /* Vertical room so the enlarged centre image (scale 1.12) isn't clipped. */
+  padding-block: clamp(24px, 5vh, 60px);
 }
 
 /* The sliding row of panels. */
