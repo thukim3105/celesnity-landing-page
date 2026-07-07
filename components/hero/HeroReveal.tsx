@@ -19,8 +19,8 @@ import type { LabelBox } from "./heroLabels.types";
 import styles from "./Hero.module.css";
 
 // Phase thresholds over the section's 0..1 scroll progress.
-const P1_END = 0.3; // content fully faded by here
-const P2_START = 0.32; // labels start revealing
+const P1_END = 0.4; // content fully faded by here (longer lead-in)
+const P2_START = 0.44; // labels start revealing (+ scroll lock engages)
 const P2_END = 0.85; // all labels revealed by here
 const TIMER_INTERVAL_MS = 900; // auto-reveal cadence (~1s each)
 const CONTENT_RISE_PX = 48; // how far the content slides up as it exits

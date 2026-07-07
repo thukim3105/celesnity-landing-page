@@ -88,7 +88,7 @@
    through this height, giving room for the content exit + label reveal. */
 .section {
   position: relative;
-  height: 240svh;
+  height: 300svh; /* more scroll runway before the first label + lock */
 }
 
 /* Pinned stage — holds the (unchanged) backdrop, the fading content, and the
