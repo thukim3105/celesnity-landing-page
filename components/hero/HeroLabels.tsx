@@ -13,6 +13,7 @@ type HeroLabelsProps = {
   codeLabel: string;
   qtyLabel: string;
   visibleCount: number; // 0..TOTAL_BOXES
+  dimmed?: boolean; // fade the whole layer out during the Scene-1 ending
 };
 
 /**
@@ -27,6 +28,7 @@ export function HeroLabels({
   codeLabel,
   qtyLabel,
   visibleCount,
+  dimmed,
 }: HeroLabelsProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [positions, setPositions] = useState<{ left: number; top: number }[]>(
@@ -57,7 +59,10 @@ export function HeroLabels({
   }, [stageRef]);
 
   return (
-    <div className={styles.layer} aria-hidden="true">
+    <div
+      className={`${styles.layer} ${dimmed ? styles.layerDimmed : ""}`}
+      aria-hidden="true"
+    >
       <svg
         ref={svgRef}
         className={styles.anchorSvg}

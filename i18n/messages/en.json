@@ -45,6 +45,13 @@
     "eyebrow": "Data-entry time",
     "caption": "manual entry, per carton"
   },
+  "HeroOutro": {
+    "message": "Manual data entry eats time and drags down productivity…",
+    "cta": "Try Minder AI"
+  },
+  "HeroScene2": {
+    "line": "Installing the hardware…"
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",

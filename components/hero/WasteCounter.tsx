@@ -6,6 +6,7 @@ import styles from "./WasteCounter.module.css";
 
 type WasteCounterProps = {
   visibleCount: number; // 0..SECONDS.length-1, from HeroReveal
+  dimmed?: boolean; // fade out during the Scene-1 ending
   eyebrow: string;
   caption: string;
 };
@@ -20,6 +21,7 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
  */
 export function WasteCounter({
   visibleCount,
+  dimmed,
   eyebrow,
   caption,
 }: WasteCounterProps) {
@@ -63,7 +65,9 @@ export function WasteCounter({
 
   return (
     <div
-      className={`${styles.card} ${visibleCount >= 1 ? styles.shown : ""}`}
+      className={`${styles.card} ${visibleCount >= 1 ? styles.shown : ""} ${
+        dimmed ? styles.dimmed : ""
+      }`}
       aria-hidden="true"
     >
       <span className={styles.eyebrow}>{eyebrow}</span>

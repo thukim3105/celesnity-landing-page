@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { HeroExperience } from "./HeroExperience";
 import { HeroLabels } from "./HeroLabels";
 import { WasteCounter } from "./WasteCounter";
+import { HeroOutro } from "./HeroOutro";
+import { HeroScene2 } from "./HeroScene2";
 import { TOTAL_BOXES } from "./heroLabels.data";
 import {
   computeProgress,
@@ -12,6 +14,7 @@ import {
   timerRevealCount,
   revealCount,
 } from "./heroRevealMath.mjs";
+import { outroStep } from "./heroOutro.mjs";
 import type { LabelBox } from "./heroLabels.types";
 import styles from "./Hero.module.css";
 
@@ -31,6 +34,9 @@ type HeroRevealProps = {
   qtyLabel: string;
   wasteEyebrow: string;
   wasteCaption: string;
+  outroMessage: string;
+  outroCta: string;
+  scene2Line: string;
 };
 
 /**
@@ -48,17 +54,27 @@ export function HeroReveal({
   qtyLabel,
   wasteEyebrow,
   wasteCaption,
+  outroMessage,
+  outroCta,
+  scene2Line,
 }: HeroRevealProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(0);
+  const [step, setStep] = useState(0); // outro timeline step (0..4)
 
   // Mutable frame state kept in refs so the rAF loop never re-subscribes.
   const maxRevealedRef = useRef(0);
   const lastSetRef = useRef(0);
   const phase2StartRef = useRef<number | null>(null);
+  const outroStartRef = useRef<number | null>(null);
+  const lastStepRef = useRef(0);
   const reducedRef = useRef(false);
+
+  const handleCtaClick = () => {
+    document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     reducedRef.current = window.matchMedia(
@@ -124,6 +140,24 @@ export function HeroReveal({
           lastSetRef.current = maxRevealedRef.current;
           setVisibleCount(maxRevealedRef.current);
         }
+
+        // Scene-1 ending timeline: begins once all labels are shown, then
+        // auto-plays message -> CTA -> click -> Scene 2.
+        if (maxRevealedRef.current >= TOTAL_BOXES) {
+          if (outroStartRef.current === null) {
+            outroStartRef.current = performance.now();
+          }
+        } else {
+          outroStartRef.current = null;
+        }
+        const nextStep =
+          outroStartRef.current === null
+            ? 0
+            : outroStep(performance.now() - outroStartRef.current);
+        if (nextStep !== lastStepRef.current) {
+          lastStepRef.current = nextStep;
+          setStep(nextStep);
+        }
       }
       raf = requestAnimationFrame(tick);
     };
@@ -134,30 +168,46 @@ export function HeroReveal({
     };
   }, []);
 
+  const dimmed = step >= 1; // labels + counter fade out once the message shows
+  const scene2Shown = step >= 4;
+
   return (
     <section ref={sectionRef} className={styles.section} data-hero>
       <div ref={stageRef} className={styles.stage}>
         <HeroExperience />
-        <WasteCounter
-          visibleCount={visibleCount}
-          eyebrow={wasteEyebrow}
-          caption={wasteCaption}
-        />
-        <div className={styles.overlay} ref={overlayRef}>
-          <h1 className={styles.heading}>{heading}</h1>
-          <p className={styles.lead}>
-            {lead1}
-            <br />
-            {lead2}
-          </p>
+        <div
+          className={`${styles.scene1} ${scene2Shown ? styles.scene1Hidden : ""}`}
+        >
+          <WasteCounter
+            visibleCount={visibleCount}
+            dimmed={dimmed}
+            eyebrow={wasteEyebrow}
+            caption={wasteCaption}
+          />
+          <div className={styles.overlay} ref={overlayRef}>
+            <h1 className={styles.heading}>{heading}</h1>
+            <p className={styles.lead}>
+              {lead1}
+              <br />
+              {lead2}
+            </p>
+          </div>
+          <HeroLabels
+            stageRef={stageRef}
+            boxes={boxes}
+            codeLabel={codeLabel}
+            qtyLabel={qtyLabel}
+            visibleCount={visibleCount}
+            dimmed={dimmed}
+          />
+          <HeroOutro
+            step={step}
+            message={outroMessage}
+            ctaLabel={outroCta}
+            onCtaClick={handleCtaClick}
+          />
         </div>
-        <HeroLabels
-          stageRef={stageRef}
-          boxes={boxes}
-          codeLabel={codeLabel}
-          qtyLabel={qtyLabel}
-          visibleCount={visibleCount}
-        />
+        <HeroScene2 shown={scene2Shown} line={scene2Line} />
       </div>
     </section>
   );

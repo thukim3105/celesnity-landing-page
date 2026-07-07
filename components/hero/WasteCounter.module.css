@@ -31,6 +31,11 @@
   transform: translateY(0);
 }
 
+/* Faded out during the Scene-1 ending (message takes over). */
+.dimmed {
+  opacity: 0;
+}
+
 .eyebrow {
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);

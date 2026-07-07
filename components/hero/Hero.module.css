@@ -105,6 +105,24 @@
   padding-bottom: clamp(56px, 12vh, 140px);
 }
 
+/* Scene 1 layer — backdrop content (copy, labels, counter, ending message).
+   Fills the stage and centres the overlay; crossfades out when Scene 2 arrives. */
+.scene1 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--header-h, 68px);
+  padding-bottom: clamp(56px, 12vh, 140px);
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.scene1Hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Tight, single cohesive block: heading + lede + CTA grouped close together. */
 .overlay {
   position: relative;

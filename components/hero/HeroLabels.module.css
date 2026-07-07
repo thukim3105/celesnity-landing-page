@@ -9,6 +9,12 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease);
+}
+
+/* Faded out during the Scene-1 ending (message takes over). */
+.layerDimmed {
+  opacity: 0;
 }
 
 /* Sliced to match the backdrop's `center / cover`; carries the anchor points. */

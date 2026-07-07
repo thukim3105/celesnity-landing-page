@@ -1,0 +1,235 @@
+/* ============================================================
+   Hero Scene-1 ending: message + CTA + auto-click effect, and the
+   Scene-2 placeholder. All layers sit over the pinned backdrop and
+   fade with their own state. DS tokens only; no shadow/glow.
+   ============================================================ */
+
+.outro {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  padding-inline: clamp(20px, 5vw, 40px);
+  text-align: center;
+  pointer-events: none; /* only the button is interactive */
+}
+
+.message {
+  margin: 0;
+  max-width: 640px;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--dur-slow) var(--ease),
+    transform var(--dur-slow) var(--ease);
+}
+
+.messageShown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CTA wrapper positions the fake cursor + ripple relative to the button. */
+.ctaWrap {
+  position: relative;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease);
+}
+
+.ctaShown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* DS primary button — nebula gradient, borderless, pill, flat. */
+.cta {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 17px 32px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-on-accent, var(--cloud-white));
+  background: var(--gradient-brand);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateZ(0);
+  transition:
+    background var(--dur-base) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.cta:hover {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)),
+    var(--gradient-brand);
+}
+
+.cta:active {
+  transform: scale(var(--press-scale)) translateZ(0);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Ripple that expands from the button centre during the auto-click. */
+.ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--cloud-white) 55%, transparent);
+  opacity: 0;
+  transform: scale(0.3);
+  pointer-events: none;
+}
+
+/* Fake cursor pointer, parked below-right of the button. */
+.cursor {
+  position: absolute;
+  right: -14px;
+  bottom: -18px;
+  width: 22px;
+  height: 22px;
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translate(24px, 24px);
+  pointer-events: none;
+}
+
+/* When the auto-click plays (step 3): cursor glides in, ripple bursts, button
+   presses. Runs once while the `clicking` class is present. */
+.clicking .cursor {
+  animation: cursorIn 620ms var(--ease) forwards;
+}
+.clicking .ripple {
+  animation: ripple 620ms var(--ease) forwards;
+}
+.clicking .cta {
+  animation: press 620ms var(--ease);
+}
+
+@keyframes cursorIn {
+  0% {
+    opacity: 0;
+    transform: translate(24px, 24px);
+  }
+  45% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  55% {
+    transform: translate(0, 0) scale(0.86);
+  }
+  70% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes ripple {
+  0%,
+  45% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  55% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+@keyframes press {
+  0%,
+  45% {
+    transform: translateZ(0) scale(1);
+  }
+  55% {
+    transform: translateZ(0) scale(var(--press-scale));
+  }
+  70% {
+    transform: translateZ(0) scale(1);
+  }
+}
+
+/* ---------- Scene 2 placeholder ---------- */
+.scene2 {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: clamp(20px, 5vw, 40px);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.scene2Shown {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scene2Line {
+  margin: 0;
+  max-width: 720px;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  color: var(--text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message,
+  .ctaWrap,
+  .scene2 {
+    transition: none;
+  }
+  .clicking .cursor,
+  .clicking .ripple,
+  .clicking .cta {
+    animation: none;
+  }
+  .cursor,
+  .ripple {
+    display: none;
+  }
+}

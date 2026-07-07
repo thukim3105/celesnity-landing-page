@@ -45,6 +45,13 @@
     "eyebrow": "Thời gian nhập liệu",
     "caption": "nhập tay, mỗi thùng"
   },
+  "HeroOutro": {
+    "message": "Việc nhập liệu tốn thời gian, gây giảm hiệu suất làm việc…",
+    "cta": "Dùng thử Minder AI"
+  },
+  "HeroScene2": {
+    "line": "Đang cài đặt phần cứng…"
+  },
   "HowItWorks": {
     "headingLine1": "Cài đặt dễ dàng,",
     "headingLine2": "sử dụng đơn giản.",
