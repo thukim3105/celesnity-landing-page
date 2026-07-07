@@ -91,26 +91,6 @@ export function HeroVoiceScene({
       setPhase("processing");
       addTimer(startFill, PROCESS_MS);
     };
-    const startSpeaking = () => {
-      clearTimers();
-      setPhase("speaking");
-      const total = transcriptText.length;
-      const speakStart = performance.now();
-      let lastN = -1;
-      const loop = () => {
-        const n = revealedByTime(performance.now() - speakStart, total, CHAR_MS);
-        if (n !== lastN) {
-          lastN = n;
-          setCharN(n);
-        }
-        if (n >= total) {
-          addTimer(startProcessing, 500);
-          return;
-        }
-        rafRef.current = requestAnimationFrame(loop);
-      };
-      rafRef.current = requestAnimationFrame(loop);
-    };
     const scheduleFallback = () => addTimer(() => beginHold(true), FALLBACK_MS);
     const beginHold = (auto: boolean) => {
       if (phaseRef.current !== "idle") return;
@@ -118,11 +98,22 @@ export function HeroVoiceScene({
       autoRef.current = auto;
       setPhase("holding");
       holdStartRef.current = performance.now();
+      const total = transcriptText.length;
+      let lastN = -1;
       const loop = () => {
-        const p = holdProgress(performance.now() - holdStartRef.current, HOLD_MS);
+        const elapsed = performance.now() - holdStartRef.current;
+        const p = holdProgress(elapsed, HOLD_MS);
         setRing(p);
-        if (p >= 1) {
-          startSpeaking();
+        // the transcript types out from the moment the mic is pressed
+        const n = revealedByTime(elapsed, total, CHAR_MS);
+        if (n !== lastN) {
+          lastN = n;
+          setCharN(n);
+        }
+        // once held past 1s, we're committed — keep typing to the end
+        if (p >= 1 && phaseRef.current === "holding") setPhase("speaking");
+        if (p >= 1 && n >= total) {
+          startProcessing();
           return;
         }
         rafRef.current = requestAnimationFrame(loop);
@@ -133,6 +124,7 @@ export function HeroVoiceScene({
       if (phaseRef.current !== "holding" || autoRef.current) return;
       clearTimers();
       setRing(0);
+      setCharN(0);
       setPhase("idle");
       scheduleFallback();
     };
@@ -221,9 +213,8 @@ export function HeroVoiceScene({
           <span className={styles.transcriptText}>
             {transcriptText.slice(0, charN)}
           </span>
-          {phase === "speaking" && charN < transcriptText.length && (
-            <span className={styles.caret} />
-          )}
+          {(phase === "holding" || phase === "speaking") &&
+            charN < transcriptText.length && <span className={styles.caret} />}
         </div>
 
         <div className={styles.processing} data-shown={phase === "processing"}>
