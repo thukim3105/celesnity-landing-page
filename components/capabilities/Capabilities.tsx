@@ -64,7 +64,6 @@ export function Capabilities() {
       const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
       const step = panelW + gap;
       const x = viewport.clientWidth / 2 - (active * step + panelW / 2);
-      track.style.transition = noAnim ? "none" : "";
       track.style.transform = `translate3d(${x}px, 0, 0)`;
     };
     place();
@@ -123,7 +122,11 @@ export function Capabilities() {
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div className={styles.track} ref={trackRef}>
+        <div
+          className={styles.track}
+          ref={trackRef}
+          data-snap={noAnim ? "true" : undefined}
+        >
           {items.map((it, i) => (
             <button
               key={it.n}
