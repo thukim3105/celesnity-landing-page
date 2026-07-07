@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import styles from "./Capabilities.module.css";
 
 const AUTO_MS = 3000; // time on each image before advancing
-const SLIDE_MS = 700; // must match the .track / .panel transition in the CSS
 
 type ItemMeta = { n: string; img?: string };
 
@@ -20,9 +19,9 @@ const ITEM_META: ItemMeta[] = [
 
 /**
  * Capabilities — an auto-advancing image carousel. The active panel is centred
- * and enlarged; every 2s it advances to the next, looping. Hovering pauses it;
- * clicking a panel (or a dot) jumps to it and restarts the 2s timer. Reduced
- * motion stops the auto-play and leaves it click/keyboard driven.
+ * and enlarged; every few seconds it advances to the next, and after the last it
+ * rewinds smoothly back to the first. Hovering the images pauses it; clicking a
+ * panel or dot jumps to it. Reduced motion stops the auto-play (click/keys only).
  */
 export function Capabilities() {
   const t = useTranslations("Capabilities");
@@ -33,18 +32,10 @@ export function Capabilities() {
   }));
   const n = items.length;
 
-  // active runs 0..n; index n is a clone of the first image, so advancing off
-  // the end slides forward onto it and then snaps back invisibly (seamless loop).
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [noAnim, setNoAnim] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
-  const activeRef = useRef(0);
-
-  useEffect(() => {
-    activeRef.current = active;
-  }, [active]);
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -69,47 +60,15 @@ export function Capabilities() {
     place();
     window.addEventListener("resize", place);
     return () => window.removeEventListener("resize", place);
-  }, [active, noAnim, n]);
-
-  // Auto-advance; any active change (including a click) restarts the timer.
-  // Stops at the clone (n) — the loop effect below takes over there.
-  useEffect(() => {
-    if (reduced || paused || active >= n) return;
-    const id = window.setTimeout(() => setActive((a) => a + 1), AUTO_MS);
-    return () => clearTimeout(id);
-  }, [active, paused, reduced, n]);
-
-  // Seamless loop: once the slide onto the clone finishes, jump back to the
-  // real first image with the transition off (invisible, since they're identical).
-  useEffect(() => {
-    if (active !== n) return;
-    const id = window.setTimeout(() => {
-      setNoAnim(true);
-      setActive(0);
-    }, SLIDE_MS);
-    return () => clearTimeout(id);
   }, [active, n]);
 
-  // Re-enable the slide a frame after the instant snap.
+  // Auto-advance; after the last image it wraps back to the first (rewinds).
+  // Any active change (including a click) restarts the timer.
   useEffect(() => {
-    if (!noAnim) return;
-    const r = requestAnimationFrame(() =>
-      requestAnimationFrame(() => setNoAnim(false)),
-    );
-    return () => cancelAnimationFrame(r);
-  }, [noAnim]);
-
-  const go = (i: number) => {
-    // If we're on the clone (mid-loop) it's visually the first image, so jump
-    // instantly rather than sliding all the way back; otherwise animate.
-    if (activeRef.current === n) {
-      setNoAnim(true);
-      setActive(i);
-      return;
-    }
-    setNoAnim(false);
-    setActive(i);
-  };
+    if (reduced || paused) return;
+    const id = window.setTimeout(() => setActive((a) => (a + 1) % n), AUTO_MS);
+    return () => clearTimeout(id);
+  }, [active, paused, reduced, n]);
 
   return (
     <section className={styles.section}>
@@ -117,16 +76,16 @@ export function Capabilities() {
         <h2 className={styles.sectionTitle}>{t("sectionTitle")}</h2>
       </div>
 
+      <p key={active} className={styles.activeTitle}>
+        {items[active].title}
+      </p>
+
       <div
         className={styles.viewport}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div
-          className={styles.track}
-          ref={trackRef}
-          data-snap={noAnim ? "true" : undefined}
-        >
+        <div className={styles.track} ref={trackRef}>
           {items.map((it, i) => (
             <button
               key={it.n}
@@ -137,33 +96,15 @@ export function Capabilities() {
               style={
                 it.img ? { backgroundImage: `url("${it.img}")` } : undefined
               }
-              onClick={() => go(i)}
+              onClick={() => setActive(i)}
               aria-label={it.title}
               aria-current={i === active}
             >
               {!it.img && <span className={styles.panelNum}>{it.n}</span>}
             </button>
           ))}
-          {/* Clone of the first image so the last→first loop slides forward.
-              Hidden unless it's the active (loop) frame, so it doesn't peek as a
-              neighbour after the last image. */}
-          <div
-            className={`${styles.panel} ${styles.clone} ${items[0].img ? styles.hasImg : ""}`}
-            data-panel
-            data-active={active === n}
-            aria-hidden="true"
-            style={
-              items[0].img
-                ? { backgroundImage: `url("${items[0].img}")` }
-                : undefined
-            }
-          />
         </div>
       </div>
-
-      <p key={active} className={styles.activeTitle}>
-        {items[active % n].title}
-      </p>
 
       <div className={styles.dots}>
         {items.map((it, i) => (
@@ -171,8 +112,8 @@ export function Capabilities() {
             key={it.n}
             type="button"
             className={styles.dot}
-            data-active={active % n === i}
-            onClick={() => go(i)}
+            data-active={i === active}
+            onClick={() => setActive(i)}
             aria-label={it.title}
           />
         ))}

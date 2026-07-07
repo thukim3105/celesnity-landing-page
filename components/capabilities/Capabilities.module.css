@@ -18,7 +18,7 @@
 .head {
   padding-inline: clamp(20px, 5vw, 48px);
   text-align: center;
-  margin-bottom: clamp(28px, 5vh, 56px);
+  margin-bottom: clamp(10px, 2vh, 22px);
 }
 
 .sectionTitle {
@@ -46,13 +46,6 @@
   gap: clamp(8px, 1.6vw, 24px);
   will-change: transform;
   transition: transform 700ms var(--ease);
-}
-
-/* During the loop snap, jump instantly — kill the track AND panel transitions
-   so the first image doesn't visibly grow into place after wrapping. */
-.track[data-snap="true"],
-.track[data-snap="true"] .panel {
-  transition: none;
 }
 
 /* Each image panel — a clickable 16:9 tile. Off-centre tiles shrink and dim. */
@@ -87,15 +80,6 @@
   z-index: 2;
 }
 
-/* The loop clone stays invisible except while it's the active (loop) frame,
-   so the first image never peeks as a neighbour after the last. */
-.clone {
-  opacity: 0;
-}
-.clone[data-active="true"] {
-  opacity: 1;
-}
-
 .panel:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
@@ -117,7 +101,7 @@
 
 /* Active image's title, re-mounted on change so it fades in. */
 .activeTitle {
-  margin: clamp(24px, 4vh, 44px) auto 0;
+  margin: 0 auto clamp(20px, 3.5vh, 40px);
   max-width: 90%;
   text-align: center;
   font-family: var(--font-display);
