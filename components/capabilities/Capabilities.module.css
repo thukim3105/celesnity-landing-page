@@ -173,19 +173,17 @@
   }
 }
 
-/* Wide, short desktops (16:10 and 16:9): vertical space is tight, so shrink the
-   centre image a touch and cap its height so the whole group fits comfortably. */
+/* Wide, short desktops (16:10 and 16:9): keep the centre image large, only cap
+   its height so the whole group still fits without cropping. */
 @media (min-width: 861px) and (min-aspect-ratio: 16 / 10) {
   .panel {
-    flex-basis: clamp(300px, 56vw, 780px);
-    max-height: 56vh;
+    max-height: 58vh;
   }
 }
 
 @media (min-width: 861px) and (min-aspect-ratio: 16 / 9) {
   .panel {
-    flex-basis: clamp(300px, 52vw, 720px);
-    max-height: 50vh;
+    max-height: 52vh;
   }
 }
 
