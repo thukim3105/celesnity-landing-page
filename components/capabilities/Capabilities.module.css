@@ -1,39 +1,24 @@
 /* ============================================================
-   Capabilities — pinned horizontal-scroll gallery. Vertical scroll slides the
-   panel row sideways (continuous scrub); the centred panel's heading cross-fades
-   in at the top. Motion driven in Capabilities.tsx.
+   Capabilities — auto-advancing image carousel. The centred panel is enlarged
+   and opaque; neighbours peek at reduced scale/opacity. Motion in Capabilities.tsx.
    ============================================================ */
 
 .section {
   position: relative;
-  height: 560vh; /* scroll room for the 6-panel horizontal scrub */
+  padding: clamp(64px, 12vh, 140px) 0 clamp(48px, 8vh, 96px);
   background: var(--bg-base);
-}
-
-.sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  /* Equal gaps between the heading, the per-panel title, and the panels. */
-  justify-content: space-between;
-  padding-top: calc(var(--header-h, 68px) + 4vh);
-  padding-bottom: clamp(24px, 5vh, 56px);
-  background: var(--bg-base);
 }
 
-/* Dark: flat --bg-base (above). Light (Daybreak): lavender. */
-:global([data-theme="light"]) .section,
-:global([data-theme="light"]) .sticky {
+/* Dark: flat --bg-base. Light (Daybreak): lavender. */
+:global([data-theme="light"]) .section {
   background: var(--lavender-mist);
 }
 
-/* Top: the fixed section title. */
 .head {
   padding-inline: clamp(20px, 5vw, 48px);
   text-align: center;
+  margin-bottom: clamp(28px, 5vh, 56px);
 }
 
 .sectionTitle {
@@ -46,29 +31,10 @@
   color: var(--text-primary);
 }
 
-/* The 6 per-panel headings stack here and cross-fade to the active panel. */
-.titles {
+.viewport {
   position: relative;
-  height: clamp(36px, 7vh, 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-inline: clamp(20px, 5vw, 48px);
-}
-
-.title {
-  position: absolute;
-  margin: 0;
-  white-space: nowrap;
-  text-align: center;
-  font-family: var(--font-display);
-  font-weight: var(--fw-semibold);
-  font-size: clamp(22px, 2.8vw, 32px);
-  line-height: var(--lh-tight);
-  letter-spacing: var(--ls-display);
-  color: var(--text-primary);
-  opacity: 0;
-  will-change: opacity, transform, filter;
+  width: 100%;
+  overflow: hidden;
 }
 
 /* The sliding row of panels. */
@@ -77,40 +43,46 @@
   align-items: center;
   gap: clamp(16px, 3vw, 40px);
   will-change: transform;
+  transition: transform 620ms var(--ease);
 }
 
+/* Each image panel — a clickable 16:9 tile. Off-centre tiles shrink and dim. */
 .panel {
   position: relative;
-  flex: 0 0 clamp(280px, 62vw, 900px);
+  flex: 0 0 clamp(260px, 56vw, 760px);
   aspect-ratio: 16 / 9;
-  max-height: 66vh;
+  max-height: 60vh;
+  padding: 0;
   border-radius: var(--radius-xl, 28px);
   overflow: hidden;
   border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: var(--space-2);
-  padding: clamp(20px, 3vw, 40px);
-  background:
-    radial-gradient(
-      120% 120% at 85% 12%,
-      color-mix(in srgb, var(--cobalt-blue) 30%, transparent) 0%,
-      transparent 55%
-    ),
-    var(--surface-hover, var(--surface));
+  cursor: pointer;
+  background-color: var(--surface-hover, var(--surface));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  opacity: 0.4;
+  transform: scale(0.9);
+  transition:
+    opacity var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease);
 }
 
-.panelNum,
-.panelLabel {
-  position: relative;
-  z-index: 1;
+.panel[data-active="true"] {
+  opacity: 1;
+  transform: scale(1);
 }
 
+.panel:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+/* Placeholder tiles (no image) show their number. */
 .panelNum {
+  position: absolute;
+  left: clamp(20px, 3vw, 40px);
+  bottom: clamp(16px, 2.5vw, 32px);
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
   font-size: clamp(40px, 6vw, 84px);
@@ -120,96 +92,75 @@
   opacity: 0.16;
 }
 
-.panelLabel {
-  font-size: clamp(16px, 1.9vw, 20px);
+/* Active image's title, re-mounted on change so it fades in. */
+.activeTitle {
+  margin: clamp(24px, 4vh, 44px) auto 0;
+  max-width: 90%;
+  text-align: center;
+  font-family: var(--font-display);
   font-weight: var(--fw-semibold);
-  letter-spacing: 0.01em;
-  color: var(--text-secondary);
+  font-size: clamp(22px, 2.8vw, 32px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  animation: fadeUp var(--dur-base) var(--ease);
 }
 
-/* Real-image panels: the heading below the section title names the active panel,
-   so the on-image caption is hidden (a screen reader still reads it). */
-.hasImg .panelLabel {
-  opacity: 0;
-}
-
-/* ---- Reduced motion / no-JS fallback: unpin, stack panels with headings ---- */
-.section[data-reduced="true"] {
-  height: auto;
-}
-
-.section[data-reduced="true"] .sticky {
-  position: static;
-  height: auto;
-  overflow: visible;
-  padding-block: clamp(48px, 10vh, 120px);
-}
-
-.section[data-reduced="true"] .titles {
-  display: none;
-}
-
-.section[data-reduced="true"] .track {
-  flex-direction: column;
-  gap: var(--space-8);
-  transform: none !important;
-  padding-inline: clamp(20px, 5vw, 48px);
-  max-width: 1120px;
-  margin: 0 auto;
-}
-
-.section[data-reduced="true"] .panel {
-  flex: none;
-  width: 100%;
-  max-height: none;
-}
-
-.section[data-reduced="true"] .panelLabel {
-  opacity: 1;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* 16:9 (and wider/shorter) desktops only — smaller panels so they fit the
-   shorter height. 16:10 and taller keep the larger size. */
-@media (min-width: 861px) and (min-aspect-ratio: 17 / 10) {
-  .panel {
-    flex-basis: clamp(280px, 52vw, 760px);
-    max-height: 58vh;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-}
-
-/* Safety net: force the stacked layout on small screens even if the pinned JS
-   already ran (e.g. a desktop window shrunk past the breakpoint). */
-@media (max-width: 860px) {
-  .section {
-    height: auto;
-  }
-  .sticky {
-    position: static;
-    height: auto;
-    overflow: visible;
-    display: block;
-    padding: clamp(48px, 10vh, 120px) 0;
-  }
-  .titles {
-    display: none;
-  }
-  .track {
-    flex-direction: column;
-    gap: var(--space-8);
-    transform: none !important;
-    padding-inline: clamp(20px, 6vw, 48px);
-    max-width: 1120px;
-    margin: 0 auto;
-  }
-  .panel {
-    flex: none;
-    width: 100%;
-    max-height: none;
-  }
-  .panel .panelLabel {
+  to {
     opacity: 1;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    transform: translateY(0);
+  }
+}
+
+/* Dots — one small brand-gradient accent for the active. */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: clamp(20px, 4vh, 36px);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  cursor: pointer;
+  transition:
+    background var(--dur-base) var(--ease),
+    width var(--dur-base) var(--ease);
+}
+
+.dot[data-active="true"] {
+  width: 22px;
+  background: var(--gradient-brand);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .panel,
+  .activeTitle,
+  .dot {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .panel {
+    flex-basis: 82vw;
   }
   .sectionTitle {
     font-size: clamp(26px, 6.5vw, 40px);
