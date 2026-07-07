@@ -3,13 +3,13 @@
 // (tsconfig allowJs), matching heroRevealMath.mjs / wasteCounter.mjs.
 
 /** ms since all labels are shown → when the message replaces the labels. */
-export const OUTRO_MESSAGE_MS = 1500;
+export const OUTRO_MESSAGE_MS = 2500;
 /** → when the "Try Minder AI" CTA appears (message lingers a while first). */
-export const OUTRO_CTA_MS = 4000;
+export const OUTRO_CTA_MS = 5000;
 /** → when the auto-click effect plays on the CTA. */
-export const OUTRO_CLICK_MS = 6000;
+export const OUTRO_CLICK_MS = 7000;
 /** → when Scene 1 crossfades to Scene 2. */
-export const OUTRO_SCENE2_MS = 7200;
+export const OUTRO_SCENE2_MS = 8200;
 
 /**
  * Map elapsed time (ms, since all labels were revealed) to a timeline step:
