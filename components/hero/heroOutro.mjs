@@ -10,10 +10,10 @@ export const OUTRO_CTA_MS = 5000;
 export const OUTRO_CLICK_MS = 7000;
 /** → when Scene 1 crossfades to Scene 2 ("installing…"). */
 export const OUTRO_SCENE2_MS = 8200;
-/** → when Scene 2 crossfades to Scene 3 ("configuring…"). */
-export const OUTRO_SCENE3_MS = 11200;
-/** → when Scene 3 crossfades to Scene 4 (the voice-to-form demo). */
-export const OUTRO_SCENE4_MS = 14200;
+/** → when Scene 2 crossfades to Scene 3 ("configuring…"). Scene 2 holds ~2s. */
+export const OUTRO_SCENE3_MS = 10200;
+/** → when Scene 3 crossfades to Scene 4 (voice demo). Scene 3 holds ~2s. */
+export const OUTRO_SCENE4_MS = 12200;
 
 /**
  * Map elapsed time (ms, since all labels were revealed) to a timeline step:
