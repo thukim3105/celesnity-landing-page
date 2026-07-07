@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { holdProgress } from "./heroVoice.mjs";
+import { holdProgress, revealedByTime } from "./heroVoice.mjs";
 import styles from "./HeroVoiceScene.module.css";
 
 type VoiceField = { label: string; value: string };
@@ -18,7 +18,7 @@ type Phase = "idle" | "holding" | "speaking" | "processing" | "filled";
 
 const HOLD_MS = 1000; // press-and-hold duration
 const FALLBACK_MS = 4000; // auto-play if nobody interacts
-const CHUNK_MS = 700; // per transcript chunk
+const CHAR_MS = 42; // per transcript character (typing effect)
 const PROCESS_MS = 1300; // loading bar duration
 const FILL_MS = 480; // per form field
 const RING_C = 2 * Math.PI * 45; // circumference of the r=45 progress ring
@@ -36,7 +36,7 @@ export function HeroVoiceScene({
   onComplete,
 }: HeroVoiceSceneProps) {
   const [phase, _setPhase] = useState<Phase>("idle");
-  const [transcriptN, setTranscriptN] = useState(0);
+  const [charN, setCharN] = useState(0);
   const [filledN, setFilledN] = useState(0);
 
   const phaseRef = useRef<Phase>("idle");
@@ -51,7 +51,7 @@ export function HeroVoiceScene({
     cancelHold: () => void;
   } | null>(null);
 
-  const chunks = fields.map((f) => f.value);
+  const transcriptText = fields.map((f) => f.value).join(", ");
 
   const setPhase = (p: Phase) => {
     phaseRef.current = p;
@@ -94,10 +94,22 @@ export function HeroVoiceScene({
     const startSpeaking = () => {
       clearTimers();
       setPhase("speaking");
-      chunks.forEach((_, i) =>
-        addTimer(() => setTranscriptN(i + 1), (i + 1) * CHUNK_MS),
-      );
-      addTimer(startProcessing, chunks.length * CHUNK_MS + 400);
+      const total = transcriptText.length;
+      const speakStart = performance.now();
+      let lastN = -1;
+      const loop = () => {
+        const n = revealedByTime(performance.now() - speakStart, total, CHAR_MS);
+        if (n !== lastN) {
+          lastN = n;
+          setCharN(n);
+        }
+        if (n >= total) {
+          addTimer(startProcessing, 500);
+          return;
+        }
+        rafRef.current = requestAnimationFrame(loop);
+      };
+      rafRef.current = requestAnimationFrame(loop);
     };
     const scheduleFallback = () => addTimer(() => beginHold(true), FALLBACK_MS);
     const beginHold = (auto: boolean) => {
@@ -132,13 +144,13 @@ export function HeroVoiceScene({
 
     // reset for a fresh run
     doneRef.current = false;
-    setTranscriptN(0);
+    setCharN(0);
     setFilledN(0);
     setRing(0);
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("filled");
-      setTranscriptN(chunks.length);
+      setCharN(transcriptText.length);
       setFilledN(fields.length);
       addTimer(finish, 700);
       return clearTimers;
@@ -206,15 +218,12 @@ export function HeroVoiceScene({
         </button>
 
         <div className={styles.transcript} aria-hidden="true">
-          {chunks.map((c, i) => (
-            <span
-              key={i}
-              className={styles.chunk}
-              data-shown={i < transcriptN}
-            >
-              {c}
-            </span>
-          ))}
+          <span className={styles.transcriptText}>
+            {transcriptText.slice(0, charN)}
+          </span>
+          {phase === "speaking" && charN < transcriptText.length && (
+            <span className={styles.caret} />
+          )}
         </div>
 
         <div className={styles.processing} data-shown={phase === "processing"}>
