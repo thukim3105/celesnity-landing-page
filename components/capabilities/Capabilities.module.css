@@ -56,9 +56,12 @@
 /* Each image panel — a clickable 16:9 tile. Off-centre tiles shrink and dim. */
 .panel {
   position: relative;
-  flex: 0 0 clamp(260px, 56vw, 760px);
+  /* Base size = the CENTRE (active) size, so the active renders at full
+     resolution (scale 1, sharp); neighbours are scaled DOWN (downscaling a
+     texture stays crisp, unlike scaling the active up which blurs). */
+  flex: 0 0 clamp(300px, 62vw, 850px);
   aspect-ratio: 16 / 9;
-  max-height: 60vh;
+  max-height: 66vh;
   padding: 0;
   border-radius: var(--radius-xl, 28px);
   overflow: hidden;
@@ -70,7 +73,7 @@
   background-repeat: no-repeat;
   opacity: 0.4;
   /* Promote to its own GPU layer so the scale/opacity animate without repaint. */
-  transform: translateZ(0) scale(0.72);
+  transform: translateZ(0) scale(0.64);
   backface-visibility: hidden;
   will-change: transform, opacity;
   transition:
@@ -78,10 +81,10 @@
     transform 700ms var(--ease);
 }
 
-/* Centre image is clearly larger; neighbours shrink and sit behind it. */
+/* Centre image sits at full size (scale 1 = full resolution, no blur). */
 .panel[data-active="true"] {
   opacity: 1;
-  transform: translateZ(0) scale(1.12);
+  transform: translateZ(0) scale(1);
   z-index: 2;
 }
 
