@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import styles from "./Capabilities.module.css";
 
-const AUTO_MS = 3000; // time on each image before advancing
+const AUTO_MS = 2000; // time on each image before advancing
 const SLIDE_MS = 700; // must match the .track / .panel transition in the CSS
 
 type ItemMeta = { n: string; img?: string };
