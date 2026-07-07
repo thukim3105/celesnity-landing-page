@@ -113,16 +113,16 @@ export function Capabilities() {
   };
 
   return (
-    <section
-      className={styles.section}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <section className={styles.section}>
       <div className={styles.head}>
         <h2 className={styles.sectionTitle}>{t("sectionTitle")}</h2>
       </div>
 
-      <div className={styles.viewport}>
+      <div
+        className={styles.viewport}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
         <div className={styles.track} ref={trackRef}>
           {items.map((it, i) => (
             <button
