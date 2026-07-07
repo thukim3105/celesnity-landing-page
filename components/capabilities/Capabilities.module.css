@@ -5,7 +5,11 @@
 
 .section {
   position: relative;
-  padding: clamp(64px, 12vh, 140px) 0 clamp(48px, 8vh, 96px);
+  min-height: 100svh; /* full-viewport section */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* content centred vertically as one group */
+  padding: calc(var(--header-h, 68px) + 4vh) 0 clamp(40px, 6vh, 88px);
   background: var(--bg-base);
   overflow: hidden;
 }
