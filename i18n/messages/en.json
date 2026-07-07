@@ -52,6 +52,9 @@
   "HeroScene2": {
     "line": "Installing the hardware…"
   },
+  "HeroScene3": {
+    "line": "Configuring…"
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",

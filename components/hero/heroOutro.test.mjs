@@ -6,6 +6,7 @@ import {
   OUTRO_CTA_MS,
   OUTRO_CLICK_MS,
   OUTRO_SCENE2_MS,
+  OUTRO_SCENE3_MS,
 } from "./heroOutro.mjs";
 
 test("thresholds are ordered and match the timeline", () => {
@@ -13,7 +14,8 @@ test("thresholds are ordered and match the timeline", () => {
     0 < OUTRO_MESSAGE_MS &&
       OUTRO_MESSAGE_MS < OUTRO_CTA_MS &&
       OUTRO_CTA_MS < OUTRO_CLICK_MS &&
-      OUTRO_CLICK_MS < OUTRO_SCENE2_MS,
+      OUTRO_CLICK_MS < OUTRO_SCENE2_MS &&
+      OUTRO_SCENE2_MS < OUTRO_SCENE3_MS,
   );
 });
 
@@ -27,7 +29,9 @@ test("outroStep maps elapsed time to the right step", () => {
   assert.equal(outroStep(OUTRO_CLICK_MS), 3);
   assert.equal(outroStep(OUTRO_SCENE2_MS - 1), 3);
   assert.equal(outroStep(OUTRO_SCENE2_MS), 4);
-  assert.equal(outroStep(999999), 4);
+  assert.equal(outroStep(OUTRO_SCENE3_MS - 1), 4);
+  assert.equal(outroStep(OUTRO_SCENE3_MS), 5);
+  assert.equal(outroStep(999999), 5);
 });
 
 test("outroStep clamps negative elapsed to step 0", () => {

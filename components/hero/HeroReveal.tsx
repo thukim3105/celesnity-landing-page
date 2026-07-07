@@ -5,7 +5,7 @@ import { HeroExperience } from "./HeroExperience";
 import { HeroLabels } from "./HeroLabels";
 import { WasteCounter } from "./WasteCounter";
 import { HeroOutro } from "./HeroOutro";
-import { HeroScene2 } from "./HeroScene2";
+import { HeroSceneLine } from "./HeroSceneLine";
 import { TOTAL_BOXES } from "./heroLabels.data";
 import {
   computeProgress,
@@ -14,7 +14,7 @@ import {
   timerRevealCount,
   revealCount,
 } from "./heroRevealMath.mjs";
-import { outroStep } from "./heroOutro.mjs";
+import { outroStep, OUTRO_SCENE2_MS } from "./heroOutro.mjs";
 import type { LabelBox } from "./heroLabels.types";
 import styles from "./Hero.module.css";
 
@@ -37,6 +37,7 @@ type HeroRevealProps = {
   outroMessage: string;
   outroCta: string;
   scene2Line: string;
+  scene3Line: string;
 };
 
 /**
@@ -57,6 +58,7 @@ export function HeroReveal({
   outroMessage,
   outroCta,
   scene2Line,
+  scene3Line,
 }: HeroRevealProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -71,13 +73,12 @@ export function HeroReveal({
   const outroStartRef = useRef<number | null>(null);
   const lastStepRef = useRef(0);
   const lockedRef = useRef(false);
-  const forceScene2Ref = useRef(false);
   const reducedRef = useRef(false);
 
-  // Real click on the CTA doesn't navigate — it just advances to Scene 2,
-  // exactly like the auto-click does at the end of the timeline.
+  // Real click on the CTA doesn't navigate — it fast-forwards the timeline to
+  // Scene 2, which then auto-continues to Scene 3 like the untouched sequence.
   const handleCtaClick = () => {
-    forceScene2Ref.current = true;
+    outroStartRef.current = performance.now() - OUTRO_SCENE2_MS;
   };
 
   useEffect(() => {
@@ -115,7 +116,6 @@ export function HeroReveal({
         } else {
           phase2StartRef.current = null;
           maxRevealedRef.current = 0;
-          forceScene2Ref.current = false;
         }
 
         let target: number;
@@ -155,9 +155,8 @@ export function HeroReveal({
         } else {
           outroStartRef.current = null;
         }
-        const nextStep = forceScene2Ref.current
-          ? 4
-          : outroStartRef.current === null
+        const nextStep =
+          outroStartRef.current === null
             ? 0
             : outroStep(performance.now() - outroStartRef.current);
         if (nextStep !== lastStepRef.current) {
@@ -165,9 +164,9 @@ export function HeroReveal({
           setStep(nextStep);
         }
 
-        // Scroll lock: hold from the first label until Scene 2 arrives, so
-        // scrolling can't jump to the next section while the scene auto-plays.
-        const wantLock = phase2StartRef.current !== null && nextStep < 4;
+        // Scroll lock: hold from the first label through the auto scene
+        // sequence (installing -> configuring), releasing once Scene 3 shows.
+        const wantLock = phase2StartRef.current !== null && nextStep < 5;
         if (wantLock !== lockedRef.current) {
           lockedRef.current = wantLock;
           window.dispatchEvent(new Event(wantLock ? "hero:lock" : "hero:unlock"));
@@ -188,14 +187,16 @@ export function HeroReveal({
   }, []);
 
   const dimmed = step >= 1; // labels + counter fade out once the message shows
-  const scene2Shown = step >= 4;
+  const sceneActive = step >= 4; // Scene 1 hidden once the status scenes begin
+  const scene2Shown = step === 4; // "installing…"
+  const scene3Shown = step >= 5; // "configuring…"
 
   return (
     <section ref={sectionRef} className={styles.section} data-hero>
       <div ref={stageRef} className={styles.stage}>
         <HeroExperience />
         <div
-          className={`${styles.scene1} ${scene2Shown ? styles.scene1Hidden : ""}`}
+          className={`${styles.scene1} ${sceneActive ? styles.scene1Hidden : ""}`}
         >
           <WasteCounter
             visibleCount={visibleCount}
@@ -226,7 +227,8 @@ export function HeroReveal({
             onCtaClick={handleCtaClick}
           />
         </div>
-        <HeroScene2 shown={scene2Shown} line={scene2Line} />
+        <HeroSceneLine shown={scene2Shown} line={scene2Line} />
+        <HeroSceneLine shown={scene3Shown} line={scene3Line} />
       </div>
     </section>
   );

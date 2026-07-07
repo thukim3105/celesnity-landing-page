@@ -14,6 +14,7 @@ export async function Hero() {
   const tw = await getTranslations("WasteCounter");
   const to = await getTranslations("HeroOutro");
   const ts = await getTranslations("HeroScene2");
+  const ts3 = await getTranslations("HeroScene3");
   const boxes = tl.raw("boxes") as LabelBox[];
 
   return (
@@ -29,6 +30,7 @@ export async function Hero() {
       outroMessage={to("message")}
       outroCta={to("cta")}
       scene2Line={ts("line")}
+      scene3Line={ts3("line")}
     />
   );
 }
