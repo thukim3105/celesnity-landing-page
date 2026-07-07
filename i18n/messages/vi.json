@@ -41,6 +41,10 @@
       { "name": "Găng tay nitrile M", "code": "MHX-778120", "qty": "5.000" }
     ]
   },
+  "WasteCounter": {
+    "eyebrow": "Thời gian nhập liệu",
+    "caption": "nhập tay, mỗi thùng"
+  },
   "HowItWorks": {
     "headingLine1": "Cài đặt dễ dàng,",
     "headingLine2": "sử dụng đơn giản.",

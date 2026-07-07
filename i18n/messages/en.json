@@ -41,6 +41,10 @@
       { "name": "Nitrile gloves M", "code": "MHX-778120", "qty": "5,000" }
     ]
   },
+  "WasteCounter": {
+    "eyebrow": "Data-entry time",
+    "caption": "manual entry, per carton"
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",

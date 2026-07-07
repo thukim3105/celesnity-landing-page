@@ -1,0 +1,77 @@
+/* ============================================================
+   Hero "data-entry time" waste counter. Frosted DS card, upper-left,
+   fades in with the label reveal and counts up. Flat (no shadow/glow).
+   The number is the one hero highlight allowed to use the brand gradient.
+   ============================================================ */
+
+.card {
+  position: absolute;
+  left: 9%;
+  top: 25%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+
+.shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.value {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(40px, 6vw, 56px);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  font-variant-numeric: tabular-nums; /* no width jitter while counting */
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.caption {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
+
+/* Mobile: full-width-ish card at the top of the stage (labels stack lower). */
+@media (max-width: 640px) {
+  .card {
+    left: var(--space-6);
+    right: var(--space-6);
+    top: 14%;
+    padding: var(--space-4) var(--space-5);
+  }
+  .value {
+    font-size: 44px;
+  }
+}

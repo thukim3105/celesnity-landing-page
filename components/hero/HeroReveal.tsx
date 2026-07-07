@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { HeroExperience } from "./HeroExperience";
 import { HeroLabels } from "./HeroLabels";
+import { WasteCounter } from "./WasteCounter";
 import { TOTAL_BOXES } from "./heroLabels.data";
 import {
   computeProgress,
@@ -28,6 +29,8 @@ type HeroRevealProps = {
   boxes: LabelBox[];
   codeLabel: string;
   qtyLabel: string;
+  wasteEyebrow: string;
+  wasteCaption: string;
 };
 
 /**
@@ -43,6 +46,8 @@ export function HeroReveal({
   boxes,
   codeLabel,
   qtyLabel,
+  wasteEyebrow,
+  wasteCaption,
 }: HeroRevealProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -133,6 +138,11 @@ export function HeroReveal({
     <section ref={sectionRef} className={styles.section} data-hero>
       <div ref={stageRef} className={styles.stage}>
         <HeroExperience />
+        <WasteCounter
+          visibleCount={visibleCount}
+          eyebrow={wasteEyebrow}
+          caption={wasteCaption}
+        />
         <div className={styles.overlay} ref={overlayRef}>
           <h1 className={styles.heading}>{heading}</h1>
           <p className={styles.lead}>

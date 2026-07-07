@@ -11,6 +11,7 @@ import type { LabelBox } from "./heroLabels.types";
 export async function Hero() {
   const t = await getTranslations("Hero");
   const tl = await getTranslations("HeroLabels");
+  const tw = await getTranslations("WasteCounter");
   const boxes = tl.raw("boxes") as LabelBox[];
 
   return (
@@ -21,6 +22,8 @@ export async function Hero() {
       boxes={boxes}
       codeLabel={tl("codeLabel")}
       qtyLabel={tl("qtyLabel")}
+      wasteEyebrow={tw("eyebrow")}
+      wasteCaption={tw("caption")}
     />
   );
 }
