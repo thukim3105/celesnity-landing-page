@@ -39,7 +39,7 @@
   transform: translateY(0);
 }
 
-/* CTA wrapper positions the fake cursor + ripple relative to the button. */
+/* CTA wrapper positions the ripple relative to the button. */
 .ctaWrap {
   position: relative;
   opacity: 0;
@@ -111,50 +111,13 @@
   pointer-events: none;
 }
 
-/* Fake cursor pointer, parked below-right of the button. */
-.cursor {
-  position: absolute;
-  right: -14px;
-  bottom: -18px;
-  width: 22px;
-  height: 22px;
-  color: var(--text-primary);
-  opacity: 0;
-  transform: translate(24px, 24px);
-  pointer-events: none;
-}
-
-/* When the auto-click plays (step 3): cursor glides in, ripple bursts, button
-   presses. Runs once while the `clicking` class is present. */
-.clicking .cursor {
-  animation: cursorIn 620ms var(--ease) forwards;
-}
+/* When the auto-click plays (step 3): ripple bursts and the button presses.
+   Runs once while the `clicking` class is present. */
 .clicking .ripple {
   animation: ripple 620ms var(--ease) forwards;
 }
 .clicking .cta {
   animation: press 620ms var(--ease);
-}
-
-@keyframes cursorIn {
-  0% {
-    opacity: 0;
-    transform: translate(24px, 24px);
-  }
-  45% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  55% {
-    transform: translate(0, 0) scale(0.86);
-  }
-  70% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
 }
 
 @keyframes ripple {
@@ -223,12 +186,10 @@
   .scene2 {
     transition: none;
   }
-  .clicking .cursor,
   .clicking .ripple,
   .clicking .cta {
     animation: none;
   }
-  .cursor,
   .ripple {
     display: none;
   }

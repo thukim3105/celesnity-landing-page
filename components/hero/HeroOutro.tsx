@@ -12,8 +12,8 @@ type HeroOutroProps = {
 
 /**
  * Scene-1 ending: the "manual entry wastes time" message and the "Try Minder AI"
- * CTA, plus a purely-visual auto-click effect (fake cursor + ripple + press)
- * that plays at step 3. Presentational — driven entirely by `step`.
+ * CTA, plus a purely-visual auto-click effect (ripple + button press) that plays
+ * at step 3. Presentational — driven entirely by `step`.
  */
 export function HeroOutro({ step, message, ctaLabel, onCtaClick }: HeroOutroProps) {
   const messageShown = step >= 1;
@@ -34,14 +34,6 @@ export function HeroOutro({ step, message, ctaLabel, onCtaClick }: HeroOutroProp
           {ctaLabel}
         </button>
         <span className={styles.ripple} aria-hidden="true" />
-        <svg
-          className={styles.cursor}
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M5 3l14 7-6 2-2 6-6-15z" />
-        </svg>
       </div>
     </div>
   );
