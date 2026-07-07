@@ -75,7 +75,12 @@
   border-radius: var(--radius-pill);
   cursor: pointer;
   pointer-events: auto;
+  /* GPU-composite the press so the label scales crisply with the button
+     instead of re-rasterizing (the text lagging the button on click). */
   transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  will-change: transform;
   transition:
     background var(--dur-base) var(--ease),
     transform var(--dur-fast) var(--ease);

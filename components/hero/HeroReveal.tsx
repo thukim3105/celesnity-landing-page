@@ -70,6 +70,7 @@ export function HeroReveal({
   const phase2StartRef = useRef<number | null>(null);
   const outroStartRef = useRef<number | null>(null);
   const lastStepRef = useRef(0);
+  const lockedRef = useRef(false);
   const reducedRef = useRef(false);
 
   const handleCtaClick = () => {
@@ -158,6 +159,14 @@ export function HeroReveal({
           lastStepRef.current = nextStep;
           setStep(nextStep);
         }
+
+        // Scroll lock: hold from the first label until Scene 2 arrives, so
+        // scrolling can't jump to the next section while the scene auto-plays.
+        const wantLock = phase2StartRef.current !== null && nextStep < 4;
+        if (wantLock !== lockedRef.current) {
+          lockedRef.current = wantLock;
+          window.dispatchEvent(new Event(wantLock ? "hero:lock" : "hero:unlock"));
+        }
       }
       raf = requestAnimationFrame(tick);
     };
@@ -165,6 +174,11 @@ export function HeroReveal({
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+      // Never leave the page scroll-locked if this unmounts mid-sequence.
+      if (lockedRef.current) {
+        lockedRef.current = false;
+        window.dispatchEvent(new Event("hero:unlock"));
+      }
     };
   }, []);
 
