@@ -11,11 +11,11 @@
  * top. Measured against the line-art in native mask space; nudge live if needed.
  */
 export const BOX_ANCHORS: ReadonlyArray<{ x: number; y: number }> = [
-  { x: 452, y: 690 }, // 1 - large, lower-left (nearest)
-  { x: 682, y: 582 }, // 2
-  { x: 838, y: 525 }, // 3
-  { x: 945, y: 490 }, // 4
-  { x: 1040, y: 472 }, // 5 - smallest (ellipsis card, farthest)
+  { x: 413, y: 712 }, // 1 - large, lower-left (nearest)
+  { x: 796, y: 581 }, // 2
+  { x: 982, y: 517 }, // 3
+  { x: 1100, y: 479 }, // 4
+  { x: 1158, y: 463 }, // 5 - smallest (ellipsis card, farthest)
 ];
 
 /** Total labels including the trailing ellipsis card. */
