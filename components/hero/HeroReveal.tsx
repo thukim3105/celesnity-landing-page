@@ -38,6 +38,7 @@ type HeroRevealProps = {
   scene3Line: string;
   voiceHint: string;
   voiceProcessing: string;
+  voiceScrollHint: string;
   voiceFields: { label: string; value: string }[];
 };
 
@@ -62,6 +63,7 @@ export function HeroReveal({
   scene3Line,
   voiceHint,
   voiceProcessing,
+  voiceScrollHint,
   voiceFields,
 }: HeroRevealProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -80,9 +82,17 @@ export function HeroReveal({
   const sequenceDoneRef = useRef(false);
   const reducedRef = useRef(false);
 
-  // Scene 4 fills the form → release the scroll lock for good.
+  // Scene 4 shows its scroll cue → release the scroll lock for good.
   const handleVoiceComplete = () => {
     sequenceDoneRef.current = true;
+  };
+
+  // The scroll cue's arrow jumps past the pinned hero to the next section.
+  const handleExplore = () => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const target = el.getBoundingClientRect().bottom + window.scrollY;
+    window.dispatchEvent(new CustomEvent("hero:scrollto", { detail: target }));
   };
 
   // Real click on the CTA doesn't navigate — it fast-forwards the timeline to
@@ -242,8 +252,10 @@ export function HeroReveal({
           active={scene4Active}
           hint={voiceHint}
           processing={voiceProcessing}
+          scrollHint={voiceScrollHint}
           fields={voiceFields}
           onComplete={handleVoiceComplete}
+          onExplore={handleExplore}
         />
       </div>
     </section>

@@ -10,17 +10,26 @@ type HeroVoiceSceneProps = {
   active: boolean;
   hint: string;
   processing: string;
+  scrollHint: string;
   fields: VoiceField[];
   onComplete: () => void;
+  onExplore: () => void;
 };
 
-type Phase = "idle" | "holding" | "speaking" | "processing" | "filled";
+type Phase =
+  | "idle"
+  | "holding"
+  | "speaking"
+  | "processing"
+  | "filled"
+  | "cue";
 
 const HOLD_MS = 1000; // press-and-hold duration
 const FALLBACK_MS = 4000; // auto-play if nobody interacts
 const CHAR_MS = 42; // per transcript character (typing effect)
 const PROCESS_MS = 1300; // loading bar duration
 const FILL_MS = 480; // per form field
+const CUE_DELAY_MS = 2000; // pause after the form fills before the scroll cue
 const RING_C = 2 * Math.PI * 45; // circumference of the r=45 progress ring
 
 /**
@@ -32,8 +41,10 @@ export function HeroVoiceScene({
   active,
   hint,
   processing,
+  scrollHint,
   fields,
   onComplete,
+  onExplore,
 }: HeroVoiceSceneProps) {
   const [phase, _setPhase] = useState<Phase>("idle");
   const [charN, setCharN] = useState(0);
@@ -78,13 +89,18 @@ export function HeroVoiceScene({
       doneRef.current = true;
       onComplete();
     };
+    const showCue = () => {
+      clearTimers();
+      setPhase("cue"); // slide up + show the scroll cue; release the lock
+      finish();
+    };
     const startFill = () => {
       clearTimers();
       setPhase("filled");
       fields.forEach((_, i) =>
         addTimer(() => setFilledN(i + 1), (i + 1) * FILL_MS),
       );
-      addTimer(finish, fields.length * FILL_MS + 500);
+      addTimer(showCue, fields.length * FILL_MS + CUE_DELAY_MS);
     };
     const startProcessing = () => {
       clearTimers();
@@ -144,7 +160,7 @@ export function HeroVoiceScene({
       setPhase("filled");
       setCharN(transcriptText.length);
       setFilledN(fields.length);
-      addTimer(finish, 700);
+      addTimer(showCue, 900);
       return clearTimers;
     }
 
@@ -167,7 +183,7 @@ export function HeroVoiceScene({
 
   return (
     <div className={`${styles.scene} ${active ? styles.sceneShown : ""}`}>
-      <div className={styles.card}>
+      <div className={styles.card} data-cue={phase === "cue"}>
         <span
           className={styles.hint}
           data-visible={phase === "idle" || phase === "holding"}
@@ -233,6 +249,20 @@ export function HeroVoiceScene({
           ))}
         </ul>
       </div>
+
+      <button
+        type="button"
+        className={styles.scrollCue}
+        data-shown={phase === "cue"}
+        onClick={onExplore}
+        tabIndex={phase === "cue" ? 0 : -1}
+        aria-hidden={phase !== "cue"}
+      >
+        <span className={styles.scrollText}>{scrollHint}</span>
+        <svg className={styles.scrollArrow} viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v13M6 13l6 6 6-6" />
+        </svg>
+      </button>
     </div>
   );
 }

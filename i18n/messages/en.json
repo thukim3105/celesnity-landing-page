@@ -56,8 +56,9 @@
     "line": "Configuring…"
   },
   "HeroVoice": {
-    "hint": "Press and hold 1s to speak",
+    "hint": "Press and hold 1s",
     "processing": "Processing…",
+    "scrollHint": "Scroll to explore",
     "nameLabel": "Product",
     "codeLabel": "Code",
     "qtyLabel": "Quantity"

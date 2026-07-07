@@ -56,8 +56,9 @@
     "line": "Đang cấu hình…"
   },
   "HeroVoice": {
-    "hint": "Ấn giữ 1 giây để nói",
+    "hint": "Ấn giữ 1 giây",
     "processing": "Đang xử lý…",
+    "scrollHint": "Scroll để khám phá",
     "nameLabel": "Tên hàng",
     "codeLabel": "Mã hàng",
     "qtyLabel": "Số lượng"

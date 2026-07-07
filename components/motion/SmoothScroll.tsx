@@ -40,12 +40,25 @@ export function SmoothScroll() {
       if (lenisRef.current) lenisRef.current.start();
       else document.documentElement.style.overflow = "";
     };
+    const scrollTo = (e: Event) => {
+      const target = (e as CustomEvent<number | string>).detail;
+      if (target == null) return;
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(target as number, { duration: 1.1 });
+      } else if (typeof target === "number") {
+        window.scrollTo({ top: target, behavior: "smooth" });
+      } else {
+        document.querySelector(target)?.scrollIntoView({ behavior: "smooth" });
+      }
+    };
     window.addEventListener("hero:lock", lock);
     window.addEventListener("hero:unlock", unlock);
+    window.addEventListener("hero:scrollto", scrollTo);
 
     return () => {
       window.removeEventListener("hero:lock", lock);
       window.removeEventListener("hero:unlock", unlock);
+      window.removeEventListener("hero:scrollto", scrollTo);
       if (raf) cancelAnimationFrame(raf);
       lenisRef.current?.destroy();
       lenisRef.current = null;

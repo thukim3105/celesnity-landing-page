@@ -41,6 +41,7 @@ export async function Hero() {
       scene3Line={ts3("line")}
       voiceHint={tv("hint")}
       voiceProcessing={tv("processing")}
+      voiceScrollHint={tv("scrollHint")}
       voiceFields={voiceFields}
     />
   );
