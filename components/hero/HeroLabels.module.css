@@ -29,8 +29,8 @@
   transition:
     opacity var(--dur-base) var(--ease),
     transform var(--dur-base) var(--ease);
-  min-width: 168px;
-  max-width: 220px;
+  width: 200px; /* all cards share one width so labels read as a uniform set */
+  box-sizing: border-box;
   padding: var(--space-3) var(--space-4);
   display: flex;
   flex-direction: column;
@@ -96,10 +96,9 @@
   background: var(--gradient-brand);
 }
 
-/* Farthest box: ellipsis only, tighter. */
+/* Farthest box: ellipsis only — same size as the rest, content centred. */
 .ellipsisCard {
-  min-width: 0;
-  padding: var(--space-2) var(--space-3);
+  align-items: center;
 }
 
 .ellipsis {
