@@ -11,9 +11,7 @@ import { TOTAL_BOXES } from "./heroLabels.data";
 import {
   computeProgress,
   contentHideT,
-  scrollRevealCount,
   timerRevealCount,
-  revealCount,
 } from "./heroRevealMath.mjs";
 import { outroStep, OUTRO_SCENE2_MS } from "./heroOutro.mjs";
 import type { LabelBox } from "./heroLabels.types";
@@ -22,7 +20,6 @@ import styles from "./Hero.module.css";
 // Phase thresholds over the section's 0..1 scroll progress.
 const P1_END = 0.4; // content fully faded by here (longer lead-in)
 const P2_START = 0.44; // labels start revealing (+ scroll lock engages)
-const P2_END = 0.85; // all labels revealed by here
 const TIMER_INTERVAL_MS = 900; // auto-reveal cadence (~1s each)
 const CONTENT_RISE_PX = 48; // how far the content slides up as it exits
 
@@ -135,22 +132,18 @@ export function HeroReveal({
         let target: number;
         if (reducedRef.current) {
           target = progress >= P2_START ? TOTAL_BOXES : 0;
+        } else if (phase2StartRef.current === null) {
+          target = 0;
         } else {
-          const sCount = scrollRevealCount(
-            progress,
+          // First label the moment phase 2 starts, then one every interval, so
+          // box 1 -> 2 is spaced the same as the rest. Scroll is locked during
+          // the reveal, so the cadence is purely time-based.
+          const tCount = timerRevealCount(
+            performance.now() - phase2StartRef.current,
             TOTAL_BOXES,
-            P2_START,
-            P2_END,
+            TIMER_INTERVAL_MS,
           );
-          const tCount =
-            phase2StartRef.current === null
-              ? 0
-              : timerRevealCount(
-                  performance.now() - phase2StartRef.current,
-                  TOTAL_BOXES,
-                  TIMER_INTERVAL_MS,
-                );
-          target = revealCount(sCount, tCount, TOTAL_BOXES);
+          target = Math.min(TOTAL_BOXES, tCount + 1);
         }
 
         // Monotonic: never un-reveal on scroll-up (unless we left phase 2).
