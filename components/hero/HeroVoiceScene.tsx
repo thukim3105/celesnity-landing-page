@@ -260,7 +260,7 @@ export function HeroVoiceScene({
       >
         <span className={styles.scrollText}>{scrollHint}</span>
         <svg className={styles.scrollArrow} viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 5v13M6 13l6 6 6-6" />
+          <path d="M5 9l7 7 7-7" />
         </svg>
       </button>
     </div>
