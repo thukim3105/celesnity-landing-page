@@ -64,7 +64,10 @@
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.4;
-  transform: scale(0.72);
+  /* Promote to its own GPU layer so the scale/opacity animate without repaint. */
+  transform: translateZ(0) scale(0.72);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
   transition:
     opacity 700ms var(--ease),
     transform 700ms var(--ease);
@@ -73,7 +76,7 @@
 /* Centre image is clearly larger; neighbours shrink and sit behind it. */
 .panel[data-active="true"] {
   opacity: 1;
-  transform: scale(1.12);
+  transform: translateZ(0) scale(1.12);
   z-index: 2;
 }
 
