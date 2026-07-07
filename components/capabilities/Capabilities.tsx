@@ -141,9 +141,11 @@ export function Capabilities() {
               {!it.img && <span className={styles.panelNum}>{it.n}</span>}
             </button>
           ))}
-          {/* Clone of the first image so the last→first loop slides forward. */}
+          {/* Clone of the first image so the last→first loop slides forward.
+              Hidden unless it's the active (loop) frame, so it doesn't peek as a
+              neighbour after the last image. */}
           <div
-            className={`${styles.panel} ${items[0].img ? styles.hasImg : ""}`}
+            className={`${styles.panel} ${styles.clone} ${items[0].img ? styles.hasImg : ""}`}
             data-panel
             data-active={active === n}
             aria-hidden="true"

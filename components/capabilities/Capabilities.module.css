@@ -77,6 +77,15 @@
   z-index: 2;
 }
 
+/* The loop clone stays invisible except while it's the active (loop) frame,
+   so the first image never peeks as a neighbour after the last. */
+.clone {
+  opacity: 0;
+}
+.clone[data-active="true"] {
+  opacity: 1;
+}
+
 .panel:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
