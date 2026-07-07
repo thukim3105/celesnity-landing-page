@@ -29,11 +29,13 @@
   transition:
     opacity var(--dur-base) var(--ease),
     transform var(--dur-base) var(--ease);
-  width: 200px; /* all cards share one width so labels read as a uniform set */
+  width: 200px; /* all cards share one width + height so the labels read as */
+  height: 104px; /* a uniform set, not sized to their content */
   box-sizing: border-box;
   padding: var(--space-3) var(--space-4);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -54,6 +56,9 @@
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .meta {
