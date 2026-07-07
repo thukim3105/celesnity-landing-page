@@ -15,7 +15,15 @@ export async function Hero() {
   const to = await getTranslations("HeroOutro");
   const ts = await getTranslations("HeroScene2");
   const ts3 = await getTranslations("HeroScene3");
+  const tv = await getTranslations("HeroVoice");
   const boxes = tl.raw("boxes") as LabelBox[];
+
+  const first = boxes[0];
+  const voiceFields = [
+    { label: tv("nameLabel"), value: first.name },
+    { label: tv("codeLabel"), value: first.code },
+    { label: tv("qtyLabel"), value: first.qty },
+  ];
 
   return (
     <HeroReveal
@@ -31,6 +39,9 @@ export async function Hero() {
       outroCta={to("cta")}
       scene2Line={ts("line")}
       scene3Line={ts3("line")}
+      voiceHint={tv("hint")}
+      voiceProcessing={tv("processing")}
+      voiceFields={voiceFields}
     />
   );
 }

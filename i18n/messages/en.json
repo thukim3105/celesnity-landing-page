@@ -55,6 +55,13 @@
   "HeroScene3": {
     "line": "Configuring…"
   },
+  "HeroVoice": {
+    "hint": "Press and hold 1s to speak",
+    "processing": "Processing…",
+    "nameLabel": "Product",
+    "codeLabel": "Code",
+    "qtyLabel": "Quantity"
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",

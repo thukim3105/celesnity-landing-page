@@ -55,6 +55,13 @@
   "HeroScene3": {
     "line": "Đang cấu hình…"
   },
+  "HeroVoice": {
+    "hint": "Ấn giữ 1 giây để nói",
+    "processing": "Đang xử lý…",
+    "nameLabel": "Tên hàng",
+    "codeLabel": "Mã hàng",
+    "qtyLabel": "Số lượng"
+  },
   "HowItWorks": {
     "headingLine1": "Cài đặt dễ dàng,",
     "headingLine2": "sử dụng đơn giản.",

@@ -12,13 +12,15 @@ export const OUTRO_CLICK_MS = 7000;
 export const OUTRO_SCENE2_MS = 8200;
 /** → when Scene 2 crossfades to Scene 3 ("configuring…"). */
 export const OUTRO_SCENE3_MS = 11200;
+/** → when Scene 3 crossfades to Scene 4 (the voice-to-form demo). */
+export const OUTRO_SCENE4_MS = 14200;
 
 /**
  * Map elapsed time (ms, since all labels were revealed) to a timeline step:
  *   0 = labels/counter, 1 = message, 2 = CTA, 3 = auto-click,
- *   4 = Scene 2 (installing), 5 = Scene 3 (configuring).
+ *   4 = Scene 2 (installing), 5 = Scene 3 (configuring), 6 = Scene 4 (voice).
  * @param {number} elapsedMs
- * @returns {0|1|2|3|4|5}
+ * @returns {0|1|2|3|4|5|6}
  */
 export function outroStep(elapsedMs) {
   if (elapsedMs < OUTRO_MESSAGE_MS) return 0;
@@ -26,5 +28,6 @@ export function outroStep(elapsedMs) {
   if (elapsedMs < OUTRO_CLICK_MS) return 2;
   if (elapsedMs < OUTRO_SCENE2_MS) return 3;
   if (elapsedMs < OUTRO_SCENE3_MS) return 4;
-  return 5;
+  if (elapsedMs < OUTRO_SCENE4_MS) return 5;
+  return 6;
 }

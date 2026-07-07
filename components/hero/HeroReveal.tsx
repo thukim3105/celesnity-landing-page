@@ -6,6 +6,7 @@ import { HeroLabels } from "./HeroLabels";
 import { WasteCounter } from "./WasteCounter";
 import { HeroOutro } from "./HeroOutro";
 import { HeroSceneLine } from "./HeroSceneLine";
+import { HeroVoiceScene } from "./HeroVoiceScene";
 import { TOTAL_BOXES } from "./heroLabels.data";
 import {
   computeProgress,
@@ -38,6 +39,9 @@ type HeroRevealProps = {
   outroCta: string;
   scene2Line: string;
   scene3Line: string;
+  voiceHint: string;
+  voiceProcessing: string;
+  voiceFields: { label: string; value: string }[];
 };
 
 /**
@@ -59,6 +63,9 @@ export function HeroReveal({
   outroCta,
   scene2Line,
   scene3Line,
+  voiceHint,
+  voiceProcessing,
+  voiceFields,
 }: HeroRevealProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -73,7 +80,13 @@ export function HeroReveal({
   const outroStartRef = useRef<number | null>(null);
   const lastStepRef = useRef(0);
   const lockedRef = useRef(false);
+  const sequenceDoneRef = useRef(false);
   const reducedRef = useRef(false);
+
+  // Scene 4 fills the form → release the scroll lock for good.
+  const handleVoiceComplete = () => {
+    sequenceDoneRef.current = true;
+  };
 
   // Real click on the CTA doesn't navigate — it fast-forwards the timeline to
   // Scene 2, which then auto-continues to Scene 3 like the untouched sequence.
@@ -116,6 +129,7 @@ export function HeroReveal({
         } else {
           phase2StartRef.current = null;
           maxRevealedRef.current = 0;
+          sequenceDoneRef.current = false;
         }
 
         let target: number;
@@ -164,9 +178,10 @@ export function HeroReveal({
           setStep(nextStep);
         }
 
-        // Scroll lock: hold from the first label through the auto scene
-        // sequence (installing -> configuring), releasing once Scene 3 shows.
-        const wantLock = phase2StartRef.current !== null && nextStep < 5;
+        // Scroll lock: hold from the first label through the whole scene
+        // sequence, releasing only once Scene 4 fills its form.
+        const wantLock =
+          phase2StartRef.current !== null && !sequenceDoneRef.current;
         if (wantLock !== lockedRef.current) {
           lockedRef.current = wantLock;
           window.dispatchEvent(new Event(wantLock ? "hero:lock" : "hero:unlock"));
@@ -189,7 +204,8 @@ export function HeroReveal({
   const dimmed = step >= 1; // labels + counter fade out once the message shows
   const sceneActive = step >= 4; // Scene 1 hidden once the status scenes begin
   const scene2Shown = step === 4; // "installing…"
-  const scene3Shown = step >= 5; // "configuring…"
+  const scene3Shown = step === 5; // "configuring…"
+  const scene4Active = step >= 6; // voice-to-form demo
 
   return (
     <section ref={sectionRef} className={styles.section} data-hero>
@@ -229,6 +245,13 @@ export function HeroReveal({
         </div>
         <HeroSceneLine shown={scene2Shown} line={scene2Line} />
         <HeroSceneLine shown={scene3Shown} line={scene3Line} />
+        <HeroVoiceScene
+          active={scene4Active}
+          hint={voiceHint}
+          processing={voiceProcessing}
+          fields={voiceFields}
+          onComplete={handleVoiceComplete}
+        />
       </div>
     </section>
   );
