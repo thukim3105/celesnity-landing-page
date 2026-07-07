@@ -77,6 +77,7 @@ export function HeroLabels({
             key={i}
             left={pos.left}
             top={pos.top}
+            z={positions.length - i}
             shown={i < visibleCount}
             ellipsis={isEllipsis}
             name={box?.name}

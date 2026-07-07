@@ -3,6 +3,8 @@ import styles from "./HeroLabels.module.css";
 type LabelCardProps = {
   left: number; // percent of stage width
   top: number; // percent of stage height
+  /** Stacking order — nearer cards get a higher value so they sit in front. */
+  z: number;
   shown: boolean;
   /** The farthest box shows only an ellipsis (signals "more cartons"). */
   ellipsis?: boolean;
@@ -20,6 +22,7 @@ type LabelCardProps = {
 export function LabelCard({
   left,
   top,
+  z,
   shown,
   ellipsis,
   name,
@@ -39,7 +42,7 @@ export function LabelCard({
   return (
     <div
       className={className}
-      style={{ left: `${left}%`, top: `${top}%` }}
+      style={{ left: `${left}%`, top: `${top}%`, zIndex: z }}
       aria-hidden="true"
     >
       {ellipsis ? (
