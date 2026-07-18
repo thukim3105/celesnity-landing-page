@@ -1,0 +1,188 @@
+/* ============================================================
+   Experimental fly-around hero. Tall scroll track drives a pinned
+   stage; the canvas scrubs the pre-rendered fly-around, colourised
+   to the Cosmos nebula gradient live. Cosmos/Daybreak aware via tokens.
+   ============================================================ */
+
+.section {
+  position: relative;
+  height: 460svh; /* scroll runway for the two-act fly-around + interior walk */
+  background: var(--bg-base, #05060f);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Cosmos wash behind the model so it never sits on flat black. */
+  background:
+    radial-gradient(
+      120% 80% at 50% 38%,
+      color-mix(in srgb, var(--deep-indigo, #1a0e4d) 55%, transparent) 0%,
+      transparent 62%
+    ),
+    var(--bg-base, #05060f);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Edge darkening for text contrast; center stays clear. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 95% at 50% 46%,
+    transparent 34%,
+    color-mix(in srgb, var(--bg-base, #05060f) 78%, transparent) 100%
+  );
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4, 16px);
+  max-width: 760px;
+  padding-inline: clamp(20px, 5vw, 40px);
+  text-align: center;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-display, "Inter", sans-serif);
+  font-weight: var(--fw-bold, 700);
+  font-size: clamp(40px, 8vw, 76px);
+  line-height: var(--lh-tight, 1.05);
+  letter-spacing: var(--ls-display, -0.03em);
+  color: var(--text-primary, #f8f9fe);
+}
+
+.lead {
+  margin: 0;
+  max-width: 560px;
+  font-size: clamp(16px, 2.2vw, 19px);
+  line-height: var(--lh-body, 1.7);
+  color: var(--text-secondary, #c9cee8);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  justify-content: center;
+  margin-top: var(--space-2, 8px);
+}
+
+/* Primary — DS nebula gradient pill, flat (no lift/shadow/glow). */
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 16px 30px;
+  font-size: 16px;
+  font-weight: var(--fw-semibold, 600);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--text-on-accent, #fff);
+  background: var(--gradient-brand);
+  border: none;
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  transform: translateZ(0);
+  will-change: transform;
+  transition:
+    background var(--dur-base, 220ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform var(--dur-fast, 140ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.ctaPrimary:hover {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.12)
+    ),
+    var(--gradient-brand);
+}
+
+.ctaPrimary:active {
+  transform: scale(var(--press-scale, 0.97)) translateZ(0);
+}
+
+/* Secondary — glass/ghost pill on the surface. */
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 16px 26px;
+  font-size: 16px;
+  font-weight: var(--fw-semibold, 600);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--text-primary, #f8f9fe);
+  background: color-mix(in srgb, var(--surface-card, #12132a) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-primary, #f8f9fe) 16%, transparent);
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  transition:
+    background var(--dur-base, 220ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform var(--dur-fast, 140ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.ctaSecondary:hover {
+  background: color-mix(in srgb, var(--surface-card, #12132a) 90%, transparent);
+}
+
+.ctaSecondary:active {
+  transform: scale(var(--press-scale, 0.97));
+}
+
+/* Simple top-progress shimmer while frames preload. */
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--gradient-brand);
+  opacity: 0.6;
+  animation: heroFlyLoad 1.2s ease-in-out infinite;
+  transform-origin: left;
+}
+
+@keyframes heroFlyLoad {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(0.7);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaPrimary,
+  .ctaSecondary {
+    transition: none;
+  }
+  .loader {
+    animation: none;
+    opacity: 0;
+  }
+}

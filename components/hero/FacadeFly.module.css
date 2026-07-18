@@ -1,0 +1,76 @@
+.section {
+  position: relative;
+  height: 500svh; /* scroll track length driving the fly-in */
+  background: #04050c;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: #04050c;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Black veil that peaks at the aerial->door cut, hiding the jump. */
+.seamVeil {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    130% 95% at 50% 50%,
+    transparent 58%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* Mascot avatar pinned bottom-right — covers the corner (and any watermark).
+   Shows /mascot.png when present; falls back to a calm brand disc otherwise. */
+.mascot {
+  position: absolute;
+  right: 120px;
+  bottom: 64px;
+  width: 104px;
+  height: 104px;
+  background: url("/mascot.png") center / contain no-repeat;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #04050c;
+}
+.loader::after {
+  content: "";
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(255, 255, 255, 0.7);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
