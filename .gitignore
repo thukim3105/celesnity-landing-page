@@ -46,3 +46,10 @@ node_modules/
 /*.png
 /*.jpg
 /*.jpeg
+
+# heavy 3D source assets & render working files (not part of the built app)
+*.blend
+*.blend1
+/*.glb
+/*.mp4
+/scratch/

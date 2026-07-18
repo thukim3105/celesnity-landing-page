@@ -15,25 +15,54 @@ export function SmoothScroll() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const lenis = new Lenis({
-      duration: 1.1,
-      smoothWheel: true,
-    });
-    lenisRef.current = lenis;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
+    if (!reduced) {
+      const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+      lenisRef.current = lenis;
+      const loop = (time: number) => {
+        lenis.raf(time);
+        raf = requestAnimationFrame(loop);
+      };
       raf = requestAnimationFrame(loop);
+    }
+
+    // Scroll lock, driven by the hero scene sequence: while locked the page can't
+    // reach the next section. Uses Lenis when present, else a plain overflow lock.
+    const lock = () => {
+      if (lenisRef.current) lenisRef.current.stop();
+      else document.documentElement.style.overflow = "hidden";
     };
-    raf = requestAnimationFrame(loop);
+    const unlock = () => {
+      if (lenisRef.current) lenisRef.current.start();
+      else document.documentElement.style.overflow = "";
+    };
+    const scrollTo = (e: Event) => {
+      const target = (e as CustomEvent<number | string>).detail;
+      if (target == null) return;
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(target as number, { duration: 1.1 });
+      } else if (typeof target === "number") {
+        window.scrollTo({ top: target, behavior: "smooth" });
+      } else {
+        document.querySelector(target)?.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+    window.addEventListener("hero:lock", lock);
+    window.addEventListener("hero:unlock", unlock);
+    window.addEventListener("hero:scrollto", scrollTo);
 
     return () => {
-      cancelAnimationFrame(raf);
-      lenis.destroy();
+      window.removeEventListener("hero:lock", lock);
+      window.removeEventListener("hero:unlock", unlock);
+      window.removeEventListener("hero:scrollto", scrollTo);
+      if (raf) cancelAnimationFrame(raf);
+      lenisRef.current?.destroy();
       lenisRef.current = null;
+      document.documentElement.style.overflow = "";
     };
   }, []);
 

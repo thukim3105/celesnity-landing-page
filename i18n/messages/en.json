@@ -31,6 +31,38 @@
     "leadLine2": "and make operations instantly searchable.",
     "cta": "Request a demo"
   },
+  "HeroLabels": {
+    "codeLabel": "Code",
+    "qtyLabel": "Qty",
+    "boxes": [
+      { "name": "Ceramic bearing 6204", "code": "MHX-204817", "qty": "1,200" },
+      { "name": "Copper busbar A2", "code": "MHX-330052", "qty": "640" },
+      { "name": "PET resin pellets", "code": "MHX-119043", "qty": "3,000" },
+      { "name": "Nitrile gloves M", "code": "MHX-778120", "qty": "5,000" }
+    ]
+  },
+  "WasteCounter": {
+    "eyebrow": "Data-entry time",
+    "caption": "manual entry, per carton"
+  },
+  "HeroOutro": {
+    "message": "Manual data entry eats time and drags down productivity…",
+    "cta": "Try Minder AI"
+  },
+  "HeroScene2": {
+    "line": "Installing the hardware…"
+  },
+  "HeroScene3": {
+    "line": "Configuring…"
+  },
+  "HeroVoice": {
+    "hint": "Press and hold 1s",
+    "processing": "Processing…",
+    "scrollHint": "Scroll to explore",
+    "nameLabel": "Product",
+    "codeLabel": "Code",
+    "qtyLabel": "Quantity"
+  },
   "HowItWorks": {
     "headingLine1": "Easy to set up,",
     "headingLine2": "simple to use",
@@ -62,7 +94,7 @@
     ]
   },
   "Capabilities": {
-    "sectionTitle": "One Platform for the Entire Operation",
+    "sectionTitle": "More than just voice input",
     "items": [
       "Onboard new hires fast",
       "Catch errors in the workflow",

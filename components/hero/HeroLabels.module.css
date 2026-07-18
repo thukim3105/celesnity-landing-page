@@ -1,0 +1,158 @@
+/* ============================================================
+   Hero label overlay. Flat frosted DS cards anchored onto the
+   line-art conveyor boxes via a sliced SVG coordinate layer.
+   Cards are decorative and never intercept pointer events.
+   ============================================================ */
+
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease);
+}
+
+/* Faded out during the Scene-1 ending (message takes over). */
+.layerDimmed {
+  opacity: 0;
+}
+
+/* Sliced to match the backdrop's `center / cover`; carries the anchor points. */
+.anchorSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* One carton callout — flat, frosted, no shadow/glow (DS interaction rules).
+   Positioned by inline left/top %; sits ABOVE its box with a 16px gap for the
+   leg. Enters with fade + slight rise + scale. */
+.card {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 16px)) translateY(8px) scale(0.98);
+  opacity: 0;
+  transition:
+    opacity var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease);
+  width: 200px; /* all cards share one width + height so the labels read as */
+  height: 120px; /* a uniform set, not sized to their content */
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-sans);
+  text-align: left;
+}
+
+.shown {
+  opacity: 1;
+  transform: translate(-50%, calc(-100% - 16px)) translateY(0) scale(1);
+}
+
+.name {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  display: flex;
+  gap: 6px;
+}
+
+.metaLabel {
+  color: var(--text-muted);
+}
+
+.more {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* Leg down to the anchor + a single small brand-gradient dot (sparing accent). */
+.leg {
+  position: absolute;
+  left: 50%;
+  bottom: -16px;
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+
+.leg::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  transform: translateX(-50%);
+  background: var(--gradient-brand);
+}
+
+/* Farthest box: ellipsis only — same size as the rest, content centred. */
+.ellipsisCard {
+  align-items: center;
+}
+
+.ellipsis {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
+
+/* Mobile portrait: `cover` crops the sides, so anchoring drifts. Drop it and
+   stack the cards as a vertical list in the lower area; JS still sets inline
+   left/top but these rules override. */
+@media (max-width: 640px) {
+  .layer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    padding-bottom: 18svh;
+  }
+  .anchorSvg {
+    display: none;
+  }
+  .card {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    transform: translateY(8px) scale(0.98);
+    width: min(320px, 88vw);
+    max-width: none;
+  }
+  .shown {
+    transform: translateY(0) scale(1);
+  }
+  .leg {
+    display: none;
+  }
+}

@@ -1,0 +1,360 @@
+/* ============================================================
+   Hero Scene 4 — voice-to-form demo. Frosted DS card: small hint,
+   mic button (gradient + progress ring + waveform), spoken transcript,
+   a processing bar, and a 3-field form that fills. Flat, DS tokens only.
+   ============================================================ */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--header-h, 68px) clamp(20px, 5vw, 40px) clamp(40px, 8vh, 96px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.sceneShown {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  width: min(440px, 92vw);
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  text-align: center;
+  transition: transform var(--dur-slow) var(--ease);
+}
+/* Slide up a touch when the scroll cue appears. */
+.card[data-cue="true"] {
+  transform: translateY(-40px);
+}
+
+/* Scroll cue — down arrow + hint, appears after the form fills. */
+.scrollCue {
+  position: absolute;
+  bottom: clamp(28px, 6vh, 64px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-slow) var(--ease),
+    transform var(--dur-slow) var(--ease);
+}
+.scrollCue[data-shown="true"] {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.scrollCue:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  border-radius: var(--radius-md);
+}
+.scrollText {
+  font-size: var(--fs-sm);
+  letter-spacing: 0.01em;
+}
+.scrollArrow {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: bounce 1.6s var(--ease) infinite;
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* Small hint above the mic. Hint + mic sit at the BOTTOM of the card (via
+   order) with the transcript/processing/form stacked above them. */
+.hint {
+  order: 4;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+}
+.hint[data-visible="true"] {
+  opacity: 1;
+}
+
+/* Mic button: gradient circle, white icon, progress ring + waveform. */
+.mic {
+  order: 5;
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-top: var(--space-2);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transform: translateZ(0);
+  transition: transform var(--dur-fast) var(--ease);
+  touch-action: none; /* let press-and-hold work without scrolling */
+}
+.mic:active {
+  transform: scale(var(--press-scale)) translateZ(0);
+}
+.mic:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+.mic[data-listening="true"] {
+  transform: scale(1.04) translateZ(0);
+}
+
+.ring {
+  position: absolute;
+  inset: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  transform: rotate(-90deg);
+}
+.ringTrack {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 3;
+}
+.ringProgress {
+  fill: none;
+  stroke: var(--cobalt-blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 80ms linear;
+}
+
+.micIcon {
+  width: 34px;
+  height: 34px;
+  fill: var(--text-on-accent, #fff);
+  stroke: var(--text-on-accent, #fff);
+  stroke-width: 1.6;
+}
+
+/* Waveform bars — visible only while listening. */
+.wave {
+  position: absolute;
+  bottom: -22px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+}
+.mic[data-listening="true"] .wave {
+  opacity: 1;
+}
+.waveBar {
+  width: 3px;
+  height: 40%;
+  border-radius: var(--radius-pill);
+  background: var(--cobalt-blue);
+  animation: wave 900ms var(--ease) infinite;
+}
+.waveBar:nth-child(2) {
+  animation-delay: 150ms;
+}
+.waveBar:nth-child(3) {
+  animation-delay: 300ms;
+}
+.waveBar:nth-child(4) {
+  animation-delay: 450ms;
+}
+.waveBar:nth-child(5) {
+  animation-delay: 600ms;
+}
+@keyframes wave {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+/* Spoken transcript — typed out character by character, sitting just above the
+   mic (order 3). */
+.transcript {
+  order: 3;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+.transcriptText {
+  white-space: pre-wrap;
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--cobalt-blue);
+  animation: caret 900ms steps(1) infinite;
+}
+@keyframes caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Processing bar. */
+.processing {
+  order: 2;
+  width: 100%;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+}
+.processing[data-shown="true"] {
+  opacity: 1;
+}
+.processingLabel {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.bar {
+  display: block;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-hover);
+  overflow: hidden;
+}
+.barFill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+}
+.processing[data-shown="true"] .barFill {
+  animation: fill 1300ms var(--ease) forwards;
+}
+@keyframes fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Form — fields fill in one by one. */
+.form {
+  order: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-base) var(--ease);
+}
+.field[data-filled="true"] {
+  border-color: color-mix(in srgb, var(--cobalt-blue) 55%, var(--border));
+}
+.fieldLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.fieldValue {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--dur-base) var(--ease),
+    transform var(--dur-base) var(--ease);
+}
+.field[data-filled="true"] .fieldValue {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene,
+  .hint,
+  .transcript,
+  .processing,
+  .fieldValue,
+  .ringProgress,
+  .card,
+  .scrollCue {
+    transition: none;
+  }
+  .waveBar,
+  .caret,
+  .scrollArrow,
+  .processing[data-shown="true"] .barFill {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: var(--space-6) var(--space-5);
+    gap: var(--space-4);
+  }
+  .mic {
+    width: 84px;
+    height: 84px;
+  }
+}

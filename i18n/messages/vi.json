@@ -31,6 +31,38 @@
     "leadLine2": "và giúp toàn bộ vận hành có thể tìm kiếm tức thì.",
     "cta": "Yêu cầu demo"
   },
+  "HeroLabels": {
+    "codeLabel": "Mã hàng",
+    "qtyLabel": "Số lượng",
+    "boxes": [
+      { "name": "Vòng bi gốm 6204", "code": "MHX-204817", "qty": "1.200" },
+      { "name": "Thanh đồng A2", "code": "MHX-330052", "qty": "640" },
+      { "name": "Hạt nhựa PET", "code": "MHX-119043", "qty": "3.000" },
+      { "name": "Găng tay nitrile M", "code": "MHX-778120", "qty": "5.000" }
+    ]
+  },
+  "WasteCounter": {
+    "eyebrow": "Thời gian nhập liệu",
+    "caption": "nhập tay, mỗi thùng"
+  },
+  "HeroOutro": {
+    "message": "Việc nhập liệu tốn thời gian, gây giảm hiệu suất làm việc…",
+    "cta": "Dùng thử Minder AI"
+  },
+  "HeroScene2": {
+    "line": "Đang cài đặt phần cứng…"
+  },
+  "HeroScene3": {
+    "line": "Đang cấu hình…"
+  },
+  "HeroVoice": {
+    "hint": "Ấn giữ 1 giây",
+    "processing": "Đang xử lý…",
+    "scrollHint": "Scroll để khám phá",
+    "nameLabel": "Tên hàng",
+    "codeLabel": "Mã hàng",
+    "qtyLabel": "Số lượng"
+  },
   "HowItWorks": {
     "headingLine1": "Cài đặt dễ dàng,",
     "headingLine2": "sử dụng đơn giản.",
@@ -62,7 +94,7 @@
     ]
   },
   "Capabilities": {
-    "sectionTitle": "Một nền tảng cho toàn bộ vận hành",
+    "sectionTitle": "Nhập bằng giọng nói không phải tính năng duy nhất",
     "items": [
       "Đào tạo nhân viên mới nhanh chóng",
       "Phát hiện lỗi trong quy trình",

@@ -1,0 +1,65 @@
+.section {
+  position: relative;
+  /* Tall scroll track — drives the lateral dolly. */
+  height: 420svh;
+  background: #0c0f1a;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  /* Lighter Cosmos backdrop with a soft central glow so the dark, moody
+     machines read against it (they render near-charcoal). */
+  background:
+    radial-gradient(80% 65% at 50% 52%, rgba(120, 132, 180, 0.20), transparent 62%),
+    radial-gradient(120% 90% at 50% 10%, rgba(45, 68, 224, 0.12), transparent 60%),
+    linear-gradient(180deg, #171b28 0%, #10131f 55%, #0b0e18 100%);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Soft cinematic edge darkening — feathered gradients, no hard line/stripe.
+   Left & right fade in from the sides so machines fly through cleanly. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(4, 5, 12, 0.9) 0%, rgba(4, 5, 12, 0) 22%),
+    linear-gradient(270deg, rgba(4, 5, 12, 0.9) 0%, rgba(4, 5, 12, 0) 22%),
+    radial-gradient(130% 90% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.loader::after {
+  content: "";
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(231, 235, 255, 0.25);
+  border-top-color: rgba(231, 235, 255, 0.9);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

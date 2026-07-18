@@ -84,21 +84,43 @@
   );
 }
 
-.hero {
+/* Tall scroll track: the sticky stage stays pinned while the page scrolls
+   through this height, giving room for the content exit + label reveal. */
+.section {
   position: relative;
-  /* Full viewport so the backdrop bleeds up behind the fixed/transparent navbar.
-     padding-top = header height so the CONTENT still centres in the visible area
-     below the navbar (not the whole viewport) — undoes the upward shift the
-     full-height pull would otherwise cause. Backdrop (inset:0) still fills up. */
-  min-height: 100svh;
-  padding-top: var(--header-h, 68px);
-  /* Extra bottom padding pulls the centred content a bit higher in the viewport
-     while keeping the top clear of the navbar. */
-  padding-bottom: clamp(56px, 12vh, 140px);
+  height: 200svh; /* lead-in runway; lock sits near the end (little dead scroll) */
+}
+
+/* Pinned stage — holds the (unchanged) backdrop, the fading content, and the
+   labels. Backdrop `inset: 0` fills this 100svh box. */
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* transparent — the pinned backdrop shows through */
+  padding-top: var(--header-h, 68px);
+  padding-bottom: clamp(56px, 12vh, 140px);
+}
+
+/* Scene 1 layer — backdrop content (copy, labels, counter, ending message).
+   Fills the stage and centres the overlay; crossfades out when Scene 2 arrives. */
+.scene1 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--header-h, 68px);
+  padding-bottom: clamp(56px, 12vh, 140px);
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.scene1Hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Tight, single cohesive block: heading + lede + CTA grouped close together. */
@@ -112,6 +134,7 @@
   max-width: 820px;
   padding-inline: clamp(20px, 5vw, 40px);
   text-align: center;
+  will-change: opacity, transform;
 }
 
 .heading {
