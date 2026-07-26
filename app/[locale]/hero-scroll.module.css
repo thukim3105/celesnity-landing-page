@@ -1,0 +1,190 @@
+.section {
+  position: relative;
+  height: 700svh;
+  background: var(--bg-base);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-base);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ambient {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.48;
+  filter: blur(28px) saturate(0.78);
+  transform: scale(1.04);
+}
+
+.video {
+  z-index: 1;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg-base) 20%, transparent),
+      transparent 22%,
+      transparent 72%,
+      color-mix(in srgb, var(--bg-base) 52%, transparent)
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--bg-base) 16%, transparent),
+      transparent 14%,
+      transparent 86%,
+      color-mix(in srgb, var(--bg-base) 16%, transparent)
+    );
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg-base);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    visibility var(--dur-slow) var(--ease-out);
+}
+
+.loaderReady {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loaderBar {
+  width: 48px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+}
+
+.loaderBar::after {
+  content: "";
+  display: block;
+  width: 56%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gradient-brand);
+  animation: load 1s var(--ease-out) infinite alternate;
+}
+
+.scrollCue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(36px, 6svh, 64px);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  color: var(--cloud-white);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 2px 18px var(--bg-base);
+  transform: translateX(-50%);
+  transition: opacity var(--dur-fast) linear;
+}
+
+.scrollCue i {
+  width: 1px;
+  height: 34px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--cloud-white) 28%, transparent);
+}
+
+.scrollCue i::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 45%;
+  background: var(--cloud-white);
+  animation: cue 1.55s var(--ease-out) infinite;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes load {
+  from {
+    transform: translateX(-58%);
+  }
+
+  to {
+    transform: translateX(92%);
+  }
+}
+
+@keyframes cue {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(225%);
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    height: 450svh;
+  }
+
+  .scrollCue {
+    bottom: 46px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section {
+    height: 100svh;
+  }
+
+  .loaderBar::after,
+  .scrollCue i::after {
+    animation: none;
+  }
+
+  .scrollCue {
+    display: none;
+  }
+}
