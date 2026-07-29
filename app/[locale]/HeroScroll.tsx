@@ -3,13 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./hero-scroll.module.css";
 
-const FRAME_COUNT = 240;
+const SOURCE_FRAME_COUNT = 240;
+const SOURCE_FRAME_STEP = 2;
+const FRAME_COUNT = Math.ceil(SOURCE_FRAME_COUNT / SOURCE_FRAME_STEP);
 const FRAME_WIDTH = 1280;
 const FRAME_HEIGHT = 720;
-const PRELOAD_RADIUS = 12;
-const RETAIN_RADIUS = 24;
+const PRELOAD_AHEAD = 24;
+const PRELOAD_BEHIND = 10;
+const RETAIN_RADIUS = 42;
+const STARTUP_FRAME_COUNT = 10;
 const frameSource = (index: number) =>
-  `/media/cinematic-industrial-frames/frame_${String(index + 1).padStart(3, "0")}.webp`;
+  `/media/cinematic-industrial-frames/frame_${String(index * SOURCE_FRAME_STEP + 1).padStart(3, "0")}.webp`;
 
 export function HeroScroll() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,6 +39,8 @@ export function HeroScroll() {
     let alive = true;
     let animationFrame = 0;
     let pixelRatio = 1;
+    let previousTarget = 0;
+    const startupFrames = new Set<number>();
 
     const getProgress = () => {
       const bounds = section.getBoundingClientRect();
@@ -67,36 +73,50 @@ export function HeroScroll() {
       return true;
     };
 
-    const loadFrame = (index: number) => {
+    const loadFrame = (index: number, priority = false) => {
       if (index < 0 || index >= FRAME_COUNT || framesRef.current.has(index)) {
         return;
       }
 
       const image = new Image();
       image.decoding = "async";
+      image.fetchPriority = priority ? "high" : "low";
       framesRef.current.set(index, image);
       image.onload = () => {
         if (!alive || framesRef.current.get(index) !== image) return;
-        if (index === 0) setReady(true);
+        if (index < STARTUP_FRAME_COUNT) {
+          startupFrames.add(index);
+          if (startupFrames.size === STARTUP_FRAME_COUNT) setReady(true);
+        }
         requestRender();
       };
       image.src = frameSource(index);
     };
 
     const primeFrameWindow = (target: number) => {
-      loadFrame(target);
-      for (let offset = 1; offset <= PRELOAD_RADIUS; offset++) {
-        loadFrame(target + offset);
-        loadFrame(target - offset);
+      const direction = target >= previousTarget ? 1 : -1;
+      loadFrame(target, true);
+
+      for (let offset = 1; offset <= PRELOAD_AHEAD; offset++) {
+        loadFrame(target + offset * direction, offset <= 4);
+      }
+      for (let offset = 1; offset <= PRELOAD_BEHIND; offset++) {
+        loadFrame(target - offset * direction);
       }
 
       for (const [index, image] of framesRef.current) {
-        if (Math.abs(index - target) > RETAIN_RADIUS) {
+        if (
+          image.complete &&
+          Math.abs(index - target) > RETAIN_RADIUS &&
+          index >= STARTUP_FRAME_COUNT
+        ) {
           image.onload = null;
           image.src = "";
           framesRef.current.delete(index);
         }
       }
+
+      previousTarget = target;
     };
 
     const render = () => {
@@ -135,14 +155,17 @@ export function HeroScroll() {
     };
 
     const resize = () => {
-      pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+      const ratioLimit = window.innerWidth <= 768 ? 1 : 1.25;
+      pixelRatio = Math.min(window.devicePixelRatio || 1, ratioLimit);
       canvas.width = Math.round(canvas.clientWidth * pixelRatio);
       canvas.height = Math.round(canvas.clientHeight * pixelRatio);
       drawnFrameRef.current = -1;
       requestRender();
     };
 
-    loadFrame(0);
+    for (let index = 0; index < STARTUP_FRAME_COUNT; index++) {
+      loadFrame(index, true);
+    }
     resize();
     window.addEventListener("scroll", requestRender, { passive: true });
     window.addEventListener("resize", resize);
