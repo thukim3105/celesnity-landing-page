@@ -1,0 +1,356 @@
+/* ============================================================
+   "How it works" — pinned section. The heading stays put on the left
+   while the three steps play in the same frame on the right: each step's
+   lines fade + slide + blur in one after another (heading-style), then get
+   pulled UP line by line to hand off to the next step. Opaque background so
+   the hero backdrop does not bleed through. (Motion driven in HowItWorks.tsx.)
+   ============================================================ */
+
+.section {
+  position: relative;
+  height: 520vh; /* scroll room for the pinned line-by-line reveal — more per step so fast scrolls don't skip */
+  background: var(--bg-base);
+}
+
+/* Pinned viewport — holds the frame while the section scrolls past. */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+/* Dark: flat --bg-base (above). Light (Daybreak): lavender. */
+:global([data-theme="light"]) .section,
+:global([data-theme="light"]) .sticky {
+  background: var(--lavender-mist);
+}
+
+.grid {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+
+/* Left column: the heading and the image frame share the same box. The frame
+   defines the height; the heading overlays it and slides away on scroll. */
+.mediaCol {
+  position: relative;
+}
+
+/* Fixed image frame; its picture cross-fades per step (opacity driven in .tsx). */
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-xl, 28px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  opacity: 0; /* revealed (fade + slide + blur) from scroll — see .tsx */
+  will-change: opacity, transform, filter;
+}
+
+/* One placeholder image per step, stacked; swap the inner markup for a real
+   <img> later. Each slide's opacity is driven from scroll for the cross-fade. */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: clamp(20px, 3vw, 36px);
+  background:
+    radial-gradient(
+      120% 120% at 85% 12%,
+      color-mix(in srgb, var(--cobalt-blue) 30%, transparent) 0%,
+      transparent 55%
+    ),
+    var(--surface-hover, var(--surface));
+  /* Real per-step images (set as background-image inline) cover the frame. */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.slideNum {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(48px, 9vw, 96px);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  opacity: 0.16;
+}
+
+.slideLabel {
+  font-size: clamp(14px, 1.6vw, 16px);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+/* Fixed section title: pinned at the top-left (below the navbar), aligned to the
+   content container, staying put for the whole section (the .sticky frame is
+   pinned, so this absolute title holds in place). */
+.heading {
+  position: absolute;
+  top: clamp(96px, 13vh, 140px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  opacity: 0; /* revealed + climbed into place from scroll (see .tsx) */
+  will-change: opacity, transform, filter;
+}
+
+/* Stage: the steps share one frame and swap in place. min-height holds the
+   column so the sticky frame does not jump. */
+.stage {
+  position: relative;
+  min-height: 360px;
+}
+
+.step {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center; /* center the step content so it lines up with the heading */
+  gap: var(--space-4);
+}
+
+/* Each line's opacity/transform/filter is driven per-line from scroll (see the
+   .tsx). The short transition gives a smooth trailing glide. */
+.line {
+  opacity: 0;
+  will-change: opacity, transform, filter;
+  transition:
+    opacity 200ms var(--ease, ease-out),
+    transform 200ms var(--ease, ease-out),
+    filter 200ms var(--ease, ease-out);
+}
+
+/* Number + label on one row. */
+.stepHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Number badge — the one spot of signature gradient per step (used sparingly). */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  color: var(--text-on-accent, var(--cloud-white));
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+
+.stepTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+}
+
+.points {
+  margin: 0;
+  /* Indent so each bullet dot lines up under the number (badge is 56px, dot 8px:
+     (56 − 8) / 2 = 24px). */
+  padding: 0 0 0 24px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.points li {
+  position: relative;
+  padding-left: 22px;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: var(--lh-body);
+  color: var(--text-secondary);
+}
+
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent, var(--cobalt-blue));
+}
+
+/* 16:9 (and wider/shorter) desktops only — leave 16:10 and taller untouched.
+   Reserve room for the fixed heading and cap the frame so they never overlap. */
+@media (min-width: 861px) and (min-aspect-ratio: 17 / 10) {
+  .sticky {
+    padding-top: clamp(150px, 21vh, 240px);
+    padding-bottom: clamp(24px, 5vh, 48px);
+  }
+  .frame {
+    max-height: 54vh;
+  }
+  .heading {
+    top: clamp(82px, 12vh, 112px);
+    font-size: clamp(28px, 3.6vw, 44px);
+  }
+}
+
+/* Per-step image — hidden in the pinned desktop layout; shown when stacked
+   (small screens / reduced motion) so every step keeps its illustration. */
+.stepMedia {
+  display: none;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg, 20px);
+  border: 1px solid var(--border);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: var(--space-2);
+}
+
+/* ---- Static stacked layout — shared by reduced motion and small screens.
+   Unpins the section; the heading sits on top and each step stacks below with
+   its own image, number, title, and bullets. ---- */
+.section[data-reduced="true"] {
+  height: auto;
+}
+.section[data-reduced="true"] .sticky {
+  position: static;
+  display: block;
+  height: auto;
+  overflow: visible;
+  padding: clamp(56px, 10vh, 120px) clamp(20px, 6vw, 48px);
+}
+.section[data-reduced="true"] .heading {
+  position: static;
+  max-width: 1120px;
+  margin: 0 auto var(--space-8);
+  padding-inline: 0;
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.section[data-reduced="true"] .grid {
+  display: block;
+  padding-inline: 0;
+}
+.section[data-reduced="true"] .mediaCol {
+  display: none;
+}
+.section[data-reduced="true"] .stepMedia {
+  display: block;
+}
+.section[data-reduced="true"] .stage {
+  min-height: 0;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 8vh, 96px);
+}
+.section[data-reduced="true"] .step {
+  position: static;
+  inset: auto;
+  justify-content: flex-start;
+}
+.section[data-reduced="true"] .line {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none;
+}
+
+/* Safety net: force the static layout on small screens even if the pinned JS
+   already ran (e.g. a desktop window shrunk past the breakpoint). */
+@media (max-width: 860px) {
+  .section {
+    height: auto;
+  }
+  .sticky {
+    position: static;
+    display: block;
+    height: auto;
+    overflow: visible;
+    padding: clamp(56px, 10vh, 120px) clamp(20px, 6vw, 48px);
+  }
+  .heading {
+    position: static;
+    max-width: 1120px;
+    margin: 0 auto var(--space-8);
+    padding-inline: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .grid {
+    display: block;
+    padding-inline: 0;
+  }
+  .mediaCol {
+    display: none;
+  }
+  .stepMedia {
+    display: block;
+  }
+  .stage {
+    min-height: 0;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 7vh, 80px);
+  }
+  .step {
+    position: static;
+    inset: auto;
+    justify-content: flex-start;
+  }
+  .line {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none;
+  }
+  /* Slightly smaller badge/title on phones. */
+  .badge {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+}

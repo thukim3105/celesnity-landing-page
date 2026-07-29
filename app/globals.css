@@ -27,8 +27,20 @@ body {
 
 body {
   min-height: 100dvh;
-  background: var(--bg-base);
+  background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color var(--dur-slow) var(--ease-out),
+    color var(--dur-slow) var(--ease-out);
+}
+
+[data-theme="dark"] {
+  --surface: var(--bg-base);
+  --surface-hover: color-mix(
+    in srgb,
+    var(--bg-base) 88%,
+    var(--text-primary)
+  );
 }

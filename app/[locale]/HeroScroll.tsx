@@ -3,30 +3,30 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./hero-scroll.module.css";
 
-const FRAME_COUNT = 304;
+const FRAME_COUNT = 240;
 const FRAME_WIDTH = 1280;
 const FRAME_HEIGHT = 720;
-const SEQUENCE_DURATION = 15.2;
+const PRELOAD_RADIUS = 12;
+const RETAIN_RADIUS = 24;
 const frameSource = (index: number) =>
-  `/media/intro-6-frames/frame_${String(index + 1).padStart(3, "0")}.webp`;
+  `/media/cinematic-industrial-frames/frame_${String(index + 1).padStart(3, "0")}.webp`;
 
 export function HeroScroll() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const ambientVideoRef = useRef<HTMLVideoElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
-  const framesRef = useRef<HTMLImageElement[]>([]);
+  const framesRef = useRef(new Map<number, HTMLImageElement>());
   const drawnFrameRef = useRef(-1);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
     const canvas = canvasRef.current;
-    const ambientVideo = ambientVideoRef.current;
-    if (!section || !canvas || !ambientVideo) return;
+    if (!section || !canvas) return;
 
     const context = canvas.getContext("2d");
     if (!context) return;
+    const loadedFrames = framesRef.current;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -43,7 +43,7 @@ export function HeroScroll() {
     };
 
     const drawFrame = (index: number) => {
-      const image = framesRef.current[index];
+      const image = framesRef.current.get(index);
       if (!image?.complete || image.naturalWidth === 0) return false;
 
       const scale = Math.min(
@@ -66,25 +66,46 @@ export function HeroScroll() {
       return true;
     };
 
+    const loadFrame = (index: number) => {
+      if (index < 0 || index >= FRAME_COUNT || framesRef.current.has(index)) {
+        return;
+      }
+
+      const image = new Image();
+      image.decoding = "async";
+      framesRef.current.set(index, image);
+      image.onload = () => {
+        if (!alive || framesRef.current.get(index) !== image) return;
+        if (index === 0) setReady(true);
+        requestRender();
+      };
+      image.src = frameSource(index);
+    };
+
+    const primeFrameWindow = (target: number) => {
+      loadFrame(target);
+      for (let offset = 1; offset <= PRELOAD_RADIUS; offset++) {
+        loadFrame(target + offset);
+        loadFrame(target - offset);
+      }
+
+      for (const [index, image] of framesRef.current) {
+        if (Math.abs(index - target) > RETAIN_RADIUS) {
+          image.onload = null;
+          image.src = "";
+          framesRef.current.delete(index);
+        }
+      }
+    };
+
     const render = () => {
       animationFrame = 0;
       const progress = reduceMotion ? 0 : getProgress();
       const target = Math.round(progress * (FRAME_COUNT - 1));
-      const ambientDuration =
-        Number.isFinite(ambientVideo.duration) && ambientVideo.duration > 0
-          ? ambientVideo.duration
-          : SEQUENCE_DURATION;
-      const ambientTime = progress * Math.max(0, ambientDuration - 0.04);
-
-      if (
-        ambientVideo.readyState >= HTMLMediaElement.HAVE_METADATA &&
-        Math.abs(ambientVideo.currentTime - ambientTime) > 0.05
-      ) {
-        ambientVideo.currentTime = ambientTime;
-      }
+      primeFrameWindow(target);
 
       if (target !== drawnFrameRef.current && !drawFrame(target)) {
-        for (let offset = 1; offset < FRAME_COUNT; offset++) {
+        for (let offset = 1; offset <= RETAIN_RADIUS; offset++) {
           if (target - offset >= 0 && drawFrame(target - offset)) break;
           if (target + offset < FRAME_COUNT && drawFrame(target + offset)) {
             break;
@@ -111,54 +132,33 @@ export function HeroScroll() {
       requestRender();
     };
 
-    const frames = Array.from({ length: FRAME_COUNT }, (_, index) => {
-      const image = new Image();
-      image.decoding = "async";
-      image.src = frameSource(index);
-      image.onload = () => {
-        if (!alive) return;
-        if (index === 0) setReady(true);
-        requestRender();
-      };
-      return image;
-    });
-    framesRef.current = frames;
-
+    loadFrame(0);
     resize();
-    ambientVideo.addEventListener("loadedmetadata", requestRender);
     window.addEventListener("scroll", requestRender, { passive: true });
     window.addEventListener("resize", resize);
 
     return () => {
       alive = false;
       cancelAnimationFrame(animationFrame);
-      ambientVideo.removeEventListener("loadedmetadata", requestRender);
       window.removeEventListener("scroll", requestRender);
       window.removeEventListener("resize", resize);
-      framesRef.current = [];
+      for (const image of loadedFrames.values()) {
+        image.onload = null;
+        image.src = "";
+      }
+      loadedFrames.clear();
     };
   }, []);
 
   return (
     <section ref={sectionRef} className={styles.section} data-hero>
-      <div className={styles.stage}>
-        <video
-          ref={ambientVideoRef}
-          className={styles.ambient}
-          src="/media/intro-6-ambient.mp4"
-          preload="auto"
-          muted
-          playsInline
-          aria-hidden="true"
-        />
+      <div className={styles.stage} data-hero-stage>
         <canvas
           ref={canvasRef}
           className={styles.video}
           aria-label="Celesnity automated factory journey"
           role="img"
         />
-
-        <div className={styles.scrim} aria-hidden="true" />
 
         <div
           className={`${styles.loader} ${ready ? styles.loaderReady : ""}`}

@@ -1,0 +1,197 @@
+/* ============================================================
+   Capabilities — auto-advancing image carousel. The centred panel is enlarged
+   and opaque; neighbours peek at reduced scale/opacity. Motion in Capabilities.tsx.
+   ============================================================ */
+
+.section {
+  position: relative;
+  min-height: 100svh; /* full-viewport section */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* content centred vertically as one group */
+  padding: calc(var(--header-h, 68px) + 2vh) 0 clamp(80px, 13vh, 170px);
+  background: var(--bg-base);
+  overflow: hidden;
+}
+
+/* Dark: flat --bg-base. Light (Daybreak): lavender. */
+:global([data-theme="light"]) .section {
+  background: var(--lavender-mist);
+}
+
+.head {
+  padding-inline: clamp(20px, 5vw, 48px);
+  text-align: center;
+  /* Equal gaps: heading -> title -> images (same as .activeTitle margin). */
+  margin-bottom: clamp(24px, 4vh, 44px);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Vertical room so the enlarged centre image (scale 1.12) isn't clipped. */
+  padding-block: clamp(24px, 5vh, 60px);
+}
+
+/* The sliding row of panels. */
+.track {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 24px);
+  will-change: transform;
+  transition: transform 700ms var(--ease);
+}
+
+/* Each image panel — a clickable 16:9 tile. Off-centre tiles shrink and dim. */
+.panel {
+  position: relative;
+  /* Base size = the CENTRE (active) size, so the active renders at full
+     resolution (scale 1, sharp); neighbours are scaled DOWN (downscaling a
+     texture stays crisp, unlike scaling the active up which blurs). */
+  flex: 0 0 clamp(300px, 62vw, 850px);
+  aspect-ratio: 16 / 9;
+  max-height: 66vh;
+  padding: 0;
+  border-radius: var(--radius-xl, 28px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background-color: var(--surface-hover, var(--surface));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  /* Promote to its own GPU layer so the scale/opacity animate without repaint. */
+  transform: translateZ(0) scale(0.64);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  transition:
+    opacity 700ms var(--ease),
+    transform 700ms var(--ease);
+}
+
+/* Centre image sits at full size (scale 1 = full resolution, no blur). */
+.panel[data-active="true"] {
+  opacity: 1;
+  transform: translateZ(0) scale(1);
+  z-index: 2;
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+/* Placeholder tiles (no image) show their number. */
+.panelNum {
+  position: absolute;
+  left: clamp(20px, 3vw, 40px);
+  bottom: clamp(16px, 2.5vw, 32px);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(40px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  opacity: 0.16;
+}
+
+/* Active image's title, re-mounted on change so it fades in. */
+.activeTitle {
+  margin: 0 auto clamp(24px, 4vh, 44px);
+  max-width: 90%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: clamp(22px, 2.8vw, 32px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--text-primary);
+  animation: fadeUp var(--dur-base) var(--ease);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dots — one small brand-gradient accent for the active. */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: clamp(20px, 4vh, 36px);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  cursor: pointer;
+  transition:
+    background var(--dur-base) var(--ease),
+    width var(--dur-base) var(--ease);
+}
+
+.dot[data-active="true"] {
+  width: 22px;
+  background: var(--gradient-brand);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .panel,
+  .activeTitle,
+  .dot {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Wide, short desktops (16:10 and 16:9): keep the centre image large, only cap
+   its height so the whole group still fits without cropping. */
+@media (min-width: 861px) and (min-aspect-ratio: 16 / 10) {
+  .panel {
+    max-height: 58vh;
+  }
+}
+
+@media (min-width: 861px) and (min-aspect-ratio: 16 / 9) {
+  .panel {
+    max-height: 52vh;
+  }
+}
+
+@media (max-width: 860px) {
+  .panel {
+    flex-basis: 82vw;
+  }
+  .sectionTitle {
+    font-size: clamp(26px, 6.5vw, 40px);
+  }
+}
