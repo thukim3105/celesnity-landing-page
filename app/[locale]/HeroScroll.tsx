@@ -15,7 +15,7 @@ export function HeroScroll() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
-  const copyRegionRef = useRef<HTMLDivElement>(null);
+  const copyFrameRef = useRef<HTMLDivElement>(null);
   const framesRef = useRef(new Map<number, HTMLImageElement>());
   const drawnFrameRef = useRef(-1);
   const [ready, setReady] = useState(false);
@@ -120,13 +120,14 @@ export function HeroScroll() {
         );
       }
 
-      if (copyRegionRef.current) {
-        const enter = Math.max(0, Math.min(1, (progress - 0.04) / 0.1));
-        const leave = Math.max(0, Math.min(1, (0.88 - progress) / 0.1));
+      if (copyFrameRef.current) {
+        const enter = Math.max(0, Math.min(1, (progress - 0.06) / 0.08));
+        const leave = Math.max(0, Math.min(1, (0.9 - progress) / 0.1));
         const visibility = enter * leave;
-        copyRegionRef.current.style.opacity = String(visibility);
-        copyRegionRef.current.style.transform = `translate3d(${(1 - enter) * -24}px, 0, 0)`;
+        copyFrameRef.current.style.opacity = String(visibility);
+        copyFrameRef.current.style.transform = `translate3d(-50%, ${(1 - enter) * 18}px, 0)`;
       }
+
     };
 
     const requestRender = () => {
@@ -180,17 +181,17 @@ export function HeroScroll() {
           </span>
         </div>
 
-        <div
-          ref={copyRegionRef}
-          className={styles.copyRegion}
-          data-hero-copy-region
-        >
-          <div className={styles.copySlot}>{/* Add hero copy here. */}</div>
-        </div>
-
         <div ref={cueRef} className={styles.scrollCue} aria-hidden="true">
           <span>Scroll to explore</span>
           <i />
+        </div>
+
+        <div
+          ref={copyFrameRef}
+          className={styles.scrollCopyFrame}
+          data-hero-copy-frame
+        >
+          {/* Add scroll copy here. */}
         </div>
       </div>
     </section>

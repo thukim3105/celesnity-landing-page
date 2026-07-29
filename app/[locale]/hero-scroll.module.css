@@ -69,11 +69,10 @@
 .scrollCue {
   position: absolute;
   left: 50%;
-  bottom: clamp(36px, 6svh, 64px);
+  bottom: clamp(92px, 13svh, 132px);
   display: grid;
   justify-items: center;
   gap: var(--space-3);
-  color: var(--cloud-white);
   font-size: var(--fs-caption);
   font-weight: var(--fw-medium);
   letter-spacing: 0.12em;
@@ -85,32 +84,31 @@
   z-index: 4;
 }
 
-.copyRegion {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: min(52vw, 760px);
-  display: flex;
-  align-items: center;
-  padding:
-    clamp(var(--space-20), 13svh, 132px)
-    clamp(var(--space-6), 7vw, 112px);
-  pointer-events: none;
-  opacity: 0;
-  transform: translate3d(-24px, 0, 0);
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--bg-base) 88%, transparent) 0%,
-    color-mix(in srgb, var(--bg-base) 62%, transparent) 58%,
-    transparent 100%
-  );
-  transition: opacity var(--dur-fast) linear;
-  will-change: opacity, transform;
-  z-index: 3;
+.scrollCue span {
+  color: var(--cloud-white);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
 }
 
-.copySlot {
-  width: min(100%, 560px);
-  min-height: clamp(180px, 32svh, 340px);
+.scrollCopyFrame {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(72px, 10svh, 108px);
+  width: min(calc(100vw - (var(--space-6) * 2)), 380px);
+  min-height: clamp(96px, 14svh, 124px);
+  padding: var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  background:
+    var(--daybreak-wash) padding-box,
+    var(--daybreak-gradient) border-box;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-50%, 18px, 0);
+  transition: opacity var(--dur-fast) linear;
+  will-change: opacity, transform;
+  z-index: 4;
 }
 
 :global([data-theme="light"]) .section,
@@ -123,7 +121,7 @@
   width: 1px;
   height: 34px;
   overflow: hidden;
-  background: color-mix(in srgb, var(--cloud-white) 28%, transparent);
+  background: var(--cloud-white);
 }
 
 .scrollCue i::after {
@@ -173,26 +171,15 @@
   }
 
   .scrollCue {
-    bottom: 46px;
+    bottom: 88px;
     font-size: 10px;
   }
 
-  .copyRegion {
-    inset: auto 0 0;
-    width: 100%;
-    min-height: 52svh;
-    align-items: flex-end;
-    padding: var(--space-8) var(--space-6) clamp(84px, 13svh, 116px);
-    background: linear-gradient(
-      0deg,
-      color-mix(in srgb, var(--bg-base) 90%, transparent) 0%,
-      color-mix(in srgb, var(--bg-base) 58%, transparent) 62%,
-      transparent 100%
-    );
-  }
-
-  .copySlot {
-    min-height: 148px;
+  .scrollCopyFrame {
+    bottom: 68px;
+    width: min(calc(100vw - (var(--space-5) * 2)), 300px);
+    min-height: 92px;
+    padding: var(--space-4);
   }
 }
 
@@ -210,7 +197,8 @@
     display: none;
   }
 
-  .copyRegion {
+  .scrollCopyFrame {
     display: none;
   }
+
 }
