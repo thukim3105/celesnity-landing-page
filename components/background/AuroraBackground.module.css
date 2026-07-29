@@ -1,0 +1,131 @@
+/* ============================================================
+   Reusable aurora background (Brand Kit "Cover"). Host must be
+   position:relative + isolation:isolate; this layer sits at z-index -1 behind
+   the host's content. Shared by the CTA and the content sections.
+   ============================================================ */
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Fade the whole aurora in at the top and out at the bottom so each section
+     blends into the continuous page background above and below — no hard seam. */
+  -webkit-mask: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 16%,
+    #000 84%,
+    transparent 100%
+  );
+  mask: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 16%,
+    #000 84%,
+    transparent 100%
+  );
+}
+
+.bgBase {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(168deg, #080c2c 0%, #06081b 56%, var(--cosmic-black) 100%);
+}
+
+.streaks {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.streak1,
+.streak2,
+.streak3 {
+  position: absolute;
+  left: -26%;
+  width: 152%;
+}
+
+/* top streak: cobalt -> violet */
+.streak1 {
+  top: 4%;
+  height: 260px;
+  transform: rotate(-14deg);
+  filter: blur(72px);
+  opacity: 0.72;
+  background: linear-gradient(
+    90deg,
+    rgba(45, 68, 224, 0) 0%,
+    var(--cobalt-blue) 36%,
+    var(--violet) 72%,
+    rgba(110, 31, 198, 0) 100%
+  );
+}
+
+/* middle streak: violet -> nebula magenta */
+.streak2 {
+  top: 33%;
+  left: -22%;
+  height: 210px;
+  transform: rotate(-9deg);
+  filter: blur(84px);
+  opacity: 0.66;
+  background: linear-gradient(
+    90deg,
+    rgba(110, 31, 198, 0) 0%,
+    var(--violet) 30%,
+    #b14fd0 66%,
+    rgba(177, 79, 208, 0) 100%
+  );
+}
+
+/* bottom streak: deep blue -> violet */
+.streak3 {
+  bottom: 6%;
+  height: 200px;
+  transform: rotate(-12deg);
+  filter: blur(96px);
+  opacity: 0.4;
+  background: linear-gradient(
+    90deg,
+    rgba(45, 68, 224, 0) 0%,
+    #2742b6 42%,
+    var(--violet) 76%,
+    rgba(110, 31, 198, 0) 100%
+  );
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 6, 15, 0.12) 0%,
+    rgba(5, 6, 15, 0) 32%,
+    rgba(5, 6, 15, 0.5) 100%
+  );
+}
+
+/* ---- Light mode (Daybreak): cloud-white base with two soft diagonal tints;
+   no blurred streaks or dark vignette (those are dark-cover only). ---- */
+:global([data-theme="light"]) .bgBase {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(45, 68, 224, 0.16) 0%,
+      rgba(248, 249, 254, 0) 46%
+    ),
+    linear-gradient(
+      330deg,
+      rgba(135, 57, 224, 0.18) 0%,
+      rgba(188, 103, 213, 0.1) 26%,
+      rgba(248, 249, 254, 0) 54%
+    ),
+    var(--lavender-mist);
+}
+
+:global([data-theme="light"]) .streaks,
+:global([data-theme="light"]) .vignette {
+  display: none;
+}

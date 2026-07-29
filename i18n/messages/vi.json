@@ -1,1 +1,133 @@
-{}
+{
+  "Meta": {
+    "homeTitle": "Celesnity - Minder AI",
+    "homeDescription": "Celesnity là công ty AI. Vươn tới những vì sao cùng Minder AI và hơn thế nữa.",
+    "aboutTitle": "Về chúng tôi - Celesnity",
+    "aboutDescription": "Celesnity là công ty AI xây dựng Minder AI."
+  },
+  "Nav": {
+    "minderAI": "Minder AI",
+    "solution": "Giải pháp",
+    "resources": "Tài nguyên",
+    "about": "Về chúng tôi"
+  },
+  "Header": {
+    "brandHome": "Celesnity trang chủ",
+    "primaryNav": "Điều hướng chính",
+    "openMenu": "Mở menu",
+    "menu": "Menu",
+    "closeMenu": "Đóng menu"
+  },
+  "LanguageSwitcher": {
+    "label": "Chọn ngôn ngữ"
+  },
+  "ThemeToggle": {
+    "label": "Chuyển giữa giao diện tối và sáng"
+  },
+  "Hero": {
+    "heading": "Minder AI",
+    "leadLine1": "Tăng năng suất lao động, ghi lại mọi thao tác thành dữ liệu",
+    "leadLine2": "và giúp toàn bộ vận hành có thể tìm kiếm tức thì.",
+    "cta": "Yêu cầu demo"
+  },
+  "HeroLabels": {
+    "codeLabel": "Mã hàng",
+    "qtyLabel": "Số lượng",
+    "boxes": [
+      { "name": "Vòng bi gốm 6204", "code": "MHX-204817", "qty": "1.200" },
+      { "name": "Thanh đồng A2", "code": "MHX-330052", "qty": "640" },
+      { "name": "Hạt nhựa PET", "code": "MHX-119043", "qty": "3.000" },
+      { "name": "Găng tay nitrile M", "code": "MHX-778120", "qty": "5.000" }
+    ]
+  },
+  "WasteCounter": {
+    "eyebrow": "Thời gian nhập liệu",
+    "caption": "nhập tay, mỗi thùng"
+  },
+  "HeroOutro": {
+    "message": "Việc nhập liệu tốn thời gian, gây giảm hiệu suất làm việc…",
+    "cta": "Dùng thử Minder AI"
+  },
+  "HeroScene2": {
+    "line": "Đang cài đặt phần cứng…"
+  },
+  "HeroScene3": {
+    "line": "Đang cấu hình…"
+  },
+  "HeroVoice": {
+    "hint": "Ấn giữ 1 giây",
+    "processing": "Đang xử lý…",
+    "scrollHint": "Scroll để khám phá",
+    "nameLabel": "Tên hàng",
+    "codeLabel": "Mã hàng",
+    "qtyLabel": "Số lượng"
+  },
+  "HowItWorks": {
+    "headingLine1": "Cài đặt dễ dàng,",
+    "headingLine2": "sử dụng đơn giản.",
+    "steps": [
+      {
+        "title": "Lắp đặt phần cứng",
+        "points": [
+          "Lắp đặt Minder AI tại khu vực làm việc",
+          "Kỹ sư Celesnity triển khai và cấu hình hệ thống tại chỗ",
+          "Thu thập thông tin vận hành riêng của nhà máy"
+        ]
+      },
+      {
+        "title": "Cấu hình phần mềm",
+        "points": [
+          "Kết nối Minder AI với các quy trình hiện có",
+          "Thiết lập vai trò và quyền của người dùng",
+          "Tùy chỉnh thuật ngữ, quy trình và các giai đoạn vận hành"
+        ]
+      },
+      {
+        "title": "Bắt đầu dùng Minder AI",
+        "points": [
+          "Công nhân đăng nhập và tương tác bằng lệnh giọng nói",
+          "AI hỗ trợ vận hành hằng ngày ngay lập tức",
+          "Liên tục học hỏi và tối ưu từ quá trình sử dụng"
+        ]
+      }
+    ]
+  },
+  "Capabilities": {
+    "sectionTitle": "Nhập bằng giọng nói không phải tính năng duy nhất",
+    "items": [
+      "Đào tạo nhân viên mới nhanh chóng",
+      "Phát hiện lỗi trong quy trình",
+      "Tự động ghi lại dữ liệu sản xuất",
+      "Báo cáo theo yêu cầu",
+      "Lập lịch",
+      "Hỏi bất cứ điều gì về vận hành bằng ngôn ngữ tự nhiên"
+    ]
+  },
+  "CTA": {
+    "heading": "Cùng trò chuyện",
+    "lead": "Khi mỗi phút dừng máy đều ảnh hưởng đến lợi nhuận,<br></br>và bạn cần một cách tốt hơn để tăng năng suất và giảm lãng phí.",
+    "thanks": "Cảm ơn bạn, chúng tôi sẽ liên hệ trong thời gian ngắn.",
+    "emailLabel": "Email công việc",
+    "emailPlaceholder": "your@email.com",
+    "button": "Yêu cầu demo",
+    "emailUsPrefix": "Hoặc gửi email trực tiếp cho chúng tôi tại "
+  },
+  "Footer": {
+    "minderAI": "Minder AI",
+    "solution": "Giải pháp",
+    "manufacturing": "Sản xuất",
+    "logistics": "Hậu cần",
+    "resources": "Tài nguyên",
+    "blogs": "Bài viết",
+    "caseStudy": "Nghiên cứu điển hình",
+    "guides": "Hướng dẫn",
+    "glossary": "Thuật ngữ",
+    "about": "Về chúng tôi",
+    "copyright": "© 2026 Celesnity Ltd. Minder AI. Bảo lưu mọi quyền."
+  },
+  "About": {
+    "eyebrow": "Về chúng tôi",
+    "heading": "Vươn tới những vì sao.",
+    "lead": "Celesnity là công ty AI xây dựng Minder AI, biến sàn nhà máy thành dữ liệu có thể tìm kiếm và hành động, để các đội ngũ làm việc thông minh hơn, phát hiện lỗi sớm hơn và mở rộng quy mô mà không hỗn loạn."
+  }
+}
