@@ -34,7 +34,24 @@ export function Capabilities() {
 
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [mediaReady, setMediaReady] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setMediaReady(true);
+        observer.disconnect();
+      },
+      { rootMargin: "600px 0px" },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   // Slide the track so the active panel sits at the viewport centre.
   useEffect(() => {
@@ -61,6 +78,7 @@ export function Capabilities() {
   // Any active change (including a click) restarts the timer.
   useEffect(() => {
     if (
+      !mediaReady ||
       paused ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
@@ -68,10 +86,10 @@ export function Capabilities() {
     }
     const id = window.setTimeout(() => setActive((a) => (a + 1) % n), AUTO_MS);
     return () => clearTimeout(id);
-  }, [active, paused, n]);
+  }, [active, paused, n, mediaReady]);
 
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
       <div className={styles.head}>
         <h2 className={styles.sectionTitle}>{t("sectionTitle")}</h2>
       </div>
@@ -94,7 +112,9 @@ export function Capabilities() {
               data-panel
               data-active={i === active}
               style={
-                it.img ? { backgroundImage: `url("${it.img}")` } : undefined
+                mediaReady && it.img
+                  ? { backgroundImage: `url("${it.img}")` }
+                  : undefined
               }
               onClick={() => setActive(i)}
               aria-label={it.title}

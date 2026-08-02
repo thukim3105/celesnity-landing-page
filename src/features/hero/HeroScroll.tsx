@@ -9,10 +9,11 @@ const FRAME_STEP = 1;
 const FRAME_COUNT = Math.ceil(SOURCE_FRAME_COUNT / FRAME_STEP);
 const FRAME_WIDTH = 1920;
 const FRAME_HEIGHT = 1080;
-const PRELOAD_AHEAD = 28;
-const PRELOAD_BEHIND = 12;
-const RETAIN_RADIUS = 48;
-const STARTUP_FRAME_COUNT = 8;
+const PRELOAD_AHEAD = 12;
+const PRELOAD_BEHIND = 5;
+const RETAIN_RADIUS = 24;
+const STARTUP_FRAME_COUNT = 1;
+const PRELOAD_TRANSITION_PROGRESS = 0.35;
 const frameSource = (index: number) =>
   `/media/hero-section-4k-full-frames/frame_${String(index * FRAME_STEP + 1).padStart(3, "0")}.webp`;
 
@@ -178,6 +179,11 @@ export function HeroScroll() {
       if (scrimRef.current) {
         const fade = Math.max(0, Math.min(1, (progress - 0.68) / 0.32));
         scrimRef.current.style.opacity = String(fade * 0.38);
+      }
+      if (transitionProgress < PRELOAD_TRANSITION_PROGRESS) {
+        loadFrame(0, true);
+        if (drawnFrameRef.current !== 0) drawFrame(0);
+        return;
       }
       primeFrameWindow(target);
       if (target !== drawnFrameRef.current && !drawFrame(target)) {

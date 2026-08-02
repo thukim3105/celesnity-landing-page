@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/media/cinematic-industrial-frames/:path*",
+        source: "/media/:path*",
         headers: [
           {
             key: "Cache-Control",
