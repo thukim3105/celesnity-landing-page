@@ -53,3 +53,6 @@ node_modules/
 /*.glb
 /*.mp4
 /scratch/
+
+# Locked local Celesnity design-system reference
+/Celesnity Design System Gradient/
