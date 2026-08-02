@@ -4,8 +4,8 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
-import "../../Celesnity Design System Gradient/styles.css";
-import "../globals.css";
+import "@/styles/celesnity/styles.css";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Celesnity",
@@ -36,7 +36,7 @@ export default async function LocaleLayout({
           }}
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>

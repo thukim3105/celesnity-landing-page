@@ -1,0 +1,495 @@
+.section {
+  position: relative;
+  background: var(--bg-base);
+}
+
+.intro {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-24) var(--gutter) var(--space-16);
+  overflow-x: clip;
+  overflow-y: visible;
+  background: var(--bg-base);
+}
+
+.introInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.transitionShade {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: var(--bg-base);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+:global([data-theme="light"]) .transitionShade {
+  background: var(--text-primary);
+}
+
+.outerGlow,
+.innerGlow {
+  position: absolute;
+  pointer-events: none;
+}
+
+.outerGlow {
+  z-index: -2;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  background-size: 300% 100%;
+}
+
+.innerGlow {
+  border-radius: 50%;
+}
+
+.outerGlowLeft,
+.outerGlowRight {
+  top: 50%;
+  width: 420px;
+  height: 420px;
+  filter: blur(120px);
+  transform: translateY(-50%);
+}
+
+.outerGlowOverall {
+  inset: -180px;
+  background-position: center;
+  filter: blur(170px);
+  opacity: 0.14;
+}
+
+.outerGlowLeft {
+  left: -9rem;
+  background: radial-gradient(
+    circle,
+    var(--focus-ring) 0%,
+    color-mix(in srgb, var(--focus-ring) 58%, transparent) 42%,
+    transparent 72%
+  );
+  filter: blur(140px);
+  opacity: 0.4;
+}
+
+.outerGlowRight {
+  right: -9rem;
+  background-position: right center;
+  filter: blur(140px);
+  opacity: 0.35;
+}
+
+.outerGlowBottom {
+  bottom: -7rem;
+  left: 50%;
+  width: 620px;
+  height: 240px;
+  background-position: center;
+  filter: blur(150px);
+  opacity: 0.25;
+  transform: translateX(-50%);
+}
+
+.introCardBorder {
+  width: 100%;
+  padding: 1px;
+  border-radius: var(--radius-xl);
+  background: var(--gradient-brand);
+}
+
+.introCardBody {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 380px;
+  border-radius: calc(var(--radius-xl) - 1px);
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--text-primary) 4%, transparent),
+      color-mix(in srgb, var(--text-primary) 4%, transparent)
+    ),
+    var(--hero-bg);
+  box-shadow: inset 0 0 70px color-mix(in srgb, var(--focus-ring) 12%, transparent);
+}
+
+.innerGlowLeft,
+.innerGlowRight {
+  top: 50%;
+  width: 400px;
+  height: 400px;
+  filter: blur(105px);
+  transform: translateY(-50%);
+}
+
+.innerGlowLeft {
+  left: -90px;
+  background: var(--gradient-brand);
+  background-size: 300% 100%;
+  background-position: left center;
+  opacity: 0.28;
+}
+
+.innerGlowRight {
+  right: -90px;
+  background: var(--gradient-brand);
+  background-size: 300% 100%;
+  background-position: right center;
+  opacity: 0.25;
+}
+
+.innerGlowCenter {
+  left: 50%;
+  top: 50%;
+  width: min(560px, 76%);
+  height: 270px;
+  background: color-mix(in srgb, var(--focus-ring) 16%, transparent);
+  filter: blur(115px);
+  transform: translate(-50%, -50%);
+}
+
+.introCardContent {
+  position: relative;
+  z-index: 1;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(var(--space-10), 6vw, var(--space-16)) var(--space-8);
+  text-align: center;
+}
+
+:global([data-theme="light"]) .outerGlowLeft { opacity: 0.18; }
+:global([data-theme="light"]) .outerGlowRight { opacity: 0.16; }
+:global([data-theme="light"]) .outerGlowBottom { opacity: 0.1; }
+:global([data-theme="light"]) .outerGlowOverall { opacity: 0.1; }
+:global([data-theme="light"]) .innerGlowLeft { opacity: 0.14; }
+:global([data-theme="light"]) .innerGlowRight { opacity: 0.12; }
+:global([data-theme="light"]) .innerGlowCenter { opacity: 0.5; }
+
+:global([data-theme="light"]) .introCardBody {
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--surface) 10%, transparent),
+      color-mix(in srgb, var(--surface) 10%, transparent)
+    ),
+    var(--hero-bg);
+}
+
+:global([data-theme="light"]) .intro {
+  background:
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--focus-ring) 12%, transparent), transparent 32%),
+    radial-gradient(circle at 85% 75%, color-mix(in srgb, var(--focus-ring) 9%, transparent), transparent 34%),
+    var(--bg-base);
+}
+
+.introHeading {
+  max-width: 11ch;
+  margin: 0 auto;
+  color: var(--hero-text);
+  font-size: clamp(var(--fs-h1), 7vw, var(--fs-display));
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-tight);
+}
+
+.introLead {
+  max-width: 34ch;
+  margin: var(--space-6) auto 0;
+  color: color-mix(in srgb, var(--hero-text) 88%, transparent);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  white-space: pre-line;
+}
+
+.introCue {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--hero-lead);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.introCue::after {
+  content: "";
+  width: 1px;
+  height: 28px;
+  margin: var(--space-4) auto 0;
+  display: block;
+  background: var(--hero-lead);
+  animation: intro-cue-line 1.8s var(--ease-out) infinite alternate;
+}
+
+.sequence {
+  position: relative;
+  z-index: 1;
+  height: 280svh;
+  margin-top: -100dvh;
+  background: var(--bg-base);
+}
+
+.transitionMarker {
+  position: absolute;
+  top: 55dvh;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-base);
+}
+
+.video,
+.scrim,
+.loader {
+  position: absolute;
+  inset: 0;
+}
+
+.video {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.scrim {
+  z-index: 1;
+  pointer-events: none;
+  background: var(--cosmic-black);
+  opacity: 0;
+  will-change: opacity;
+}
+
+.videoVeil {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background: var(--bg-base);
+  opacity: 1;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+:global([data-theme="light"]) .videoVeil {
+  background: var(--text-primary);
+}
+
+.content {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: min(var(--container-max), calc(100% - (var(--gutter) * 2)));
+  margin-inline: auto;
+  pointer-events: none;
+}
+
+.chapter {
+  position: absolute;
+  top: auto;
+  bottom: clamp(80px, 10svh, 112px);
+  left: 0;
+  width: min(760px, calc(100% - 150px));
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    visibility var(--dur-slow) var(--ease-out);
+}
+
+.chapterActive {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+}
+
+.exampleChapter {
+  bottom: clamp(112px, 14svh, 152px);
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-5);
+  color: var(--starlight);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.heading {
+  max-width: 16ch;
+  margin: 0;
+  color: var(--cloud-white);
+  font-size: clamp(var(--fs-h1), 6vw, var(--fs-display));
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-tight);
+  text-wrap: balance;
+  text-shadow: 0 2px 22px var(--cosmic-black);
+}
+
+.lead {
+  max-width: 46ch;
+  margin: var(--space-6) 0 0;
+  color: var(--cloud-white);
+  font-size: clamp(var(--fs-body), 1.7vw, var(--fs-lead));
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+  white-space: pre-line;
+  text-shadow: 0 2px 18px var(--cosmic-black);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin-top: var(--space-8);
+  padding: 0 var(--space-8);
+  border-radius: var(--radius-pill);
+  color: var(--cloud-white);
+  background: var(--gradient-brand);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  pointer-events: auto;
+  transition:
+    filter var(--dur-med) var(--ease-out),
+    transform var(--dur-med) var(--ease-out);
+}
+
+.cta:hover { filter: brightness(1.1); }
+.cta:active { transform: scale(0.97); }
+.cta:focus-visible { outline: 0; box-shadow: var(--focus-shadow); }
+
+.chapterNav {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--space-10);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.chapterNav button {
+  width: 48px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--starlight) 24%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--starlight);
+  background: color-mix(in srgb, var(--bg-base) 46%, transparent);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-xs);
+  transition:
+    width var(--dur-med) var(--ease-out),
+    color var(--dur-med) var(--ease-out),
+    background var(--dur-med) var(--ease-out);
+}
+
+.chapterNav .navActive {
+  width: 72px;
+  border-color: transparent;
+  color: var(--cloud-white);
+  background: var(--gradient-brand);
+}
+
+.chapterNav button:focus-visible { outline: 0; box-shadow: var(--focus-shadow); }
+
+.markers {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  pointer-events: none;
+}
+
+.loader {
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  background: var(--bg-base);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--dur-slow) var(--ease-out), visibility var(--dur-slow) var(--ease-out);
+}
+
+.loaderReady { opacity: 0; visibility: hidden; pointer-events: none; }
+.loaderBar { width: 48px; height: 3px; overflow: hidden; border-radius: var(--radius-pill); background: var(--surface-card); }
+.loaderBar::after { content: ""; display: block; width: 56%; height: 100%; border-radius: inherit; background: var(--gradient-brand); animation: load 1s var(--ease-out) infinite alternate; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@keyframes load { from { transform: translateX(-58%); } to { transform: translateX(92%); } }
+
+@keyframes intro-cue-line {
+  from { opacity: 0.45; transform: translateY(-5px) scaleY(0.72); }
+  to { opacity: 1; transform: translateY(5px) scaleY(1); }
+}
+
+@media (max-width: 767px) {
+  .intro { padding: var(--space-20) var(--space-5) var(--space-10); }
+  .introCardBody, .introCardContent { min-height: 320px; }
+  .introCardContent { padding: var(--space-8) var(--space-6); }
+  .introHeading { font-size: clamp(42px, 13vw, 56px); }
+  .introLead { margin-top: var(--space-4); font-size: var(--fs-body); line-height: 1.55; }
+  .sequence { height: 250svh; margin-top: -100dvh; }
+  .content { width: calc(100% - (var(--space-5) * 2)); }
+  .chapter { top: auto; bottom: clamp(84px, 11svh, 116px); width: 100%; }
+  .exampleChapter { bottom: clamp(116px, 15svh, 148px); }
+  .heading { max-width: 12ch; font-size: clamp(42px, 13vw, 56px); }
+  .lead { max-width: 30ch; margin-top: var(--space-4); font-size: var(--fs-body); line-height: 1.55; }
+  .cta { margin-top: var(--space-5); }
+  .chapterNav { right: var(--space-5); bottom: var(--space-6); }
+  .chapterNav button { width: 42px; }
+  .chapterNav .navActive { width: 58px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sequence { height: 100dvh; margin-top: 0; }
+  .intro { position: relative; opacity: 1 !important; }
+  .transitionShade, .videoVeil { display: none; }
+  .introCue::after { animation: none; }
+  .chapter:not(:first-child), .chapterNav, .markers { display: none; }
+  .chapter:first-child { opacity: 1; visibility: visible; transform: none; }
+  .loaderBar::after { animation: none; }
+  .video { object-fit: cover; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .outerGlow, .innerGlow { opacity: 0.12; }
+  .introCardBody { background: var(--bg-base); }
+  .chapterNav button { background: var(--bg-base); backdrop-filter: none; }
+}
