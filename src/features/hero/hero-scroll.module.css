@@ -245,15 +245,6 @@
   background: var(--bg-base);
 }
 
-.transitionMarker {
-  position: absolute;
-  top: 55dvh;
-  left: 0;
-  width: 1px;
-  height: 1px;
-  pointer-events: none;
-}
-
 .stage {
   position: sticky;
   top: 0;

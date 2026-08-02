@@ -48,6 +48,7 @@ export function HeroScroll() {
     let alive = true;
     let animationFrame = 0;
     let previousTarget = 0;
+    let previousVideoTone: boolean | null = null;
 
     const getProgress = () => {
       const bounds = section.getBoundingClientRect();
@@ -137,6 +138,22 @@ export function HeroScroll() {
         0,
         Math.min(1, -sequenceTop / (window.innerHeight * 0.55)),
       );
+      const heroBounds = sectionRef.current
+        ?.closest<HTMLElement>("[data-hero]")
+        ?.getBoundingClientRect();
+      const useVideoTone =
+        transitionProgress >= 0.6 && (heroBounds?.bottom ?? 0) > 0;
+      if (useVideoTone !== previousVideoTone) {
+        document.documentElement.dataset.heroTone = useVideoTone
+          ? "video"
+          : "intro";
+        window.dispatchEvent(
+          new CustomEvent<boolean>("celesnity:hero-tone", {
+            detail: useVideoTone,
+          }),
+        );
+        previousVideoTone = useVideoTone;
+      }
       if (transitionShadeRef.current) {
         transitionShadeRef.current.style.opacity = String(
           Math.min(1, transitionProgress / 0.45),
@@ -215,6 +232,7 @@ export function HeroScroll() {
       cancelAnimationFrame(animationFrame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
+      delete document.documentElement.dataset.heroTone;
       for (const image of loadedFrames.values()) {
         image.onload = null;
         image.src = "";
@@ -261,7 +279,6 @@ export function HeroScroll() {
       </div>
 
       <div ref={sectionRef} className={styles.sequence}>
-        <span className={styles.transitionMarker} data-hero-color-trigger aria-hidden="true" />
         <div className={styles.stage} data-hero-stage>
         <canvas
           ref={canvasRef}
