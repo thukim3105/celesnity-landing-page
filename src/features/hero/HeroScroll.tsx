@@ -190,12 +190,17 @@ export function HeroScroll() {
         target = Math.round((progress / 0.64) * 58);
       } else if (progress <= 0.82) {
         target = Math.round(58 + ((progress - 0.64) / 0.18) * 34);
+      } else if (progress <= 0.9) {
+        target = Math.round(92 + ((progress - 0.82) / 0.08) * 32);
+      } else if (progress <= 0.96) {
+        target = Math.round(124 + ((progress - 0.9) / 0.06) * 20);
       } else {
-        target = Math.round(92 + ((progress - 0.82) / 0.18) * 52);
+        target = FRAME_COUNT - 1;
       }
       if (scrimRef.current) {
-        const fade = Math.max(0, Math.min(1, (progress - 0.68) / 0.32));
-        scrimRef.current.style.opacity = String(fade * 0.38);
+        const fadeIn = Math.max(0, Math.min(1, (progress - 0.68) / 0.12));
+        const fadeOut = Math.max(0, Math.min(1, (0.94 - progress) / 0.08));
+        scrimRef.current.style.opacity = String(fadeIn * fadeOut * 0.28);
       }
       if (transitionProgress < PRELOAD_TRANSITION_PROGRESS) {
         loadFrame(0, true);
@@ -241,7 +246,7 @@ export function HeroScroll() {
     };
   }, []);
 
-  const [intro] = t.raw("chapters") as {
+  const [intro, firstVideoChapter, secondVideoChapter] = t.raw("chapters") as {
     eyebrow: string;
     heading: string;
     lead: string;
@@ -273,7 +278,7 @@ export function HeroScroll() {
               </div>
             </div>
           </div>
-          <p className={styles.introCue}>Scroll to explore</p>
+          <p className={styles.introCue}>{t("scrollHint")}</p>
         </div>
         <div ref={transitionShadeRef} className={styles.transitionShade} aria-hidden="true" />
       </div>
@@ -306,14 +311,14 @@ export function HeroScroll() {
             className={`${styles.chapter} ${styles.exampleChapter} ${contentPhase === "example1" ? styles.chapterActive : ""}`}
             aria-hidden={contentPhase !== "example1"}
           >
-            <h2 className={styles.heading}>Example Text 1</h2>
+            <h2 className={styles.heading}>{firstVideoChapter.heading}</h2>
           </div>
 
           <div
             className={`${styles.chapter} ${styles.exampleChapter} ${contentPhase === "example2" ? styles.chapterActive : ""}`}
             aria-hidden={contentPhase !== "example2"}
           >
-            <h2 className={styles.heading}>Example Text 2</h2>
+            <h2 className={styles.heading}>{secondVideoChapter.heading}</h2>
           </div>
           </div>
         </div>

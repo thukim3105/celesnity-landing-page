@@ -32,9 +32,10 @@
     "videoLabel": "Minder AI hoạt động trong môi trường vận hành công nghiệp",
     "loading": "Đang tải thước phim",
     "ready": "Thước phim đã sẵn sàng",
+    "scrollHint": "Cuộn để khám phá",
     "chapterNavigation": "Khám phá Minder AI",
     "chapters": [
-      { "eyebrow": "", "heading": "Minder AI", "lead": "An AI expert\nfor every front-line\nworker." },
+      { "eyebrow": "", "heading": "Minder AI", "lead": "Chuyên gia AI cho mọi nhân viên tuyến đầu." },
       { "eyebrow": "Ghi nhận", "heading": "Công việc thành dữ liệu.", "lead": "Minder AI lắng nghe, sắp xếp và lưu lại những chi tiết thường bị bỏ sót." },
       { "eyebrow": "Hành động", "heading": "Câu trả lời đúng lúc.", "lead": "Hỏi về sản xuất, phát hiện lỗi sớm hơn và giữ mọi ca làm việc liền mạch." }
     ]
