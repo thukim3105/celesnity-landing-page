@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import styles from "./HowItWorks.module.css";
 
@@ -34,6 +34,22 @@ export function HowItWorks() {
   );
 
   const rootRef = useRef<HTMLElement>(null);
+  const [mediaReady, setMediaReady] = useState(false);
+
+  useEffect(() => {
+    const section = rootRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setMediaReady(true);
+        observer.disconnect();
+      },
+      { rootMargin: "700px 0px" },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -150,7 +166,7 @@ export function HowItWorks() {
                   className={styles.slide}
                   data-slide
                   style={
-                    s.img
+                    mediaReady && s.img
                       ? { backgroundImage: `url("${s.img}")` }
                       : undefined
                   }
@@ -172,7 +188,11 @@ export function HowItWorks() {
                 {s.img && (
                   <div
                     className={styles.stepMedia}
-                    style={{ backgroundImage: `url("${s.img}")` }}
+                    style={
+                      mediaReady
+                        ? { backgroundImage: `url("${s.img}")` }
+                        : undefined
+                    }
                     aria-hidden="true"
                   />
                 )}
