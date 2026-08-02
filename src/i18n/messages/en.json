@@ -32,6 +32,7 @@
     "videoLabel": "Minder AI working across an industrial operation",
     "loading": "Loading the film",
     "ready": "Film ready",
+    "scrollHint": "Scroll to explore",
     "chapterNavigation": "Explore Minder AI",
     "chapters": [
       { "eyebrow": "", "heading": "Minder AI", "lead": "An AI expert for every front-line worker." },
