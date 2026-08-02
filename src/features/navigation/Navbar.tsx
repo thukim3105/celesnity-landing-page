@@ -62,36 +62,17 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const heroColorTrigger = document.querySelector<HTMLElement>(
-      "[data-hero-color-trigger]",
-    );
-    const hero = document.querySelector<HTMLElement>("[data-hero]");
-    if (!heroColorTrigger || !hero) return;
-
     const frame = requestAnimationFrame(() => {
       setPageRoot(document.body);
+      setIsOverHero(document.documentElement.dataset.heroTone === "video");
     });
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const triggerTop = entry.boundingClientRect.top;
-        const viewportTop = entry.rootBounds?.top ?? 0;
-        setIsOverHero(triggerTop <= viewportTop);
-      },
-      {
-        rootMargin: "0px 0px -99% 0px",
-        threshold: 0,
-      },
-    );
-    observer.observe(heroColorTrigger);
-    const heroObserver = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) setIsOverHero(false);
-    });
-    heroObserver.observe(hero);
+    const handleHeroTone = (event: Event) => {
+      setIsOverHero((event as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener("celesnity:hero-tone", handleHeroTone);
     return () => {
       cancelAnimationFrame(frame);
-      observer.disconnect();
-      heroObserver.disconnect();
+      window.removeEventListener("celesnity:hero-tone", handleHeroTone);
     };
   }, []);
 
