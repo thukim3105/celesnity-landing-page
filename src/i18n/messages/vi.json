@@ -36,8 +36,8 @@
     "chapterNavigation": "Khám phá Minder AI",
     "chapters": [
       { "eyebrow": "", "heading": "Minder AI", "lead": "Chuyên gia AI cho mọi nhân viên tuyến đầu." },
-      { "eyebrow": "Ghi nhận", "heading": "Công việc thành dữ liệu.", "lead": "Minder AI lắng nghe, sắp xếp và lưu lại những chi tiết thường bị bỏ sót." },
-      { "eyebrow": "Hành động", "heading": "Câu trả lời đúng lúc.", "lead": "Hỏi về sản xuất, phát hiện lỗi sớm hơn và giữ mọi ca làm việc liền mạch." }
+      {"heading": "Công việc thành dữ liệu."},
+      {"heading": "Câu trả lời đúng lúc."}
     ]
   },
   "HeroLabels": {

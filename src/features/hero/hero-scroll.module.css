@@ -26,20 +26,6 @@
   gap: var(--space-8);
 }
 
-.transitionShade {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  background: var(--bg-base);
-  opacity: 0;
-  pointer-events: none;
-  will-change: opacity;
-}
-
-:global([data-theme="light"]) .transitionShade {
-  background: var(--text-primary);
-}
-
 .outerGlow,
 .innerGlow {
   position: absolute;
@@ -170,6 +156,7 @@
   justify-content: center;
   padding: clamp(var(--space-10), 6vw, var(--space-16)) var(--space-8);
   text-align: center;
+  transform: translateY(var(--space-4));
 }
 
 :global([data-theme="light"]) .outerGlowLeft { opacity: 0.18; }
@@ -268,6 +255,8 @@
   display: block;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
+  will-change: opacity;
 }
 
 .scrim {
@@ -276,20 +265,6 @@
   background: var(--cosmic-black);
   opacity: 0;
   will-change: opacity;
-}
-
-.videoVeil {
-  position: absolute;
-  z-index: 3;
-  inset: 0;
-  background: var(--bg-base);
-  opacity: 1;
-  pointer-events: none;
-  will-change: opacity;
-}
-
-:global([data-theme="light"]) .videoVeil {
-  background: var(--text-primary);
 }
 
 .content {
@@ -305,11 +280,12 @@
   position: absolute;
   top: auto;
   bottom: clamp(80px, 10svh, 112px);
-  left: 0;
+  left: 50%;
   width: min(760px, calc(100% - 150px));
+  text-align: center;
   opacity: 0;
   visibility: hidden;
-  transform: translate3d(0, 24px, 0);
+  transform: translate3d(-50%, 24px, 0);
   transition:
     opacity var(--dur-slow) var(--ease-out),
     transform var(--dur-slow) var(--ease-out),
@@ -319,11 +295,29 @@
 .chapterActive {
   opacity: 1;
   visibility: visible;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(-50%, 0, 0);
 }
 
 .exampleChapter {
-  bottom: clamp(112px, 14svh, 152px);
+  top: 80%;
+  bottom: auto;
+  transform: translate3d(-50%, calc(-50% + 24px), 0);
+}
+
+.exampleChapter.chapterActive {
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.transitionChapter {
+  top: 50%;
+  bottom: auto;
+  transform: translate3d(-50%, -50%, 0);
+  transition: none;
+  will-change: top;
+}
+
+.transitionChapter.chapterActive {
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .eyebrow {
@@ -338,7 +332,7 @@
 
 .heading {
   max-width: 16ch;
-  margin: 0;
+  margin: 0 auto;
   color: var(--cloud-white);
   font-size: clamp(var(--fs-h1), 6vw, var(--fs-display));
   font-weight: var(--fw-bold);
@@ -350,7 +344,7 @@
 
 .lead {
   max-width: 46ch;
-  margin: var(--space-6) 0 0;
+  margin: var(--space-6) auto 0;
   color: var(--cloud-white);
   font-size: clamp(var(--fs-body), 1.7vw, var(--fs-lead));
   font-weight: var(--fw-regular);
@@ -459,7 +453,8 @@
   .sequence { height: 250svh; margin-top: -100dvh; }
   .content { width: calc(100% - (var(--space-5) * 2)); }
   .chapter { top: auto; bottom: clamp(84px, 11svh, 116px); width: 100%; }
-  .exampleChapter { bottom: clamp(116px, 15svh, 148px); }
+  .exampleChapter { top: 80%; bottom: auto; }
+  .transitionChapter { top: 50%; bottom: auto; }
   .heading { max-width: 12ch; font-size: clamp(42px, 13vw, 56px); }
   .lead { max-width: 30ch; margin-top: var(--space-4); font-size: var(--fs-body); line-height: 1.55; }
   .cta { margin-top: var(--space-5); }
@@ -471,10 +466,9 @@
 @media (prefers-reduced-motion: reduce) {
   .sequence { height: 100dvh; margin-top: 0; }
   .intro { position: relative; opacity: 1 !important; }
-  .transitionShade, .videoVeil { display: none; }
   .introCue::after { animation: none; }
   .chapter:not(:first-child), .chapterNav, .markers { display: none; }
-  .chapter:first-child { opacity: 1; visibility: visible; transform: none; }
+  .chapter:first-child { opacity: 1; visibility: visible; transform: translate3d(-50%, -50%, 0); }
   .loaderBar::after { animation: none; }
   .video { object-fit: cover; }
 }

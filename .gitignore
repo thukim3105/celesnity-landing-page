@@ -54,5 +54,12 @@ node_modules/
 /*.mp4
 /scratch/
 
+# Local hero render exports; only the selected sequence belongs in the app
+/public/media/intro-4k-frames/
+/public/media/intro-4k-frames-full/
+/public/media/intro-scroll-frames/
+/public/media/cinematic-industrial-commercial.mp4
+/public/media/intro-4k-full.mp4
+
 # Locked local Celesnity design-system reference
 /Celesnity Design System Gradient/

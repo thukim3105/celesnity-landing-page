@@ -9,27 +9,55 @@ const FRAME_STEP = 1;
 const FRAME_COUNT = Math.ceil(SOURCE_FRAME_COUNT / FRAME_STEP);
 const FRAME_WIDTH = 1920;
 const FRAME_HEIGHT = 1080;
-const PRELOAD_AHEAD = 12;
-const PRELOAD_BEHIND = 5;
-const RETAIN_RADIUS = 24;
-const STARTUP_FRAME_COUNT = 1;
+const PRELOAD_AHEAD = 16;
+const PRELOAD_BEHIND = 6;
+const RETAIN_RADIUS = 20;
+const STARTUP_FRAME_COUNT = 8;
 const PRELOAD_TRANSITION_PROGRESS = 0.35;
+const ALERT_FRAME_INDEX = 4;
+const CHECK_FRAME_INDEX = 19;
+const DIGITAL_FRAME_INDEX = 34;
+const FRAME_TIMELINE = [
+  { progress: 0, frame: 0 },
+  { progress: 0.06, frame: 4 },
+  { progress: 0.24, frame: 19 },
+  { progress: 0.42, frame: 34 },
+  { progress: 0.64, frame: 70 },
+  { progress: 0.72, frame: 92 },
+  { progress: 0.78, frame: 112 },
+  { progress: 0.98, frame: 140 },
+  { progress: 1, frame: FRAME_COUNT - 1 },
+] as const;
 const frameSource = (index: number) =>
-  `/media/hero-section-4k-full-frames/frame_${String(index * FRAME_STEP + 1).padStart(3, "0")}.webp`;
+  `/media/0805-7-frames/frame_${String(index * FRAME_STEP + 1).padStart(3, "0")}.webp`;
 
-type ContentPhase = "example1" | "hidden" | "example2";
+function frameAtProgress(progress: number) {
+  for (let index = 1; index < FRAME_TIMELINE.length; index++) {
+    const end = FRAME_TIMELINE[index];
+    if (progress > end.progress) continue;
+    const start = FRAME_TIMELINE[index - 1];
+    const segmentProgress =
+      (progress - start.progress) / (end.progress - start.progress);
+    return Math.round(
+      start.frame + segmentProgress * (end.frame - start.frame),
+    );
+  }
+  return FRAME_COUNT - 1;
+}
+
+type ContentPhase = "title" | "example1" | "example2" | "hidden";
 
 export function HeroScroll() {
   const t = useTranslations("Hero");
   const introRef = useRef<HTMLDivElement>(null);
+  const introHeadingRef = useRef<HTMLHeadingElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
-  const transitionShadeRef = useRef<HTMLDivElement>(null);
-  const videoVeilRef = useRef<HTMLDivElement>(null);
+  const transitionTitleRef = useRef<HTMLDivElement>(null);
   const framesRef = useRef(new Map<number, HTMLImageElement>());
   const drawnFrameRef = useRef(-1);
-  const [contentPhase, setContentPhase] = useState<ContentPhase>("example1");
+  const [contentPhase, setContentPhase] = useState<ContentPhase>("title");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -154,49 +182,44 @@ export function HeroScroll() {
         );
         previousVideoTone = useVideoTone;
       }
-      if (transitionShadeRef.current) {
-        transitionShadeRef.current.style.opacity = String(
-          Math.min(1, transitionProgress / 0.45),
-        );
-      }
       if (introRef.current) {
-        const introFade = Math.max(
-          0,
-          Math.min(1, (transitionProgress - 0.45) / 0.15),
-        );
-        introRef.current.style.opacity = String(1 - introFade);
-        introRef.current.style.pointerEvents = introFade === 1 ? "none" : "auto";
+        const showIntro = transitionProgress < 0.6;
+        introRef.current.style.visibility = showIntro ? "visible" : "hidden";
+        introRef.current.style.pointerEvents = showIntro ? "auto" : "none";
       }
-      if (videoVeilRef.current) {
-        const videoReveal = Math.max(
+      if (transitionTitleRef.current) {
+        const titleTravel = Math.max(
           0,
           Math.min(1, (transitionProgress - 0.6) / 0.4),
         );
-        videoVeilRef.current.style.opacity = String(1 - videoReveal);
+        const introTitleBounds = introHeadingRef.current?.getBoundingClientRect();
+        const titleStart = introTitleBounds
+          ? ((introTitleBounds.top + introTitleBounds.height / 2) /
+              window.innerHeight) *
+            100
+          : 50;
+        transitionTitleRef.current.style.top = `${titleStart + titleTravel * (80 - titleStart)}%`;
+      }
+      const videoReveal = reduceMotion
+        ? 1
+        : Math.max(0, Math.min(1, (transitionProgress - 0.6) / 0.4));
+      const activeCanvas = canvasRef.current;
+      if (activeCanvas) {
+        activeCanvas.style.opacity = String(videoReveal);
       }
       const progress = reduceMotion ? 0 : getProgress();
-      const beat = Math.min(8, Math.floor(progress / 0.08));
+      const target = frameAtProgress(progress);
       const nextPhase: ContentPhase =
-        beat === 4 || beat === 8
-          ? "hidden"
-          : beat < 4
+        target < ALERT_FRAME_INDEX
+          ? "title"
+          : target < CHECK_FRAME_INDEX
             ? "example1"
-            : "example2";
+            : target < DIGITAL_FRAME_INDEX
+              ? "example2"
+              : "hidden";
       setContentPhase((current) =>
         current === nextPhase ? current : nextPhase,
       );
-      let target: number;
-      if (progress <= 0.64) {
-        target = Math.round((progress / 0.64) * 58);
-      } else if (progress <= 0.82) {
-        target = Math.round(58 + ((progress - 0.64) / 0.18) * 34);
-      } else if (progress <= 0.9) {
-        target = Math.round(92 + ((progress - 0.82) / 0.08) * 32);
-      } else if (progress <= 0.96) {
-        target = Math.round(124 + ((progress - 0.9) / 0.06) * 20);
-      } else {
-        target = FRAME_COUNT - 1;
-      }
       if (scrimRef.current) {
         const fadeIn = Math.max(0, Math.min(1, (progress - 0.68) / 0.12));
         const fadeOut = Math.max(0, Math.min(1, (0.94 - progress) / 0.08));
@@ -269,7 +292,9 @@ export function HeroScroll() {
                 <div className={`${styles.innerGlow} ${styles.innerGlowCenter}`} aria-hidden="true" />
 
                 <div className={styles.introCardContent}>
-                  <h1 className={styles.introHeading}>{intro.heading}</h1>
+                  <h1 ref={introHeadingRef} className={styles.introHeading}>
+                    {intro.heading}
+                  </h1>
                   <p className={styles.introLead}>{intro.lead}</p>
                   <a className={styles.cta} href="#section-4">
                     {t("cta")}
@@ -280,7 +305,6 @@ export function HeroScroll() {
           </div>
           <p className={styles.introCue}>{t("scrollHint")}</p>
         </div>
-        <div ref={transitionShadeRef} className={styles.transitionShade} aria-hidden="true" />
       </div>
 
       <div ref={sectionRef} className={styles.sequence}>
@@ -293,7 +317,6 @@ export function HeroScroll() {
         />
 
         <div ref={scrimRef} className={styles.scrim} aria-hidden="true" />
-        <div ref={videoVeilRef} className={styles.videoVeil} aria-hidden="true" />
 
         <div
           className={`${styles.loader} ${ready ? styles.loaderReady : ""}`}
@@ -308,18 +331,35 @@ export function HeroScroll() {
 
           <div className={styles.content} aria-live="polite">
           <div
+            ref={transitionTitleRef}
+            className={`${styles.chapter} ${styles.transitionChapter} ${contentPhase === "title" ? styles.chapterActive : ""}`}
+            aria-hidden={contentPhase !== "title"}
+          >
+            <h2 className={styles.heading}>{intro.heading}</h2>
+          </div>
+
+          <div
             className={`${styles.chapter} ${styles.exampleChapter} ${contentPhase === "example1" ? styles.chapterActive : ""}`}
             aria-hidden={contentPhase !== "example1"}
           >
+            {firstVideoChapter.eyebrow ? (
+              <p className={styles.eyebrow}>{firstVideoChapter.eyebrow}</p>
+            ) : null}
             <h2 className={styles.heading}>{firstVideoChapter.heading}</h2>
+            <p className={styles.lead}>{firstVideoChapter.lead}</p>
           </div>
 
           <div
             className={`${styles.chapter} ${styles.exampleChapter} ${contentPhase === "example2" ? styles.chapterActive : ""}`}
             aria-hidden={contentPhase !== "example2"}
           >
+            {secondVideoChapter.eyebrow ? (
+              <p className={styles.eyebrow}>{secondVideoChapter.eyebrow}</p>
+            ) : null}
             <h2 className={styles.heading}>{secondVideoChapter.heading}</h2>
+            <p className={styles.lead}>{secondVideoChapter.lead}</p>
           </div>
+
           </div>
         </div>
       </div>
