@@ -36,8 +36,8 @@
     "chapterNavigation": "Explore Minder AI",
     "chapters": [
       { "eyebrow": "", "heading": "Minder AI", "lead": "An AI expert for every front-line worker." },
-      { "eyebrow": "Capture", "heading": "Work becomes data.", "lead": "Minder AI listens, structures and records the details that usually disappear." },
-      { "eyebrow": "Act", "heading": "Answers, right when needed.", "lead": "Ask about production, spot errors sooner and keep every shift moving." }
+      {"heading": "Work becomes data."},
+      {"heading": "Answers in the flow of work."}
     ]
   },
   "HeroLabels": {
