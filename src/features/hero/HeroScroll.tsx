@@ -9,10 +9,11 @@ const FRAME_STEP = 1;
 const FRAME_COUNT = Math.ceil(SOURCE_FRAME_COUNT / FRAME_STEP);
 const FRAME_WIDTH = 1920;
 const FRAME_HEIGHT = 1080;
-const PRELOAD_AHEAD = 16;
-const PRELOAD_BEHIND = 6;
-const RETAIN_RADIUS = 20;
-const STARTUP_FRAME_COUNT = 8;
+const PRELOAD_AHEAD = 8;
+const PRELOAD_BEHIND = 3;
+const MAX_PRELOAD_AHEAD = 12;
+const MAX_DECODED_FRAMES = 16;
+const STARTUP_FRAME_COUNT = 1;
 const PRELOAD_TRANSITION_PROGRESS = 0.35;
 const ALERT_FRAME_INDEX = 4;
 const CHECK_FRAME_INDEX = 19;
@@ -64,6 +65,7 @@ export function HeroScroll() {
     const section = sectionRef.current;
     const canvas = canvasRef.current;
     if (!section || !canvas) return;
+    const activeSection = section;
 
     const context = canvas.getContext("2d");
     if (!context) return;
@@ -73,21 +75,24 @@ export function HeroScroll() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const startupFrames = new Set<number>();
+    const pendingFrames = new Map<number, HTMLImageElement>();
     let alive = true;
     let animationFrame = 0;
     let previousTarget = 0;
+    let previousContentPhase: ContentPhase = "title";
     let previousVideoTone: boolean | null = null;
+    let isNearViewport = true;
+    let transitionTitleStart = 50;
 
-    const getProgress = () => {
-      const bounds = section.getBoundingClientRect();
-      const distance = section.offsetHeight - window.innerHeight;
+    const getProgress = (sectionTop: number) => {
+      const distance = activeSection.offsetHeight - window.innerHeight;
       const transitionDistance = window.innerHeight * 0.55;
       const sequenceDistance = distance - transitionDistance;
       return sequenceDistance <= 0
         ? 0
         : Math.max(
             0,
-            Math.min(1, (-bounds.top - transitionDistance) / sequenceDistance),
+            Math.min(1, (-sectionTop - transitionDistance) / sequenceDistance),
           );
     };
 
@@ -118,59 +123,104 @@ export function HeroScroll() {
       if (!animationFrame) animationFrame = requestAnimationFrame(render);
     };
 
+    const releaseImage = (image: HTMLImageElement) => {
+      image.onload = null;
+      image.onerror = null;
+      image.src = "";
+    };
+
+    const pruneDecodedFrames = (target: number) => {
+      if (loadedFrames.size <= MAX_DECODED_FRAMES) return;
+      const evictionCandidates = [...loadedFrames.keys()]
+        .filter((index) => index !== 0 && index !== target)
+        .sort(
+          (left, right) =>
+            Math.abs(right - target) - Math.abs(left - target),
+        );
+      while (
+        loadedFrames.size > MAX_DECODED_FRAMES &&
+        evictionCandidates.length > 0
+      ) {
+        const index = evictionCandidates.shift();
+        if (index === undefined) break;
+        const image = loadedFrames.get(index);
+        if (!image) continue;
+        releaseImage(image);
+        loadedFrames.delete(index);
+      }
+    };
+
     const loadFrame = (index: number, priority = false) => {
-      if (index < 0 || index >= FRAME_COUNT || loadedFrames.has(index)) return;
+      if (
+        index < 0 ||
+        index >= FRAME_COUNT ||
+        loadedFrames.has(index) ||
+        pendingFrames.has(index)
+      ) {
+        return;
+      }
       const image = new Image();
       image.decoding = "async";
       image.fetchPriority = priority ? "high" : "low";
-      loadedFrames.set(index, image);
-      image.onload = () => {
-        if (!alive || loadedFrames.get(index) !== image) return;
+      pendingFrames.set(index, image);
+
+      const markDecoded = () => {
+        if (!alive || pendingFrames.get(index) !== image) return;
+        pendingFrames.delete(index);
+        loadedFrames.set(index, image);
         if (index < STARTUP_FRAME_COUNT) {
           startupFrames.add(index);
           if (startupFrames.size === STARTUP_FRAME_COUNT) setReady(true);
         }
+        pruneDecodedFrames(previousTarget);
         requestRender();
       };
+
+      image.onerror = () => {
+        if (pendingFrames.get(index) === image) pendingFrames.delete(index);
+      };
       image.src = frameSource(index);
+      image.decode().then(markDecoded).catch(() => {
+        if (image.complete && image.naturalWidth > 0) markDecoded();
+      });
     };
 
     const primeFrameWindow = (target: number) => {
       const direction = target >= previousTarget ? 1 : -1;
+      const targetJump = Math.abs(target - previousTarget);
+      const preloadAhead = Math.min(
+        MAX_PRELOAD_AHEAD,
+        PRELOAD_AHEAD + Math.floor(targetJump / 3),
+      );
       loadFrame(target, true);
-      for (let offset = 1; offset <= PRELOAD_AHEAD; offset++) {
+      for (let offset = 1; offset <= preloadAhead; offset++) {
         loadFrame(target + offset * direction, offset <= 5);
       }
       for (let offset = 1; offset <= PRELOAD_BEHIND; offset++) {
         loadFrame(target - offset * direction);
       }
-      for (const [index, image] of loadedFrames) {
-        if (
-          image.complete &&
-          Math.abs(index - target) > RETAIN_RADIUS &&
-          index >= STARTUP_FRAME_COUNT
-        ) {
-          image.onload = null;
-          image.src = "";
-          loadedFrames.delete(index);
+
+      for (const [index, image] of pendingFrames) {
+        if (Math.abs(index - target) > MAX_PRELOAD_AHEAD * 2 && index !== 0) {
+          releaseImage(image);
+          pendingFrames.delete(index);
         }
       }
       previousTarget = target;
+      pruneDecodedFrames(target);
     };
 
     function render() {
       animationFrame = 0;
-      const sequenceTop =
-        sectionRef.current?.getBoundingClientRect().top ?? window.innerHeight;
+      if (!isNearViewport) return;
+      const sectionBounds = activeSection.getBoundingClientRect();
+      const sequenceTop = sectionBounds.top;
       const transitionProgress = Math.max(
         0,
         Math.min(1, -sequenceTop / (window.innerHeight * 0.55)),
       );
-      const heroBounds = sectionRef.current
-        ?.closest<HTMLElement>("[data-hero]")
-        ?.getBoundingClientRect();
       const useVideoTone =
-        transitionProgress >= 0.6 && (heroBounds?.bottom ?? 0) > 0;
+        transitionProgress >= 0.6 && sectionBounds.bottom > 0;
       if (useVideoTone !== previousVideoTone) {
         document.documentElement.dataset.heroTone = useVideoTone
           ? "video"
@@ -192,13 +242,10 @@ export function HeroScroll() {
           0,
           Math.min(1, (transitionProgress - 0.6) / 0.4),
         );
-        const introTitleBounds = introHeadingRef.current?.getBoundingClientRect();
-        const titleStart = introTitleBounds
-          ? ((introTitleBounds.top + introTitleBounds.height / 2) /
-              window.innerHeight) *
-            100
-          : 50;
-        transitionTitleRef.current.style.top = `${titleStart + titleTravel * (80 - titleStart)}%`;
+        const titleTravelPixels =
+          ((80 - transitionTitleStart) / 100) * window.innerHeight * titleTravel;
+        transitionTitleRef.current.style.transform =
+          `translate3d(-50%, calc(-50% + ${titleTravelPixels}px), 0)`;
       }
       const videoReveal = reduceMotion
         ? 1
@@ -207,7 +254,7 @@ export function HeroScroll() {
       if (activeCanvas) {
         activeCanvas.style.opacity = String(videoReveal);
       }
-      const progress = reduceMotion ? 0 : getProgress();
+      const progress = reduceMotion ? 0 : getProgress(sequenceTop);
       const target = frameAtProgress(progress);
       const nextPhase: ContentPhase =
         target < ALERT_FRAME_INDEX
@@ -217,9 +264,10 @@ export function HeroScroll() {
             : target < DIGITAL_FRAME_INDEX
               ? "example2"
               : "hidden";
-      setContentPhase((current) =>
-        current === nextPhase ? current : nextPhase,
-      );
+      if (nextPhase !== previousContentPhase) {
+        previousContentPhase = nextPhase;
+        setContentPhase(nextPhase);
+      }
       if (scrimRef.current) {
         const fadeIn = Math.max(0, Math.min(1, (progress - 0.68) / 0.12));
         const fadeOut = Math.max(0, Math.min(1, (0.94 - progress) / 0.08));
@@ -232,7 +280,7 @@ export function HeroScroll() {
       }
       primeFrameWindow(target);
       if (target !== drawnFrameRef.current && !drawFrame(target)) {
-        for (let offset = 1; offset <= RETAIN_RADIUS; offset++) {
+        for (let offset = 1; offset <= MAX_DECODED_FRAMES; offset++) {
           if (target - offset >= 0 && drawFrame(target - offset)) break;
           if (target + offset < FRAME_COUNT && drawFrame(target + offset)) break;
         }
@@ -243,15 +291,33 @@ export function HeroScroll() {
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = Math.round(canvas.clientWidth * pixelRatio);
       canvas.height = Math.round(canvas.clientHeight * pixelRatio);
+      const introTitleBounds = introHeadingRef.current?.getBoundingClientRect();
+      transitionTitleStart = introTitleBounds
+        ? ((introTitleBounds.top + introTitleBounds.height / 2) /
+            window.innerHeight) *
+          100
+        : 50;
+      if (transitionTitleRef.current) {
+        transitionTitleRef.current.style.top = `${transitionTitleStart}%`;
+      }
       drawnFrameRef.current = -1;
       requestRender();
     };
     const onScroll = () => requestRender();
 
+    const viewportObserver = new IntersectionObserver(
+      ([entry]) => {
+        isNearViewport = entry.isIntersecting;
+        if (isNearViewport) requestRender();
+      },
+      { rootMargin: "100% 0px" },
+    );
+
     for (let index = 0; index < STARTUP_FRAME_COUNT; index++) {
       loadFrame(index, true);
     }
     resize();
+    viewportObserver.observe(activeSection);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", resize);
 
@@ -260,12 +326,14 @@ export function HeroScroll() {
       cancelAnimationFrame(animationFrame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
+      viewportObserver.disconnect();
       delete document.documentElement.dataset.heroTone;
       for (const image of loadedFrames.values()) {
-        image.onload = null;
-        image.src = "";
+        releaseImage(image);
       }
+      for (const image of pendingFrames.values()) releaseImage(image);
       loadedFrames.clear();
+      pendingFrames.clear();
     };
   }, []);
 
