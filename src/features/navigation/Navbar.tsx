@@ -14,14 +14,6 @@ import styles from "./navbar.module.css";
 
 type Theme = "dark" | "light";
 
-const NAV_ITEMS = [
-  "Minder AI",
-  "Conviction",
-  "Model",
-  "Results",
-  "Insights",
-  "Contact",
-];
 const LANGUAGE_OPTIONS = [
   { code: "vi", label: "Tiếng Việt", enabled: true },
   { code: "en", label: "English", enabled: true },
@@ -192,13 +184,13 @@ export function Navbar() {
           <div className={styles.settingsAnchor}>
             <a
               className={styles.link}
-              href="#section-1"
+              href={`/${locale === "en" ? "" : `${locale}/`}`}
               aria-current="page"
-              data-label={NAV_ITEMS[0]}
+              data-label={NAV_ITEMS[0].label}
             >
-              <span className={styles.linkBase}>{NAV_ITEMS[0]}</span>
+              <span className={styles.linkBase}>{NAV_ITEMS[0].label}</span>
               <span className={styles.linkGradient} aria-hidden="true">
-                {NAV_ITEMS[0]}
+                {NAV_ITEMS[0].label}
               </span>
             </a>
 
@@ -208,10 +200,10 @@ export function Navbar() {
             const index = itemIndex + 1;
             return (
               <a
-                key={item}
+                key={item.label}
                 className={styles.link}
-                href={`#section-${index + 1}`}
-                data-label={item}
+                href={`/${locale === "en" ? "" : `${locale}/`}${item.path}`}
+                data-label={item.label}
                 data-reveal={
                   hoveredNav === index
                     ? "enter"
@@ -244,9 +236,9 @@ export function Navbar() {
                   navLeaveTimers.current.set(index, timer);
                 }}
               >
-                <span className={styles.linkBase}>{item}</span>
+                <span className={styles.linkBase}>{item.label}</span>
                 <span className={styles.linkGradient} aria-hidden="true">
-                  {item}
+                  {item.label}
                 </span>
               </a>
             );
@@ -350,3 +342,11 @@ export function Navbar() {
     </>
   );
 }
+const NAV_ITEMS = [
+  { label: "Minder AI", path: "" },
+  { label: "Conviction", path: "conviction" },
+  { label: "Model", path: "model" },
+  { label: "Results", path: "results" },
+  { label: "Insights", path: "insights" },
+  { label: "Contact", path: "contact" },
+];

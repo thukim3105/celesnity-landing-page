@@ -29,6 +29,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+.eslintcache
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -53,6 +54,12 @@ node_modules/
 /*.glb
 /*.mp4
 /scratch/
+/unuse/root-assets/
+/unuse/public-media/intro-4k-frames/
+/unuse/public-media/intro-4k-frames-full/
+/unuse/public-media/intro-scroll-frames/
+/unuse/public-media/cinematic-industrial-commercial.mp4
+/unuse/public-media/intro-4k-full.mp4
 
 # Local hero render exports; only the selected sequence belongs in the app
 /public/media/intro-4k-frames/

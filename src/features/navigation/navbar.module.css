@@ -11,6 +11,7 @@
 .navbar {
   position: relative;
   --menu-half-width: 0px;
+  --nav-edge-inset: max(0px, calc((100vw - 177.7778svh) / 2));
   width: 100%;
   min-height: 52px;
   margin: 0 auto;
@@ -23,9 +24,7 @@
 
 .brand {
   position: absolute;
-  left: calc(
-    max(0px, calc((100vw - 177.7778svh) / 2)) + var(--menu-half-width)
-  );
+  left: var(--nav-edge-inset);
   width: fit-content;
   min-height: 52px;
   margin-left: 0;
@@ -37,7 +36,7 @@
   color: var(--text-primary);
   font-weight: 600;
   letter-spacing: -0.02em;
-  transform: translateX(-50%);
+  transform: none;
   transition: color var(--dur-slow) var(--ease-out);
 }
 
@@ -88,7 +87,7 @@
   grid-column: 2;
   min-height: 52px;
   padding: var(--space-1) var(--space-3);
-  margin-right: max(0px, calc((100vw - 177.7778svh) / 2));
+  margin-right: var(--nav-edge-inset);
   justify-self: end;
   display: flex;
   align-items: center;
