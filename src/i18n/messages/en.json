@@ -1,142 +1,40 @@
 {
-  "Meta": {
-    "homeTitle": "Celesnity - Minder AI",
-    "homeDescription": "Celesnity is an AI company. Reach the stars with Minder AI and more.",
-    "aboutTitle": "About Us - Celesnity",
-    "aboutDescription": "Celesnity is an AI company building Minder AI."
-  },
-  "Nav": {
-    "minderAI": "Minder AI",
-    "operationalModel": "Operational model",
-    "capabilities": "Capabilities",
-    "everySurface": "Every surface",
-    "contact": "Contact",
-    "solution": "Solution",
-    "resources": "Resources",
-    "about": "About Us"
-  },
-  "Header": {
-    "brandHome": "Celesnity home",
-    "primaryNav": "Primary",
-    "openMenu": "Open menu",
-    "menu": "Menu",
-    "closeMenu": "Close menu"
-  },
-  "LanguageSwitcher": {
-    "label": "Select language"
-  },
-  "ThemeToggle": {
-    "label": "Switch between dark and light theme"
-  },
   "Hero": {
-    "heading": "Minder AI",
-    "leadLine1": "Increase workforce productivity, capture every action as data,",
-    "leadLine2": "and make operations instantly searchable.",
     "cta": "Request a demo",
     "videoLabel": "Minder AI working across an industrial operation",
     "loading": "Loading the film",
     "ready": "Film ready",
     "scrollHint": "Scroll to explore",
-    "chapterNavigation": "Explore Minder AI",
     "chapters": [
-      { "eyebrow": "", "heading": "Minder AI", "lead": "An AI expert for every front-line worker." },
-      {"heading": "Work becomes data."},
-      {"heading": "Answers in the flow of work."}
-    ]
-  },
-  "HeroLabels": {
-    "codeLabel": "Code",
-    "qtyLabel": "Qty",
-    "boxes": [
-      { "name": "Ceramic bearing 6204", "code": "MHX-204817", "qty": "1,200" },
-      { "name": "Copper busbar A2", "code": "MHX-330052", "qty": "640" },
-      { "name": "PET resin pellets", "code": "MHX-119043", "qty": "3,000" },
-      { "name": "Nitrile gloves M", "code": "MHX-778120", "qty": "5,000" }
-    ]
-  },
-  "WasteCounter": {
-    "eyebrow": "Data-entry time",
-    "caption": "manual entry, per carton"
-  },
-  "HeroOutro": {
-    "message": "Manual data entry eats time and drags down productivity…",
-    "cta": "Try Minder AI"
-  },
-  "HeroScene2": {
-    "line": "Installing the hardware…"
-  },
-  "HeroScene3": {
-    "line": "Configuring…"
-  },
-  "HeroVoice": {
-    "hint": "Press and hold 1s",
-    "processing": "Processing…",
-    "scrollHint": "Scroll to explore",
-    "nameLabel": "Product",
-    "codeLabel": "Code",
-    "qtyLabel": "Quantity"
-  },
-  "HowItWorks": {
-    "headingLine1": "Easy to set up,",
-    "headingLine2": "simple to use",
-    "steps": [
       {
-        "title": "Install the Hardware",
-        "points": [
-          "Set up Minder AI in the work area",
-          "Celesnity engineers deploy and configure the system on-site",
-          "Gather factory-specific operational information"
-        ]
+        "eyebrow": "",
+        "heading": "Minder AI",
+        "lead": "An AI expert for every front-line worker."
       },
       {
-        "title": "Configure the Software",
-        "points": [
-          "Connect Minder AI to existing processes",
-          "Define user roles and permissions",
-          "Customize terminology, workflows, and operational stages"
-        ]
+        "heading": "Work becomes data."
       },
       {
-        "title": "Start Using Minder AI",
-        "points": [
-          "Workers log in and interact using voice commands",
-          "AI supports daily operations immediately",
-          "Continuous learning and optimization from usage"
-        ]
+        "heading": "Answers in the flow of work."
       }
-    ]
-  },
-  "Capabilities": {
-    "sectionTitle": "Voice input isn't the only feature",
-    "items": [
-      "Onboard new hires fast",
-      "Catch errors in the workflow",
-      "Capture production data automatically",
-      "Reporting on demand",
-      "Scheduling",
-      "Ask the operation anything, in plain language"
     ]
   },
   "OperationsNetwork": {
     "eyebrow": "Operational World Model",
     "heading": "Every operation. One Minder.",
     "lead": "Minder AI connects people, machines, and data into one shared intelligence layer — turning every signal into the right action, right on time.",
-    "core": "Minder AI",
     "flow": {
-      "workers": "Workers", "machines": "Machines", "items": "Items", "sensors": "Sensors",
-      "eventLog": "Event log", "operationalGraph": "Operational graph", "insight": "Insight",
-      "dashboards": "Dashboards", "agents": "Agents", "alerts": "Alerts", "apis": "APIs"
-    },
-    "nodes": {
-      "operator": "Operator",
-      "plant": "Plant",
-      "sensor": "Sensor",
-      "machine": "Machine",
-      "material": "Material",
-      "workOrder": "Work order",
-      "defect": "Defect",
-      "eventLog": "Event log"
-      ,"productionLine": "Production line"
+      "workers": "Workers",
+      "machines": "Machines",
+      "items": "Items",
+      "sensors": "Sensors",
+      "eventLog": "Event log",
+      "operationalGraph": "Operational graph",
+      "insight": "Insight",
+      "dashboards": "Dashboards",
+      "agents": "Agents",
+      "alerts": "Alerts",
+      "apis": "APIs"
     }
   },
   "PlanningSection": {
@@ -144,26 +42,60 @@
     "sectionHeading": "One intelligence. Every operation.",
     "sectionDescription": "Supporting every stage of work, from planning to continuous improvement.",
     "items": [
-      { "title": "Plan", "description": "Plan production, workforce, and resources across operations." },
-      { "title": "Produce", "description": "Guide frontline execution and capture every production activity." },
-      { "title": "Move", "description": "Coordinate materials, inventory, and internal logistics in real time." },
-      { "title": "Maintain", "description": "Prevent failures and manage equipment reliability proactively." },
-      { "title": "Inspect", "description": "Verify quality, record defects, and ensure full traceability." },
-      { "title": "Monitor", "description": "Capture live events from workers, machines, sensors, and systems." },
-      { "title": "Protect", "description": "Improve safety, compliance, and operational risk management." },
-      { "title": "Optimize", "description": "Continuously improve performance using operational intelligence." }
+      {
+        "title": "Plan",
+        "description": "Plan production, workforce, and resources across operations."
+      },
+      {
+        "title": "Produce",
+        "description": "Guide frontline execution and capture every production activity."
+      },
+      {
+        "title": "Move",
+        "description": "Coordinate materials, inventory, and internal logistics in real time."
+      },
+      {
+        "title": "Maintain",
+        "description": "Prevent failures and manage equipment reliability proactively."
+      },
+      {
+        "title": "Inspect",
+        "description": "Verify quality, record defects, and ensure full traceability."
+      },
+      {
+        "title": "Monitor",
+        "description": "Capture live events from workers, machines, sensors, and systems."
+      },
+      {
+        "title": "Protect",
+        "description": "Improve safety, compliance, and operational risk management."
+      },
+      {
+        "title": "Optimize",
+        "description": "Continuously improve performance using operational intelligence."
+      }
     ]
   },
   "DevicesCarousel": {
     "eyebrow": "Access",
     "heading": "One layer. Every device.",
     "lead": "Minder meets the worker on whatever is to hand, with the same operational intelligence behind every interface.",
-    "modesLabel": "Interface modes", "voice": "Voice", "chat": "Chat", "vision": "Vision",
-    "previous": "Previous device", "next": "Next device",
     "devices": [
-      { "eyebrow": "At the station", "title": "Tablet", "description": "A shared command surface for production cells, workstations, and control points." },
-      { "eyebrow": "On the move", "title": "Phone", "description": "Operational context travels with the worker across shifts, locations, and tasks." },
-      { "eyebrow": "Hands free", "title": "Smartglasses", "description": "Voice, chat, and vision stay in the flow of work when both hands need to stay on the job." }
+      {
+        "eyebrow": "At the station",
+        "title": "Tablet",
+        "description": "A shared command surface for production cells, workstations, and control points."
+      },
+      {
+        "eyebrow": "On the move",
+        "title": "Phone",
+        "description": "Operational context travels with the worker across shifts, locations, and tasks."
+      },
+      {
+        "eyebrow": "Hands free",
+        "title": "Smartglasses",
+        "description": "Voice, chat, and vision stay in the flow of work when both hands need to stay on the job."
+      }
     ]
   },
   "CTA": {
@@ -187,10 +119,5 @@
     "glossary": "Glossary",
     "about": "About Us",
     "copyright": "© 2026 Celesnity Ltd. Minder AI. All rights reserved."
-  },
-  "About": {
-    "eyebrow": "About Us",
-    "heading": "Reach the stars.",
-    "lead": "Celesnity is an AI company building Minder AI, turning the factory floor into searchable, actionable data so teams work smarter, catch errors sooner, and scale without chaos."
   }
 }
