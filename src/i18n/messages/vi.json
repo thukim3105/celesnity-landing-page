@@ -21,7 +21,7 @@
   },
   "OperationsNetwork": {
     "eyebrow": "Mô hình vận hành",
-    "heading": "Mọi vận hành. Một Minder.",
+    "heading": "Kết nối mọi vận hành.",
     "lead": "Minder AI kết nối con người, máy móc và dữ liệu thành một lớp tri thức chung — để mỗi tín hiệu đều trở thành hành động đúng lúc.",
     "flow": {
       "workers": "Nhân viên",
@@ -29,7 +29,7 @@
       "items": "Vật tư",
       "sensors": "Cảm biến",
       "eventLog": "Nhật ký sự kiện",
-      "operationalGraph": "Biểu đồ vận hành",
+      "operationalGraph": "Minder AI",
       "insight": "Nhận định",
       "dashboards": "Bảng điều khiển",
       "agents": "Tác nhân AI",
@@ -39,7 +39,7 @@
   },
   "PlanningSection": {
     "sectionLabel": "Năng lực",
-    "sectionHeading": "Một trí tuệ. Mọi vận hành.",
+    "sectionHeading": "Một AI. Mọi vận hành.",
     "sectionDescription": "Hỗ trợ mọi giai đoạn công việc, từ lập kế hoạch đến cải tiến liên tục.",
     "items": [
       {
@@ -78,7 +78,7 @@
   },
   "DevicesCarousel": {
     "eyebrow": "Truy cập",
-    "heading": "Một lớp. Mọi thiết bị.",
+    "heading": "Một trải nghiệm. Mọi thiết bị.",
     "lead": "Minder đồng hành cùng nhân viên trên thiết bị sẵn có, với cùng một lớp tri thức vận hành phía sau mọi giao diện.",
     "devices": [
       {
