@@ -7,6 +7,10 @@
   },
   "Nav": {
     "minderAI": "Minder AI",
+    "operationalModel": "Mô hình vận hành",
+    "capabilities": "Năng lực",
+    "everySurface": "Mọi thiết bị",
+    "contact": "Liên hệ",
     "solution": "Giải pháp",
     "resources": "Tài nguyên",
     "about": "Về chúng tôi"
@@ -37,7 +41,7 @@
     "chapters": [
       { "eyebrow": "", "heading": "Minder AI", "lead": "Chuyên gia AI cho mọi nhân viên tuyến đầu." },
       {"heading": "Công việc thành dữ liệu."},
-      {"heading": "Câu trả lời đúng lúc."}
+      {"heading": "Câu trả lời ngay trong luồng công việc."}
     ]
   },
   "HeroLabels": {
@@ -52,10 +56,10 @@
   },
   "WasteCounter": {
     "eyebrow": "Thời gian nhập liệu",
-    "caption": "nhập tay, mỗi thùng"
+    "caption": "nhập thủ công, cho mỗi thùng"
   },
   "HeroOutro": {
-    "message": "Việc nhập liệu tốn thời gian, gây giảm hiệu suất làm việc…",
+    "message": "Nhập dữ liệu thủ công tốn thời gian và kéo giảm năng suất…",
     "cta": "Dùng thử Minder AI"
   },
   "HeroScene2": {
@@ -67,7 +71,7 @@
   "HeroVoice": {
     "hint": "Ấn giữ 1 giây",
     "processing": "Đang xử lý…",
-    "scrollHint": "Scroll để khám phá",
+    "scrollHint": "Cuộn để khám phá",
     "nameLabel": "Tên hàng",
     "codeLabel": "Mã hàng",
     "qtyLabel": "Số lượng"
@@ -113,10 +117,59 @@
       "Hỏi bất cứ điều gì về vận hành bằng ngôn ngữ tự nhiên"
     ]
   },
+  "OperationsNetwork": {
+    "eyebrow": "Mô hình thế giới vận hành",
+    "heading": "Mọi vận hành. Một Minder.",
+    "lead": "Minder AI kết nối con người, máy móc và dữ liệu thành một lớp tri thức chung — để mỗi tín hiệu đều trở thành hành động đúng lúc.",
+    "core": "Minder AI",
+    "flow": {
+      "workers": "Nhân viên", "machines": "Máy móc", "items": "Vật tư", "sensors": "Cảm biến",
+      "eventLog": "Nhật ký sự kiện", "operationalGraph": "Đồ thị vận hành", "insight": "Tri thức",
+      "dashboards": "Bảng điều khiển", "agents": "Tác nhân AI", "alerts": "Cảnh báo", "apis": "API"
+    },
+    "nodes": {
+      "operator": "Nhân viên",
+      "plant": "Nhà máy",
+      "sensor": "Cảm biến",
+      "machine": "Máy móc",
+      "material": "Vật tư",
+      "workOrder": "Lệnh sản xuất",
+      "defect": "Lỗi vận hành",
+      "eventLog": "Nhật ký sự kiện"
+      ,"productionLine": "Dây chuyền"
+    }
+  },
+  "PlanningSection": {
+    "sectionLabel": "Năng lực",
+    "sectionHeading": "Một trí tuệ. Mọi vận hành.",
+    "sectionDescription": "Hỗ trợ mọi giai đoạn công việc, từ lập kế hoạch đến cải tiến liên tục.",
+    "items": [
+      { "title": "Lập kế hoạch", "description": "Lập kế hoạch sản xuất, nhân lực và nguồn lực xuyên suốt hoạt động vận hành." },
+      { "title": "Sản xuất", "description": "Hướng dẫn nhân viên tuyến đầu thực thi và ghi lại mọi hoạt động sản xuất." },
+      { "title": "Luân chuyển", "description": "Điều phối vật tư, tồn kho và logistics nội bộ theo thời gian thực." },
+      { "title": "Bảo trì", "description": "Ngăn ngừa sự cố và chủ động quản lý độ tin cậy của thiết bị." },
+      { "title": "Kiểm định", "description": "Xác minh chất lượng, ghi nhận lỗi và đảm bảo khả năng truy xuất đầy đủ." },
+      { "title": "Giám sát", "description": "Ghi nhận sự kiện theo thời gian thực từ nhân viên, máy móc, cảm biến và hệ thống." },
+      { "title": "Bảo vệ", "description": "Cải thiện an toàn, tuân thủ và quản trị rủi ro vận hành." },
+      { "title": "Tối ưu", "description": "Liên tục cải thiện hiệu suất bằng tri thức vận hành." }
+    ]
+  },
+  "DevicesCarousel": {
+    "eyebrow": "Truy cập",
+    "heading": "Một lớp. Mọi thiết bị.",
+    "lead": "Minder đồng hành cùng nhân viên trên thiết bị sẵn có, với cùng một lớp tri thức vận hành phía sau mọi giao diện.",
+    "modesLabel": "Phương thức tương tác", "voice": "Giọng nói", "chat": "Trò chuyện", "vision": "Thị giác",
+    "previous": "Thiết bị trước", "next": "Thiết bị tiếp theo",
+    "devices": [
+      { "eyebrow": "Tại trạm", "title": "Máy tính bảng", "description": "Giao diện điều khiển dùng chung cho khu vực sản xuất, trạm làm việc và điểm kiểm soát." },
+      { "eyebrow": "Khi di chuyển", "title": "Điện thoại", "description": "Ngữ cảnh vận hành đồng hành cùng nhân viên qua các ca, địa điểm và nhiệm vụ." },
+      { "eyebrow": "Rảnh tay", "title": "Kính thông minh", "description": "Giọng nói, trò chuyện và thị giác luôn trong luồng công việc khi đôi tay cần tập trung vào nhiệm vụ." }
+    ]
+  },
   "CTA": {
     "heading": "Cùng trò chuyện",
-    "lead": "Khi mỗi phút dừng máy đều ảnh hưởng đến lợi nhuận,<br></br>và bạn cần một cách tốt hơn để tăng năng suất và giảm lãng phí.",
-    "thanks": "Cảm ơn bạn, chúng tôi sẽ liên hệ trong thời gian ngắn.",
+    "lead": "Nếu nhân viên của bạn phải xoay xở giữa máy móc và các ca làm việc, và bạn muốn biết cách tiết kiệm chi phí và tăng năng suất.",
+    "thanks": "Cảm ơn bạn. Chúng tôi sẽ sớm liên hệ.",
     "emailLabel": "Email công việc",
     "emailPlaceholder": "your@email.com",
     "button": "Yêu cầu demo",
@@ -133,7 +186,7 @@
     "guides": "Hướng dẫn",
     "glossary": "Thuật ngữ",
     "about": "Về chúng tôi",
-    "copyright": "© 2026 Celesnity Ltd. Minder AI. Bảo lưu mọi quyền."
+    "copyright": "© 2026 Celesnity Ltd. Minder AI. Mọi quyền được bảo lưu."
   },
   "About": {
     "eyebrow": "Về chúng tôi",

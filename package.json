@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint app src proxy.ts next.config.ts --cache --cache-location .eslintcache",
+    "lint:file": "eslint --cache --cache-location .eslintcache",
+    "lint:clean": "eslint app src proxy.ts next.config.ts --no-cache",
+    "lint:strict": "eslint app src proxy.ts next.config.ts --no-cache --rule react-hooks/static-components:error"
   },
   "dependencies": {
     "lenis": "^1.3.25",

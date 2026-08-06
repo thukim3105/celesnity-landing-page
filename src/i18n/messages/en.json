@@ -7,6 +7,10 @@
   },
   "Nav": {
     "minderAI": "Minder AI",
+    "operationalModel": "Operational model",
+    "capabilities": "Capabilities",
+    "everySurface": "Every surface",
+    "contact": "Contact",
     "solution": "Solution",
     "resources": "Resources",
     "about": "About Us"
@@ -111,6 +115,55 @@
       "Reporting on demand",
       "Scheduling",
       "Ask the operation anything, in plain language"
+    ]
+  },
+  "OperationsNetwork": {
+    "eyebrow": "Operational World Model",
+    "heading": "Every operation. One Minder.",
+    "lead": "Minder AI connects people, machines, and data into one shared intelligence layer — turning every signal into the right action, right on time.",
+    "core": "Minder AI",
+    "flow": {
+      "workers": "Workers", "machines": "Machines", "items": "Items", "sensors": "Sensors",
+      "eventLog": "Event log", "operationalGraph": "Operational graph", "insight": "Insight",
+      "dashboards": "Dashboards", "agents": "Agents", "alerts": "Alerts", "apis": "APIs"
+    },
+    "nodes": {
+      "operator": "Operator",
+      "plant": "Plant",
+      "sensor": "Sensor",
+      "machine": "Machine",
+      "material": "Material",
+      "workOrder": "Work order",
+      "defect": "Defect",
+      "eventLog": "Event log"
+      ,"productionLine": "Production line"
+    }
+  },
+  "PlanningSection": {
+    "sectionLabel": "Capabilities",
+    "sectionHeading": "One intelligence. Every operation.",
+    "sectionDescription": "Supporting every stage of work, from planning to continuous improvement.",
+    "items": [
+      { "title": "Plan", "description": "Plan production, workforce, and resources across operations." },
+      { "title": "Produce", "description": "Guide frontline execution and capture every production activity." },
+      { "title": "Move", "description": "Coordinate materials, inventory, and internal logistics in real time." },
+      { "title": "Maintain", "description": "Prevent failures and manage equipment reliability proactively." },
+      { "title": "Inspect", "description": "Verify quality, record defects, and ensure full traceability." },
+      { "title": "Monitor", "description": "Capture live events from workers, machines, sensors, and systems." },
+      { "title": "Protect", "description": "Improve safety, compliance, and operational risk management." },
+      { "title": "Optimize", "description": "Continuously improve performance using operational intelligence." }
+    ]
+  },
+  "DevicesCarousel": {
+    "eyebrow": "Access",
+    "heading": "One layer. Every device.",
+    "lead": "Minder meets the worker on whatever is to hand, with the same operational intelligence behind every interface.",
+    "modesLabel": "Interface modes", "voice": "Voice", "chat": "Chat", "vision": "Vision",
+    "previous": "Previous device", "next": "Next device",
+    "devices": [
+      { "eyebrow": "At the station", "title": "Tablet", "description": "A shared command surface for production cells, workstations, and control points." },
+      { "eyebrow": "On the move", "title": "Phone", "description": "Operational context travels with the worker across shifts, locations, and tasks." },
+      { "eyebrow": "Hands free", "title": "Smartglasses", "description": "Voice, chat, and vision stay in the flow of work when both hands need to stay on the job." }
     ]
   },
   "CTA": {
